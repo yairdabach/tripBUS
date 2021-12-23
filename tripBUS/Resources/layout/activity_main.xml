@@ -1,7 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-</RelativeLayout>
+    android:layout_height="match_parent"
+    android:background="@drawable/oreng_background"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="360dp"
+        android:layout_height="360dp"
+        android:src="@drawable/logo_gray"
+        android:layout_marginTop="70dp"/>
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="Manager Login"
+        android:textSize="26sp"
+        android:fontFamily="sans-serif"
+        android:textAllCaps="false"
+        android:background="@drawable/button1_style"
+        android:layout_margin="5dp"
+        android:textColor="#fff"
+        android:id="@+id/button_login_manager"/>
+
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="Team Login"
+        android:textSize="26sp"
+        android:fontFamily="sans-serif"
+        android:textAllCaps="false"
+        android:background="@drawable/button1_style"
+        android:layout_margin="5dp"
+        android:textColor="#fff"
+        android:id="@+id/button_login_team"/>
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:textColor="#414042"
+        android:text="@string/dontacount"
+        android:id="@+id/tv_signup"/>
+</LinearLayout>

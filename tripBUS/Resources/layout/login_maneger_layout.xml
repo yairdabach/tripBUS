@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/white_bg"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:textSize="31sp"
+        android:textColor="#414042"
+        android:layout_marginTop="150dp"/>
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+            <EditText
+                    android:inputType="textEmailAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" 
+                    android:hint="email"
+                    android:textSize="21sp"
+                    android:imeOptions="actionNext"
+                    android:theme="@style/EditTextMy"
+                    android:layout_margin="20dp"
+                    android:id="@+id/et_email_login"/>
+     </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+            <EditText
+                    android:inputType="textPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" 
+                    android:hint="password"
+                    android:textSize="21sp"
+                    android:imeOptions="actionNext"
+                    android:theme="@style/EditTextMy"
+                    android:layout_margin="20dp"
+            android:id="@+id/et_password_login"/>
+     </android.support.design.widget.TextInputLayout>
+
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Remember me"
+        android:textSize="16sp"
+        android:id="@+id/cb_remember_login"/>
+
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:textSize="26sp"
+        android:fontFamily="sans-serif"
+        android:textAllCaps="false"
+        android:background="@drawable/button2_style"
+        android:layout_margin="5dp"
+        android:textColor="#fff"
+        android:id="@+id/btn_login"/>
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:textColor="#414042"
+        android:text="forget password"
+        android:id="@+id/tv_forget_password_click"/>
+</LinearLayout>

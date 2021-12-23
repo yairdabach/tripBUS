@@ -1,0 +1,44 @@
+﻿
+using AspNetCore.Http.Extensions;
+using System;
+using System.Collections;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net.Mail;
+using System.Threading.Tasks;
+using Twilio;
+using Twilio.TwiML;
+
+using Twilio.Rest.Api.V2010.Account;
+using Twilio.Types;
+
+namespace tripBUS.Helpers
+{
+    public static class SMSHelper
+    {
+        public static string SendSms(string phone)
+        {
+            var accountSid = "AC66c98ec25c85b0ab9355d2918c166b22";
+            var authToken = "2df643d06229582fd5fb6915c0c9455c";
+            TwilioClient.Init(accountSid, authToken);
+
+            var messageOptions = new CreateMessageOptions(
+                new PhoneNumber("+972522401616"));
+            messageOptions.MessagingServiceSid = "MGf33a46c1c26224795718761507707b1c";
+            string verifactioncode = (((new Random()).Next(111111, 9999999)).ToString());
+            messageOptions.Body = "Your vrifaction code for TripBus is :" + verifactioncode;
+
+            var message = MessageResource.Create(messageOptions);
+            Console.WriteLine(message.Body);
+            return verifactioncode;
+        }
+
+        public static async Task Write(string text)
+        {
+            await File.WriteAllTextAsync("WriteText.txt", text);
+        }
+        
+    }
+}
