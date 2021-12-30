@@ -13,6 +13,7 @@ using Twilio.TwiML;
 
 using Twilio.Rest.Api.V2010.Account;
 using Twilio.Types;
+using Android.Telephony;
 
 namespace tripBUS.Helpers
 {
@@ -24,17 +25,21 @@ namespace tripBUS.Helpers
             var authToken = "2df643d06229582fd5fb6915c0c9455c";
             TwilioClient.Init(accountSid, authToken);
 
-            var messageOptions = new CreateMessageOptions(
-                new PhoneNumber("+972522401616"));
+            var messageOptions = new CreateMessageOptions( new PhoneNumber(phone));
             messageOptions.MessagingServiceSid = "MGf33a46c1c26224795718761507707b1c";
             string verifactioncode = (((new Random()).Next(111111, 9999999)).ToString());
             messageOptions.Body = "Your vrifaction code for TripBus is :" + verifactioncode;
 
             var message = MessageResource.Create(messageOptions);
-            Console.WriteLine(message.Body);
+            
             return verifactioncode;
+            
         }
 
+        public static void Send()
+        {
+            SmsManager.Default.SendTextMessage("972522580810", null, "תתעלמי", null, null);
+        }
         public static async Task Write(string text)
         {
             await File.WriteAllTextAsync("WriteText.txt", text);

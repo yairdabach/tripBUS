@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+	<group android:checkableBehavior="single">
+		<item
+            android:id="@+id/nav_new_trip"
+            android:title="New trip" />
+		<item
+            android:id="@+id/nav_past_trips"
+            android:title="Past trips" />
+		<item
+            android:id="@+id/nav_sherch"
+            android:title="Sherch" />
+	</group>
+
+	<item android:title="User definisens">
+		<menu>
+			<item
+                android:id="@+id/nav_update"
+                android:title="Update account" />
+			<item
+                android:id="@+id/nav_logout"
+                android:title="Logout" />
+		</menu>
+	</item>
+
+</menu>
+
+
+<!-- Code to implement into Activity:
+
+Android.Widget.SearchView searchView;
+public override bool OnCreateOptionsMenu(IMenu menu)
+{
+  this.MenuInflater.Inflate(Resource.Menu.menu1, menu);
+
+  var searchItem = menu.FindItem(Resource.Id.action_search);
+
+  searchView = searchItem.ActionProvider.JavaCast<Android.Widget.SearchView>();
+
+  searchView.QueryTextSubmit += (sender, args) =>
+  {
+    Toast.MakeText(this, "You searched: " + args.Query, ToastLength.Short).Show();
+
+  };
+
+
+  return base.OnCreateOptionsMenu(menu);
+}
+
+-->

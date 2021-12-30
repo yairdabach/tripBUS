@@ -15,5 +15,18 @@ namespace tripBUS.Helpers
     public static class SavedData
     {
         public static TeamMember loginMember;
+        public static Queue<Context> savedActivities;
+        public static Context context;
+        private static Android.Content.ISharedPreferences sharedPreferencesRefrence;
+
+        public static void SetSharedPreferencesRefrence(Android.Content.ISharedPreferences sp) { sharedPreferencesRefrence = sp; }
+        public static void DeleteSp()
+        {
+            var editor = sharedPreferencesRefrence.Edit();
+            editor.PutString("email", null);
+            editor.PutString("password",null);
+            editor.Commit();
+        }
+
     }
 }

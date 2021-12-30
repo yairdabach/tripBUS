@@ -13,12 +13,12 @@ namespace tripBUS.Modles
 {
     public class TeamMember
     {
-        string firstName { get; set; }
-        string lastName { get; set; }
-        string schoolID { get; set; }
-        string kidomet { get; set; }
-        string phone { get; set; }
-        string email  { get; set; }
+        public string firstName { get; set; }
+        public string lastName { get; set; }
+        public string schoolID { get; set; }
+        public string kidomet { get; set; }
+        public string phone { get; set; }
+        public string email  { get; set; }
 
         private string password;
 

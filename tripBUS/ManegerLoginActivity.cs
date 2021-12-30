@@ -30,10 +30,15 @@ namespace tripBUS
         Dialog ForgetPasswordDilog;
         string confirmCode;
         string emailstr;
+
+        SmsReceiver sMSReceiver;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.login_maneger_layout);
+            
+
+            SavedData.context = (this);
 
             forgetPasswordTvClick = FindViewById<TextView>(Resource.Id.tv_forget_password_click);
             forgetPasswordTvClick.Click += ForgetPassword_Click;
@@ -44,7 +49,12 @@ namespace tripBUS
 
             btnLogin = FindViewById<Button>(Resource.Id.btn_login);
             btnLogin.Click += BtnLogin_Click;
-            
+
+            sMSReceiver = new SmsReceiver();
+            var intentFilter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
+            intentFilter.Priority = 999;
+            RegisterReceiver(sMSReceiver, intentFilter);
+
         }
 
         private void BtnLogin_Click(object sender, EventArgs e)
@@ -52,6 +62,7 @@ namespace tripBUS
             TeamMember teamMember = DataHelper.Login(emailET.Text, passwordET.Text, this);
             if (teamMember != null)
             {
+                SavedData.loginMember = teamMember;
                 Intent data = new Intent();
                 data.PutExtra("Save", cbRememberMe.Checked);
                 SetResult(Result.Ok,data);
@@ -91,10 +102,13 @@ namespace tripBUS
             emailstr = email.Text;
             if (DataHelper.ManegerHasEmail(email.Text ,this)==1)
             {
-                confirmCode = SMSHelper.SendSms("+972522401616");
                 try
                 {
                     string phone = DataHelper.GetPhoneByEmail(email.Text, this);
+                    //SmsReceiver sMSReceiver = new SmsReceiver();
+                    //var intentFilter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
+                    //intentFilter.Priority = 999;
+                    //RegisterReceiver(sMSReceiver, intentFilter);
                     confirmCode = SMSHelper.SendSms(phone);
                     
                     ForgetPasswordDilog.SetContentView(Resource.Layout.forget_password_confirm_layout);
@@ -117,7 +131,12 @@ namespace tripBUS
 
         private void BtnConfirmPassword_Click(object sender, EventArgs e)
         {
-            if ((ForgetPasswordDilog.FindViewById<EditText>(Resource.Id.et_code_forget)).Text == confirmCode)
+            ConfirmCode((ForgetPasswordDilog.FindViewById<EditText>(Resource.Id.et_code_forget)).Text);
+        }
+
+        public void ConfirmCode(string code)
+        {
+            if ( code == confirmCode)
             {
                 ForgetPasswordDilog.SetContentView(Resource.Layout.forget_password_new_layout);
                 Button btnSetPassword = (Button)ForgetPasswordDilog.FindViewById(Resource.Id.btn_new_forget);

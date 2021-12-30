@@ -2,6 +2,8 @@
     <string name="app_name">tripBUS</string>
     <string name="action_settings">Settings</string>
 	<string name="dontacount"><u>Do not have an account? Sign Up!</u></string>
+	<string name="navigation_drawer_open"></string>
+	<string name="navigation_drawer_close"></string>
 	<string-array name="phone_kidomet">
 		<item>+972</item>
 	</string-array>

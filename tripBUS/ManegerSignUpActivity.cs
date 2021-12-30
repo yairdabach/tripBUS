@@ -58,8 +58,9 @@ namespace tripBUS
                 if (ValidVaribols())
                 {
                     DataHelper.AddTeamMember((new TeamMember(firstNameET.Text, lastNameET.Text, schoolIdET.Text, ((string)KidometSpinner.SelectedItem), phoneET.Text, emailET.Text, passwordET.Text)),this);
-                    
-                    SetResult(Result.Ok);
+                    Intent data = new Intent();
+                    data.PutExtra("Click", true);
+                    SetResult(Result.Ok, data);
                     Finish();
                 }
             }

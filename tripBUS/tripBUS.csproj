@@ -69,11 +69,13 @@
   <ItemGroup>
     <Compile Include="Helpers\SavedData.cs" />
     <Compile Include="Helpers\SMSHelper.cs" />
+    <Compile Include="Helpers\SmsReceiver.cs" />
     <Compile Include="ManegerSignUpActivity.cs" />
     <Compile Include="ManegerLoginActivity.cs" />
     <Compile Include="Helpers\Constant.cs" />
     <Compile Include="Helpers\DataHelper.cs" />
     <Compile Include="MainActivity.cs" />
+    <Compile Include="MangerMainActivity.cs" />
     <Compile Include="Modles\TeamMember.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -185,6 +187,27 @@
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\futer_trips_layout.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\nav_header_main.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\menu\meneger_menu.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\maneger_layout.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\values\dimens.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
