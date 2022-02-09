@@ -21,7 +21,6 @@ namespace tripBUS
         TextView TVSignUp;
         Android.Content.ISharedPreferences sp;
 
-        SmsReceiver sMSReceiver;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -52,11 +51,6 @@ namespace tripBUS
                 StartActivity(menegerLogin);
                 Finish();
             }
-            sMSReceiver = new SmsReceiver();
-            var intentFilter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
-            intentFilter.Priority = 999;
-            RegisterReceiver(sMSReceiver, intentFilter);
-
         }
 
         private void BtnTeamMember_Click(object sender, EventArgs e)

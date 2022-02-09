@@ -9,6 +9,7 @@ using AndroidX.AppCompat.App;
 using AndroidX.AppCompat.Widget;
 using AndroidX.Core.View;
 using AndroidX.DrawerLayout.Widget;
+using Google.Android.Material.AppBar;
 using Google.Android.Material.FloatingActionButton;
 using Google.Android.Material.Navigation;
 using Google.Android.Material.Snackbar;
@@ -24,23 +25,30 @@ namespace tripBUS
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.maneger_layout);
+            SetContentView(Resource.Layout.navbar_layout);
             // Create your application here
+
             toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar_futer);
             SetSupportActionBar(toolbar);
 
             SupportActionBar.Title = "Future trips";
 
+            
             DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, Resource.String.navigation_drawer_open, Resource.String.navigation_drawer_close);
             drawer.AddDrawerListener(toggle);
             toggle.SyncState();
+
+            ViewStub stub = FindViewById<ViewStub>(Resource.Id.layout_stub);
+            stub.LayoutResource = Resource.Layout.futer_trips_layout;
+            stub.Inflate();
 
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
             navigationView.SetNavigationItemSelectedListener(this);
             
             ((navigationView.GetHeaderView(0)).FindViewById<TextView>(Resource.Id.nav_head_name)).Text = SavedData.loginMember.firstName + " "+SavedData.loginMember.lastName;
             ((navigationView.GetHeaderView(0)).FindViewById<TextView>(Resource.Id.nav_head_email)).Text = SavedData.loginMember.email;
+
         }
 
         public bool OnNavigationItemSelected(IMenuItem menuItem)
@@ -52,6 +60,16 @@ namespace tripBUS
                 Intent MainAc = new Intent(this, typeof(MainActivity));
                 StartActivity(MainAc);
                 Finish();
+            }
+            if (menuItem.ItemId == Resource.Id.nav_new_trip)
+            {
+                Intent MainAc = new Intent(this, typeof(NewTripActivity));
+                StartActivity(MainAc);
+                return true;
+            }
+            if (menuItem.ItemId == Resource.Id.nav_update)
+            {
+
             }
             return true;
         }

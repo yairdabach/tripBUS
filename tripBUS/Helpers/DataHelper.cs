@@ -33,6 +33,8 @@ namespace tripBUS.Helpers
                 //MySqlCommand cmd = new MySqlCommand();
             }
         }
+
+        //TeamMember function
         public static int ManegerHasEmail(string email, Context context)
         {
             try
@@ -88,6 +90,30 @@ namespace tripBUS.Helpers
                 
             }
         }
+        public static void UpdateTeamMember(TeamMember teamMember, Context context)
+        {
+            try
+            {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.Append("UPDATE [dbo].[TeamMember] (FirstName, LastName, SchoolID, Kidomet, Phone, Email, Password)");
+                stringBuilder.Append(@"SET" +teamMember.ToStringUpdate() );
+                stringBuilder.Append(@"Where Email=" + teamMember.email);
+                createConacation();
+                var cmd = new SqlCommand(stringBuilder.ToString(), conn);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                    //MySqlCommand cmd = new MySqlCommand();
+                }
+                Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
+
+            }
+        }
         public static TeamMember Login(string email,string password, Context context)
         {
             try
@@ -100,14 +126,13 @@ namespace tripBUS.Helpers
                 if (reader.HasRows)
                 {
                     TeamMember teamMember = new TeamMember(
-                        ((IDataRecord)reader).GetValue(1).ToString(),
                         ((IDataRecord)reader).GetValue(0).ToString(),
+                        ((IDataRecord)reader).GetValue(1).ToString(),
                         ((IDataRecord)reader).GetValue(2).ToString(),
                         ((IDataRecord)reader).GetValue(3).ToString(),
                         ((IDataRecord)reader).GetValue(4).ToString(),
                         ((IDataRecord)reader).GetValue(5).ToString(),
                         ((IDataRecord)reader).GetValue(6).ToString() );
-                    //SavedData.loginMember = teamMember;
                     conn.Close();
                     SavedData.loginMember = teamMember;
                     return teamMember;
@@ -125,6 +150,10 @@ namespace tripBUS.Helpers
                     conn.Close();
                     //MySqlCommand cmd = new MySqlCommand();
                 }
+                Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
+                Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
+                Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
+                Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
                 Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
                 return null;
             }
@@ -187,6 +216,31 @@ namespace tripBUS.Helpers
                     //MySqlCommand cmd = new MySqlCommand();
                 }
                 return false;
+
+            }
+        }
+
+        //Trip Function
+        public static void CreateNewTrip(Trip trip, Context context)
+        {
+            try
+            {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.Append("INSERT INTO [dbo].[Trip] (TripName, TripDescription, ManegerEmail, Place, TripStartDateDay, TripStartDateMonth, TripStartDateYear, TripEndDateDay, TripEndDateMonth, TripEndDateYear)");
+                stringBuilder.Append(@"VALUES " + trip.ToString());
+                createConacation();
+                var cmd = new SqlCommand(stringBuilder.ToString(), conn);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                    //MySqlCommand cmd = new MySqlCommand();
+                }
+                Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
 
             }
         }

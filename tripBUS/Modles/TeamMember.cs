@@ -33,7 +33,21 @@ namespace tripBUS.Modles
             this.email = email;
             this.password = password;
         }
+        public void CopyTeamMember(TeamMember m)
+        {
+            m.firstName = firstName;
+            m.lastName = lastName;
+            m.schoolID = schoolID;
+            m.kidomet = kidomet;
+            m.phone = phone;
+            m.email = email;
+            m.password = password;
+        }
 
+        public void setPassword(string pass)
+        {
+            password= pass;
+        }
         public void SetSp(Android.Content.ISharedPreferences sp)
         {
             var editor = sp.Edit();
@@ -44,6 +58,11 @@ namespace tripBUS.Modles
         public override string ToString()
         {
             return $"('{this.firstName}','{this.lastName}', '{this.schoolID}', '{this.kidomet}', '{this.phone}', '{this.email}', '{this.password}')";
+        }
+
+        public string ToStringUpdate()
+        {
+            return $"FirstName='{this.firstName}',LastName='{this.lastName}', SchoolId = '{this.schoolID}', Kidomet='{this.kidomet}', Phone='{this.phone}', Password = '{this.password}'";
         }
     }
 }

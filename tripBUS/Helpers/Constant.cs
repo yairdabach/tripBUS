@@ -14,7 +14,7 @@ namespace tripBUS.Helpers
     public static class Constant
     {
         #region MYSQL CONACTION STRING
-        public static string connectionString = "Server=tcp:tripbus.database.windows.net,1433;Initial Catalog = tripBus; Persist Security Info=False;User ID = admintripbus; Password=tripBus!; MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout = 30";
+        public static string connectionString = "Server=tcp:tripbusserver.database.windows.net,1433;Initial Catalog = tripbus; Persist Security Info=False;User ID = admintripbus; Password=tripBus!; MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout = 30";
         #endregion
 
     }

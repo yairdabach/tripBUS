@@ -67,6 +67,9 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UpdateDitles.cs" />
+    <Compile Include="Modles\Trip.cs" />
+    <Compile Include="NewTripActivity.cs" />
     <Compile Include="Helpers\SavedData.cs" />
     <Compile Include="Helpers\SMSHelper.cs" />
     <Compile Include="Helpers\SmsReceiver.cs" />
@@ -202,12 +205,22 @@
     <AndroidResource Include="Resources\menu\meneger_menu.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\maneger_layout.xml">
+    <AndroidResource Include="Resources\layout\navbar_layout.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\dimens.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\trip_layout.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\title_layout.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
