@@ -52,7 +52,7 @@ namespace tripBUS.Modles
         {
             if(tripCode == 0)
             {
-                return $"('{this.maengerEmail}','{this.tripName}', '{this.tripDescription}','{this.place}','{this.classAge}', '{this.StartDate.Day}', '{this.StartDate.Month}', '{this.StartDate.Year}', '{this.EndDate.Day}', '{this.EndDate.Month}', '{this.EndDate.Year}')";
+                return $"('{this.tripName}', '{this.tripDescription}','{this.maengerEmail}','{this.place}','{this.classAge}', '{this.StartDate.Day}', '{this.StartDate.Month}', '{this.StartDate.Year}', '{this.EndDate.Day}', '{this.EndDate.Month}', '{this.EndDate.Year}')";
             }
             return $"('{this.tripCode}','{this.maengerEmail}','{this.tripName}', '{this.tripDescription}','{this.place}','{this.classAge}', '{this.StartDate.Day}', '{this.StartDate.Month}', '{this.StartDate.Year}', '{this.EndDate.Day}', '{this.EndDate.Month}', '{this.EndDate.Year}')";
         }

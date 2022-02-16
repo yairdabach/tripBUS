@@ -138,20 +138,22 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp">
-                <TextView
-                    android:text="Place"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="16dp"
-                    android:paddingLeft="5dp" />
-                <Spinner
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    style="@style/Widget.AppCompat.Spinner.Underlined"
-                    android:id="@+id/spnr_place_trip"
-                    android:hint="Place"/>
+                <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <EditText
+                            android:inputType="text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Place"
+                            android:textSize="21sp"
+                            android:imeOptions="actionNext"
+                            android:theme="@style/EditTextMy"
+                            android:id="@+id/et_place_trip"/>
+                </android.support.design.widget.TextInputLayout>
             </LinearLayout>
 
+            
 
 
         </LinearLayout>

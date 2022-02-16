@@ -23,9 +23,8 @@ using tripBUS.Modles;
 namespace tripBUS
 {
     [Activity(Label = "Activity1")]
-    public class UpdateDitles : AppCompatActivity
+    public class UpdateDitlesActivity : AppCompatActivity
     {
-        TextView haveAccountTV;
         Button UpdateBtn;
         Spinner KidometSpinner;
         EditText firstNameET, lastNameET, schoolIdET, emailET, phoneET, passwordET, passworConET;
@@ -42,12 +41,15 @@ namespace tripBUS
             ViewStub stub = FindViewById<ViewStub>(Resource.Id.layout_stubBar);
             stub.LayoutResource = Resource.Layout.signup_layout;
             stub.Inflate();
+            (FindViewById<TextView>(Resource.Id.singupTV)).Text = "Update";
+
             // Create your application here
 
             (FindViewById<TextView>(Resource.Id.tv_have_account)).Visibility = ViewStates.Invisible;
 
             UpdateBtn = FindViewById<Button>(Resource.Id.btn_signup);
             UpdateBtn.Click += UpdateBtn_Click; ;
+            UpdateBtn.Text = "Update";
 
             KidometSpinner = FindViewById<Spinner>(Resource.Id.spnr_Kidomet_signup);
             var adapter = ArrayAdapter.CreateFromResource(this, Resource.Array.phone_kidomet, Android.Resource.Layout.SimpleSpinnerDropDownItem);
@@ -66,7 +68,7 @@ namespace tripBUS
             lastNameET.Text = Helpers.SavedData.loginMember.lastName;
             schoolIdET.Text = Helpers.SavedData.loginMember.schoolID;
             emailET.Text = Helpers.SavedData.loginMember.email;
-            emailET.Enabled= true;
+            emailET.Enabled= false;
             phoneET.Text = Helpers.SavedData.loginMember.phone;
             passwordET.Text = "00000000";
             passworConET.Text = "00000000";
@@ -96,11 +98,16 @@ namespace tripBUS
                     teamMemberTemp.schoolID = schoolIdET.Text;
                     teamMemberTemp.email = emailET.Text;
                     teamMemberTemp.kidomet = ((string)KidometSpinner.SelectedItem);
-                    if (passwordET.Text !="00000000")
+                    if (passwordET.Text != "00000000")
                     {
                         teamMemberTemp.setPassword(passwordET.Text);
                     }
-                    Finish();
+                    if(DataHelper.UpdateTeamMember(teamMemberTemp,this))
+                    {
+                        Helpers.SavedData.loginMember= teamMemberTemp;
+                        FinishActivity(0); 
+                    }
+                    
 
 
                 }
@@ -167,31 +174,6 @@ namespace tripBUS
                 }
             }
 
-            // email valid
-            if (!CheckDataMail(emailET.Text) || emailET.Text == "")
-            {
-                emailET.Text = null;
-                emailET.Background.SetColorFilter(Android.Graphics.Color.Red, PorterDuff.Mode.SrcAtop);
-                emailET.Error = "not valid email";
-                valid = false;
-            }
-            else
-            {
-                if (DataHelper.ManegerHasEmail(emailET.Text,this)==1)
-                {
-                    emailET.Text = null;
-                    emailET.Background.SetColorFilter(Android.Graphics.Color.Red, PorterDuff.Mode.SrcAtop);
-                    emailET.Error = "there is email";
-                    valid = false;
-                }
-                else
-                {
-                    emailET.SetError("", null);
-                    emailET.Background.SetColorFilter(Android.Graphics.Color.LightGray, PorterDuff.Mode.Src);
-                    emailET.Error = null;
-                }
-            }
-
             //valid phone
             if (phoneET.Text.Length != 9 || !phoneET.Text.All(char.IsDigit))
             {
@@ -208,39 +190,42 @@ namespace tripBUS
             }
 
             //Pasword Valid
-            if (passwordET.Text != "00000000"||!ValidatePassword(passwordET.Text))
+            if (passwordET.Text != "00000000")
             {
-                //At least onelower case letter,
-                //At least oneupper case letter,
-                //At least onenumber
-                //At least 8characters length
-                passwordET.Text = null;
-                passwordET.Background.SetColorFilter(Android.Graphics.Color.Red, PorterDuff.Mode.SrcAtop);
-                passwordET.Error = "At least onelower case letter, \n At least oneupper case letter \n At least onenumber \n At least 8characters length";
-                valid = false;
-                passworConET.Text = "";
-            }
-            else
-            {
-                passwordET.SetError("", null);
-                passwordET.Background.SetColorFilter(Android.Graphics.Color.LightGray, PorterDuff.Mode.Src);
-                passwordET.Error = null;
-                if (passworConET.Text == passwordET.Text)
+                if (!ValidatePassword(passwordET.Text))
                 {
-                    passworConET.SetError("", null);
-                    passworConET.Background.SetColorFilter(Android.Graphics.Color.LightGray, PorterDuff.Mode.Src);
-                    passworConET.Error = null;
-                }
-                else
-                {
-                    passworConET.Text = null;
-                    passworConET.Background.SetColorFilter(Android.Graphics.Color.Red, PorterDuff.Mode.SrcAtop);
-                    passworConET.Error = "Password don't match";
+                    //At least onelower case letter,
+                    //At least oneupper case letter,
+                    //At least onenumber
+                    //At least 8characters length
+                    passwordET.Text = null;
+                    passwordET.Background.SetColorFilter(Android.Graphics.Color.Red, PorterDuff.Mode.SrcAtop);
+                    passwordET.Error = "At least onelower case letter, \n At least oneupper case letter \n At least onenumber \n At least 8characters length";
                     valid = false;
                     passworConET.Text = "";
                 }
+                else
+                {
+                    passwordET.SetError("", null);
+                    passwordET.Background.SetColorFilter(Android.Graphics.Color.LightGray, PorterDuff.Mode.Src);
+                    passwordET.Error = null;
+                    if (passworConET.Text == passwordET.Text)
+                    {
+                        passworConET.SetError("", null);
+                        passworConET.Background.SetColorFilter(Android.Graphics.Color.LightGray, PorterDuff.Mode.Src);
+                        passworConET.Error = null;
+                    }
+                    else
+                    {
+                        passworConET.Text = null;
+                        passworConET.Background.SetColorFilter(Android.Graphics.Color.Red, PorterDuff.Mode.SrcAtop);
+                        passworConET.Error = "Password don't match";
+                        valid = false;
+                        passworConET.Text = "";
+                    }
+                }
             }
-
+            
             return valid;
         }
 

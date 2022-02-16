@@ -90,18 +90,19 @@ namespace tripBUS.Helpers
                 
             }
         }
-        public static void UpdateTeamMember(TeamMember teamMember, Context context)
+        public static bool UpdateTeamMember(TeamMember teamMember, Context context)
         {
             try
             {
                 StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.Append("UPDATE [dbo].[TeamMember] (FirstName, LastName, SchoolID, Kidomet, Phone, Email, Password)");
-                stringBuilder.Append(@"SET" +teamMember.ToStringUpdate() );
-                stringBuilder.Append(@"Where Email=" + teamMember.email);
+                stringBuilder.Append("UPDATE [dbo].[TeamMember]");
+                stringBuilder.Append(@"SET " +teamMember.ToStringUpdate() );
+                stringBuilder.Append(@"Where Email='" + teamMember.email+"'");
                 createConacation();
                 var cmd = new SqlCommand(stringBuilder.ToString(), conn);
                 cmd.ExecuteNonQuery();
                 conn.Close();
+                return true;
             }
             catch (Exception ex)
             {
@@ -111,7 +112,7 @@ namespace tripBUS.Helpers
                     //MySqlCommand cmd = new MySqlCommand();
                 }
                 Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
-
+                return false;
             }
         }
         public static TeamMember Login(string email,string password, Context context)
@@ -226,7 +227,7 @@ namespace tripBUS.Helpers
             try
             {
                 StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.Append("INSERT INTO [dbo].[Trip] (TripName, TripDescription, ManegerEmail, Place, TripStartDateDay, TripStartDateMonth, TripStartDateYear, TripEndDateDay, TripEndDateMonth, TripEndDateYear)");
+                stringBuilder.Append("INSERT INTO [dbo].[Trip] (TripName, TripDescription, ManegerEmail ,Place,ClassAge, TripStartDateDay, TripStartDateMonth, TripStartDateYear, TripEndDateDay, TripEndDateMonth, TripEndDateYear)");
                 stringBuilder.Append(@"VALUES " + trip.ToString());
                 createConacation();
                 var cmd = new SqlCommand(stringBuilder.ToString(), conn);

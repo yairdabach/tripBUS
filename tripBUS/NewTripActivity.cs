@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
@@ -24,9 +25,9 @@ namespace tripBUS
 
     public class NewTripActivity : AppCompatActivity
     {
-        EditText TripNameET, TripDescriptionET, TripStartDate, TripEndDate;
+        EditText TripNameET, TripDescriptionET, TripStartDate, TripEndDate, TripPlace;
         Object Last;
-        Spinner TripClass, TripPlace;
+        Spinner TripClass;
         DateTime startDate, endDate;
         Button btnStartDate, btnEndDate;
         Google.Android.Material.FloatingActionButton.FloatingActionButton saveFAB;
@@ -49,9 +50,13 @@ namespace tripBUS
             TripDescriptionET = FindViewById<EditText>(Resource.Id.et_TripDes_trip);
             TripStartDate = FindViewById<EditText>(Resource.Id.et_startdate_trip);
             TripEndDate = FindViewById<EditText>(Resource.Id.et_end_trip);
-            TripPlace = FindViewById<Spinner>(Resource.Id.spnr_place_trip);
+            TripPlace = FindViewById<EditText>(Resource.Id.et_place_trip);
             TripClass = FindViewById<Spinner>(Resource.Id.spnr_class_trip);
             saveFAB = FindViewById<Google.Android.Material.FloatingActionButton.FloatingActionButton>(Resource.Id.save_trip_fav);
+
+            var items = new List<string>() {"א","ב","ג","ד","ה","ו","ז","ח","ט","י","יא","יב"};
+            var adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleSpinnerItem, items);
+            TripClass.Adapter = adapter;
 
             btnEndDate = FindViewById<Button>(Resource.Id.btn_endDate);
             btnStartDate = FindViewById<Button>(Resource.Id.btn_startDate);
@@ -90,7 +95,7 @@ namespace tripBUS
                 TripStartDate.Error = null;
             }
 
-            if (TripEndDate.Text == "" || DateTime.Compare(startDate,endDate)<0)
+            if (TripEndDate.Text == "" || DateTime.Compare(startDate,endDate)>0)
             {
                 TripEndDate.Background.SetColorFilter(Android.Graphics.Color.Red, PorterDuff.Mode.SrcAtop);
                 TripEndDate.Error = "you didn't fill or the date befor the start date";
@@ -103,10 +108,23 @@ namespace tripBUS
                 TripEndDate.Error = null;
             }
 
+            if (TripPlace.Text == "" )
+            {
+                TripPlace.Background.SetColorFilter(Android.Graphics.Color.Red, PorterDuff.Mode.SrcAtop);
+                TripPlace.Error = "you didn't fill or the date befor the start date";
+                valid = false;
+            }
+            else
+            {
+                TripPlace.SetError("", null);
+                TripPlace.Background.SetColorFilter(Android.Graphics.Color.LightGray, PorterDuff.Mode.Src);
+                TripPlace.Error = null;
+            }
+
 
             if (valid)
             {
-                Trip trip = new Trip(TripNameET.Text, Helpers.SavedData.loginMember.email, TripDescriptionET.Text, ((string)TripPlace.SelectedItem), ((string)TripClass.SelectedItem), startDate, endDate);
+                Trip trip = new Trip(TripNameET.Text, Helpers.SavedData.loginMember.email, TripDescriptionET.Text, TripPlace.Text, ((string)TripClass.SelectedItem), startDate, endDate);
                 DataHelper.CreateNewTrip(trip, this);
 
             }
