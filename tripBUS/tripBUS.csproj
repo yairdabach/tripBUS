@@ -67,6 +67,8 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UpdaterTripActivity.cs" />
+    <Compile Include="ViewTripActivity.cs" />
     <Compile Include="UpdateDitlesActivity.cs" />
     <Compile Include="Modles\Trip.cs" />
     <Compile Include="NewTripActivity.cs" />

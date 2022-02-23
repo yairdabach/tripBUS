@@ -152,10 +152,6 @@ namespace tripBUS.Helpers
                     //MySqlCommand cmd = new MySqlCommand();
                 }
                 Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
-                Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
-                Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
-                Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
-                Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
                 return null;
             }
 
@@ -226,13 +222,32 @@ namespace tripBUS.Helpers
         {
             try
             {
+                // add trip to table
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.Append("INSERT INTO [dbo].[Trip] (TripName, TripDescription, ManegerEmail ,Place,ClassAge, TripStartDateDay, TripStartDateMonth, TripStartDateYear, TripEndDateDay, TripEndDateMonth, TripEndDateYear)");
                 stringBuilder.Append(@"VALUES " + trip.ToString());
                 createConacation();
                 var cmd = new SqlCommand(stringBuilder.ToString(), conn);
                 cmd.ExecuteNonQuery();
-                conn.Close();
+
+                // get trip code
+                string sqlQuer = @"SELECT MAX(TripCode) From [dbo].[Trip] Where ManegerEmail='" + trip.maengerEmail + "'";
+                createConacation();
+                cmd = new SqlCommand(sqlQuer, conn);
+                var reader = cmd.ExecuteReader();
+                reader.Read();
+
+                if (reader.HasRows)
+                {
+                    trip.tripCode= int.Parse(((IDataRecord)reader).GetValue(0).ToString());
+                    conn.Close();
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+                
+                
             }
             catch (Exception ex)
             {
@@ -245,6 +260,113 @@ namespace tripBUS.Helpers
 
             }
         }
+
+        //public static List<Trip> GetAllTripsByEmail(string manegerEmail, Context context)
+        //{
+        //    try
+        //    {
+        //        string sqlQuer = @"SELECT * FROM [dbo].[TeamMember] Where ManegerEmail='" + manegerEmail + "' AND Password='" + password + "'";
+        //        createConacation();
+        //        var cmd = new SqlCommand(sqlQuer, conn);
+        //        var reader = cmd.ExecuteReader();
+        //        reader.Read();
+        //        if (reader.HasRows)
+        //        {
+        //            TeamMember teamMember = new TeamMember(
+        //                ((IDataRecord)reader).GetValue(0).ToString(),
+        //                ((IDataRecord)reader).GetValue(1).ToString(),
+        //                ((IDataRecord)reader).GetValue(2).ToString(),
+        //                ((IDataRecord)reader).GetValue(3).ToString(),
+        //                ((IDataRecord)reader).GetValue(4).ToString(),
+        //                ((IDataRecord)reader).GetValue(5).ToString(),
+        //                ((IDataRecord)reader).GetValue(6).ToString());
+        //            conn.Close();
+        //            SavedData.loginMember = teamMember;
+        //            return teamMember;
+        //        }
+        //        else
+        //        {
+        //            conn.Close();
+        //            return null;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        if (conn.State == ConnectionState.Open)
+        //        {
+        //            conn.Close();
+        //            //MySqlCommand cmd = new MySqlCommand();
+        //        }
+        //        Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
+        //        return null;
+        //    }
+        //}
+        public static Trip GetTripByCode(int code, Context context)
+        {
+            try
+            {
+                string sqlQuer = @"SELECT * FROM [dbo].[Trip] Where TripCode='" + code.ToString() + "'";
+                createConacation();
+                var cmd = new SqlCommand(sqlQuer, conn);
+                var reader = cmd.ExecuteReader();
+                reader.Read();
+                if (reader.HasRows)
+                {
+                   Trip trip = new Trip(
+                        int.Parse(((IDataRecord)reader).GetValue(0).ToString()),
+                        ((IDataRecord)reader).GetValue(2).ToString(),
+                        ((IDataRecord)reader).GetValue(1).ToString(),
+                        ((IDataRecord)reader).GetValue(3).ToString(),
+                        ((IDataRecord)reader).GetValue(10).ToString(),
+                        ((IDataRecord)reader).GetValue(11).ToString(),
+                        new DateTime(int.Parse(((IDataRecord)reader).GetValue(6).ToString()), int.Parse(((IDataRecord)reader).GetValue(5).ToString()), int.Parse(((IDataRecord)reader).GetValue(4).ToString())),
+                        new DateTime(int.Parse(((IDataRecord)reader).GetValue(9).ToString()), int.Parse(((IDataRecord)reader).GetValue(8).ToString()), int.Parse(((IDataRecord)reader).GetValue(7).ToString())));
+                    conn.Close();
+                    return trip;
+                }
+                else
+                {
+                    conn.Close();
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+                Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
+                return null;
+            }
+
+        }
+        public static bool UpdateTrip(Trip trip, Context context)
+        {
+            try
+            {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.Append("UPDATE [dbo].[Trip]");
+                stringBuilder.Append(@"SET " + trip.ToStringUpdate());
+                stringBuilder.Append(@"Where ManegerEmail='" + trip.maengerEmail + "' AND TripCode='" + trip.tripCode + "'");
+                createConacation();
+                var cmd = new SqlCommand(stringBuilder.ToString(), conn);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                    //MySqlCommand cmd = new MySqlCommand();
+                }
+                Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
+                return false;
+            }
+        }
+
     }
 
 

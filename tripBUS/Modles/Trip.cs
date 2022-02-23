@@ -25,6 +25,7 @@ namespace tripBUS.Modles
         public Trip() { }
         public Trip(string tripName, string ManegerEmail, string tripDescription, string place,string classAge, DateTime StartDate, DateTime endDate)
         {
+            tripCode = 0;
             this.tripName = tripName;
             this.maengerEmail = ManegerEmail;
             this.classAge = classAge;
@@ -48,6 +49,11 @@ namespace tripBUS.Modles
             this.EndDate = endDate;
         }
 
+        public string ToStringUpdate()
+        {
+            //(TripName, TripDescription, ManegerEmail, Place, ClassAge, TripStartDateDay, TripStartDateMonth, TripStartDateYear, TripEndDateDay, TripEndDateMonth, TripEndDateYear)
+            return $"TripName='{this.tripName}',TripDescription='{this.tripDescription}', Place = '{this.place}', ClassAge='{this.classAge}', TripStartDateDay='{this.StartDate.Day}', TripStartDateMonth='{this.StartDate.Day}',TripStartDateYear='{this.StartDate.Day}',TripEndDateDay='{this.StartDate.Day}', TripEndDateMonth='{this.StartDate.Day}',TripEndDateYear='{this.StartDate.Day}'";
+        }
         public override string ToString()
         {
             if(tripCode == 0)

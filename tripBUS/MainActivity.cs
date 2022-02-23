@@ -90,7 +90,7 @@ namespace tripBUS
                     else
                         Toast.MakeText(this, "You signup Secsesfuly", ToastLength.Long).Show();
                 }
-                catch (Exception ex) { }
+                catch  { }
 
             }
             if (requestCode == 2)

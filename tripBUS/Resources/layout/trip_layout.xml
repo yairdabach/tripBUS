@@ -21,6 +21,22 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/til_TripCode_trip">
+                <EditText
+                    android:inputType="number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Trip Code"
+                    android:textSize="21sp"
+                    android:imeOptions="actionNext"
+                    android:theme="@style/EditTextMy"
+                    android:layout_margin="20dp"
+                    android:id="@+id/et_TripCode_trip"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <EditText
                     android:inputType="text"
@@ -152,10 +168,6 @@
                             android:id="@+id/et_place_trip"/>
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
-
-            
-
-
         </LinearLayout>
 
     </FrameLayout>

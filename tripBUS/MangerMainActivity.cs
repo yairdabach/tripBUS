@@ -73,10 +73,17 @@ namespace tripBUS
                 StartActivityForResult(UpAc, 0);
                 return true;
             }
+            if (menuItem.ItemId == Resource.Id.nav_past_trips)
+            {
+                Intent UpAc = new Intent(this, typeof(ViewTripActivity));
+                UpAc.PutExtra("TripCode", 1);
+                StartActivityForResult(UpAc, 0);
+                return true;
+            }
             return true;
         }
 
-        protected void onActivityResult(int requestCode, int resultCode, Intent data)
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
             
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
