@@ -15,6 +15,9 @@ using tripBUS.Modles;
 
 namespace tripBUS.Helpers
 {
+    /// <summary>
+    /// DDL -  Data Layer
+    /// </summary>
     public class DataHelper
     {
         
@@ -26,11 +29,9 @@ namespace tripBUS.Helpers
                 conn = new SqlConnection(Constant.connectionString);
             }
 
-            //conn.Open();
             if (conn.State == ConnectionState.Closed)
             {
                 conn.Open();
-                //MySqlCommand cmd = new MySqlCommand();
             }
         }
 
@@ -320,9 +321,13 @@ namespace tripBUS.Helpers
                         ((IDataRecord)reader).GetValue(10).ToString(),
                         ((IDataRecord)reader).GetValue(11).ToString(),
                         new DateTime(int.Parse(((IDataRecord)reader).GetValue(6).ToString()), int.Parse(((IDataRecord)reader).GetValue(5).ToString()), int.Parse(((IDataRecord)reader).GetValue(4).ToString())),
-                        new DateTime(int.Parse(((IDataRecord)reader).GetValue(9).ToString()), int.Parse(((IDataRecord)reader).GetValue(8).ToString()), int.Parse(((IDataRecord)reader).GetValue(7).ToString())));
+                        new DateTime(int.Parse(((IDataRecord)reader).GetValue(9).ToString()), int.Parse(((IDataRecord)reader).GetValue(8).ToString()), int.Parse(((IDataRecord)reader).GetValue(7).ToString())),
+                        int.Parse(((IDataRecord)reader).GetValue(12).ToString()),
+                        int.Parse(((IDataRecord)reader).GetValue(13).ToString()),
+                        int.Parse(((IDataRecord)reader).GetValue(14).ToString()));
                     conn.Close();
                     return trip;
+
                 }
                 else
                 {
@@ -366,6 +371,83 @@ namespace tripBUS.Helpers
                 return false;
             }
         }
+
+        public static int UpdateNumGroup(Trip trip, Context context)
+        {
+            try
+            {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.Append("UPDATE [dbo].[Trip]");
+                stringBuilder.Append(@"SET " + $"countGroup='{trip.countGroup}'" );
+                stringBuilder.Append(@"Where ManegerEmail='" + trip.maengerEmail + "' AND TripCode='" + trip.tripCode + "'");
+                createConacation();
+                var cmd = new SqlCommand(stringBuilder.ToString(), conn);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+                return trip.countGroup;
+            }
+            catch (Exception ex)
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                    //MySqlCommand cmd = new MySqlCommand();
+                }
+                Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
+                return -1;
+            }
+        }
+        public static int UpdateNumStusent(Trip trip, Context context)
+        {
+            try
+            {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.Append("UPDATE [dbo].[Trip]");
+                stringBuilder.Append(@"SET " + $"countStudent='{trip.countStudent}'");
+                stringBuilder.Append(@"Where ManegerEmail='" + trip.maengerEmail + "' AND TripCode='" + trip.tripCode + "'");
+                createConacation();
+                var cmd = new SqlCommand(stringBuilder.ToString(), conn);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+                return trip.countStudent;
+            }
+            catch (Exception ex)
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                    //MySqlCommand cmd = new MySqlCommand();
+                }
+                Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
+                return -1;
+            }
+        }
+        public static int UpdateNumBus(Trip trip, Context context)
+        {
+            try
+            {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.Append("UPDATE [dbo].[Trip]");
+                stringBuilder.Append(@"SET " + $"countBus='{trip.countBus}'");
+                stringBuilder.Append(@"Where ManegerEmail='" + trip.maengerEmail + "' AND TripCode='" + trip.tripCode + "'");
+                createConacation();
+                var cmd = new SqlCommand(stringBuilder.ToString(), conn);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+                return trip.countBus;
+            }
+            catch (Exception ex)
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                    //MySqlCommand cmd = new MySqlCommand();
+                }
+                Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
+                return -1;
+            }
+        }
+        //Student function
 
     }
 

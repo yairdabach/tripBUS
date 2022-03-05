@@ -22,6 +22,11 @@ namespace tripBUS.Modles
         public DateTime EndDate { get; set; }
         public string maengerEmail { get; set; }
 
+        // נרמול לא תקין למצוא תיאור
+        public int countBus{ get; set;}
+        public int countStudent { get; set; }
+        public int countGroup { get; set; }
+
         public Trip() { }
         public Trip(string tripName, string ManegerEmail, string tripDescription, string place,string classAge, DateTime StartDate, DateTime endDate)
         {
@@ -33,11 +38,9 @@ namespace tripBUS.Modles
             this.place = place;
             this.StartDate = StartDate;
             this.EndDate = endDate;
-            
-
         }
 
-        public Trip(int tripCode, string ManegerEmail, string tripName, string tripDescription,string place, string classAge, DateTime StartDate, DateTime endDate)
+        public Trip(int tripCode, string ManegerEmail, string tripName, string tripDescription,string place, string classAge, DateTime StartDate, DateTime endDate,int groupCount, int studentCount, int busCount)
         {
             this.tripCode = tripCode;
             this.maengerEmail= ManegerEmail;
@@ -47,6 +50,9 @@ namespace tripBUS.Modles
             this.classAge= classAge;
             this.StartDate = StartDate;
             this.EndDate = endDate;
+            this.countGroup = groupCount;
+            this.countBus = busCount;
+            this.countStudent = studentCount;
         }
 
         public string ToStringUpdate()

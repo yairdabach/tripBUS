@@ -47,7 +47,10 @@ namespace tripBUS
 
             // Create your application here
             var TripCodeET = FindViewById<TextInputLayout>(Resource.Id.til_TripCode_trip);
-            TripCodeET.Visibility = ViewStates.Invisible;
+            TripCodeET.Visibility = ViewStates.Gone;
+            (FindViewById<EditText>(Resource.Id.et_GroupCount_trip)).Visibility = ViewStates.Gone;
+            (FindViewById<EditText>(Resource.Id.et_StudentCount_trip)).Visibility = ViewStates.Gone;
+            (FindViewById<EditText>(Resource.Id.et_BusCount_trip)).Visibility = ViewStates.Gone;
 
             TripNameET = FindViewById<EditText>(Resource.Id.et_TripName_trip);
             TripDescriptionET = FindViewById<EditText>(Resource.Id.et_TripDes_trip);

@@ -88,6 +88,9 @@ namespace tripBUS
             TripEndDate.Enabled = false;
             TripPlace.Enabled = false;
             TripClass.Enabled = false;
+            (FindViewById<EditText>(Resource.Id.et_GroupCount_trip)).Enabled = false;
+            (FindViewById<EditText>(Resource.Id.et_StudentCount_trip)).Enabled = false;
+            (FindViewById<EditText>(Resource.Id.et_BusCount_trip)).Enabled = false;
 
             editFAB.SetImageResource(Android.Resource.Drawable.IcMenuEdit);
             TripCodeET.Text = trip.tripCode.ToString();
@@ -96,6 +99,9 @@ namespace tripBUS
             TripPlace.Text = trip.place;
             TripStartDate.Text = trip.StartDate.ToShortDateString();
             TripEndDate.Text = trip.EndDate.ToShortDateString();
+            (FindViewById<EditText>(Resource.Id.et_GroupCount_trip)).Text = trip.countGroup.ToString()  ;
+            (FindViewById<EditText>(Resource.Id.et_StudentCount_trip)).Text = trip.countStudent.ToString();
+            (FindViewById<EditText>(Resource.Id.et_BusCount_trip)).Text = trip.countBus.ToString();
 
             for (int i = 0; i < adapter.Count; i++)
             {
