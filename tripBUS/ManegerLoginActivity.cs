@@ -49,11 +49,11 @@ namespace tripBUS
 
             btnLogin = FindViewById<Button>(Resource.Id.btn_login);
             btnLogin.Click += BtnLogin_Click;
-
-            sMSReceiver = new SmsReceiver();
-            var intentFilter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
-            intentFilter.Priority = 999;
-            RegisterReceiver(sMSReceiver, intentFilter);
+                sMSReceiver = new SmsReceiver();
+                var intentFilter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
+                intentFilter.Priority = 999;
+                RegisterReceiver(sMSReceiver, intentFilter);
+           
 
         }
 
@@ -105,10 +105,10 @@ namespace tripBUS
                 try
                 {
                     string phone = DataHelper.GetPhoneByEmail(email.Text, this);
-                    //SmsReceiver sMSReceiver = new SmsReceiver();
-                    //var intentFilter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
-                    //intentFilter.Priority = 999;
-                    //RegisterReceiver(sMSReceiver, intentFilter);
+                    SmsReceiver sMSReceiver = new SmsReceiver();
+                    var intentFilter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
+                    intentFilter.Priority = 999;
+                    RegisterReceiver(sMSReceiver, intentFilter);
                     confirmCode = SMSHelper.SendSms(phone);
                     
                     ForgetPasswordDilog.SetContentView(Resource.Layout.forget_password_confirm_layout);
@@ -230,6 +230,20 @@ namespace tripBUS
             }
             if (validConditions == 1) return false;
             return true;
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            UnregisterReceiver(sMSReceiver);
+        }
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
+        {
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
         }
     }
 }

@@ -12,14 +12,15 @@ using System.Text;
 
 namespace tripBUS.Helpers
 {
+
     [BroadcastReceiver(Enabled = true, Exported = true, Permission = "android.permission.RECEIVE_SMS")]
     [IntentFilter(new[] { "android.provider.Telephony.SMS_RECEIVED" }, Priority = (int)IntentFilterPriority.HighPriority)]
-    public class SmsReceiver : Android.Content.BroadcastReceiver
+    public class SmsReceiver : Android.Content.BroadcastReceiver 
     {
         public SmsReceiver() {}
         public override void OnReceive(Context context, Intent intent)
         {
-       
+            
             if (intent.Action.Equals("android.provider.Telephony.SMS_RECEIVED"))
             {
 
@@ -27,6 +28,7 @@ namespace tripBUS.Helpers
                 startBroadCast(intent, context);
                 
             }
+           
         }
 
 
@@ -76,6 +78,7 @@ namespace tripBUS.Helpers
 
 
             }
+
         }
     }
 }

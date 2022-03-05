@@ -127,5 +127,10 @@ namespace tripBUS
 
 
         }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+        }
     }
 }

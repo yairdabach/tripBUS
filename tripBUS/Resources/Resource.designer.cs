@@ -8078,58 +8078,61 @@ namespace tripBUS
 			public const int signup_layout = 2131492970;
 			
 			// aapt resource value: 0x7F0C006B
-			public const int support_simple_spinner_dropdown_item = 2131492971;
+			public const int student_menegment = 2131492971;
 			
 			// aapt resource value: 0x7F0C006C
-			public const int test_action_chip = 2131492972;
+			public const int support_simple_spinner_dropdown_item = 2131492972;
 			
 			// aapt resource value: 0x7F0C006D
-			public const int test_chip_zero_corner_radius = 2131492973;
+			public const int test_action_chip = 2131492973;
 			
 			// aapt resource value: 0x7F0C006E
-			public const int test_design_checkbox = 2131492974;
+			public const int test_chip_zero_corner_radius = 2131492974;
 			
 			// aapt resource value: 0x7F0C006F
-			public const int test_design_radiobutton = 2131492975;
+			public const int test_design_checkbox = 2131492975;
 			
 			// aapt resource value: 0x7F0C0070
-			public const int test_navigation_bar_item_layout = 2131492976;
+			public const int test_design_radiobutton = 2131492976;
 			
 			// aapt resource value: 0x7F0C0071
-			public const int test_reflow_chipgroup = 2131492977;
+			public const int test_navigation_bar_item_layout = 2131492977;
 			
 			// aapt resource value: 0x7F0C0072
-			public const int test_toolbar = 2131492978;
+			public const int test_reflow_chipgroup = 2131492978;
 			
 			// aapt resource value: 0x7F0C0073
-			public const int test_toolbar_custom_background = 2131492979;
+			public const int test_toolbar = 2131492979;
 			
 			// aapt resource value: 0x7F0C0074
-			public const int test_toolbar_elevation = 2131492980;
+			public const int test_toolbar_custom_background = 2131492980;
 			
 			// aapt resource value: 0x7F0C0075
-			public const int test_toolbar_surface = 2131492981;
-			
-			// aapt resource value: 0x7F0C007A
-			public const int text_view_without_line_height = 2131492986;
+			public const int test_toolbar_elevation = 2131492981;
 			
 			// aapt resource value: 0x7F0C0076
-			public const int text_view_with_line_height_from_appearance = 2131492982;
-			
-			// aapt resource value: 0x7F0C0077
-			public const int text_view_with_line_height_from_layout = 2131492983;
-			
-			// aapt resource value: 0x7F0C0078
-			public const int text_view_with_line_height_from_style = 2131492984;
-			
-			// aapt resource value: 0x7F0C0079
-			public const int text_view_with_theme_line_height = 2131492985;
+			public const int test_toolbar_surface = 2131492982;
 			
 			// aapt resource value: 0x7F0C007B
-			public const int title_layout = 2131492987;
+			public const int text_view_without_line_height = 2131492987;
+			
+			// aapt resource value: 0x7F0C0077
+			public const int text_view_with_line_height_from_appearance = 2131492983;
+			
+			// aapt resource value: 0x7F0C0078
+			public const int text_view_with_line_height_from_layout = 2131492984;
+			
+			// aapt resource value: 0x7F0C0079
+			public const int text_view_with_line_height_from_style = 2131492985;
+			
+			// aapt resource value: 0x7F0C007A
+			public const int text_view_with_theme_line_height = 2131492986;
 			
 			// aapt resource value: 0x7F0C007C
-			public const int trip_layout = 2131492988;
+			public const int title_layout = 2131492988;
+			
+			// aapt resource value: 0x7F0C007D
+			public const int trip_layout = 2131492989;
 			
 			static Layout()
 			{
