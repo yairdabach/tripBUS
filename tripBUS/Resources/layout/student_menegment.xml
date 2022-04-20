@@ -4,4 +4,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp">
+                <TextView
+                    android:text="Lerning Year"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:paddingLeft="5dp" />
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    style="@style/Widget.AppCompat.Spinner.Underlined"
+                    android:id="@+id/spnr_LerningYear_StudentMenegment"
+                    android:hint="Lerning Year"/>
+            </LinearLayout>
+    
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/lily_Perent_StudentMenegment"
+            android:orientation="vertical" />
+    
 </LinearLayout>

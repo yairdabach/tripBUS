@@ -145,7 +145,19 @@ namespace tripBUS
 
         public bool OnNavigationItemSelected(IMenuItem menuItem)
         {
-            throw new NotImplementedException();
+            //// group activity open
+            //Intent intent = new Intent(this, typeof(ViewGroupActivity));
+            //Bundle b = new Bundle();
+            //b.PutInt("groupNum", 1);
+            //b.PutInt("tripCode", trip.tripCode);
+            //b.PutString("SchoolId", Helpers.SavedData.loginMember.schoolID);
+            //intent.PutExtras(b);
+            //StartActivity(intent);
+            //return true;
+
+            Intent intent = new Intent(this, typeof(ViewBusActivity));
+            StartActivity(intent);
+            return true;
         }
     
     }

@@ -29,6 +29,11 @@ namespace tripBUS.Helpers
                 conn = new SqlConnection(Constant.connectionString);
             }
 
+            if (conn.State == ConnectionState.Open)
+            {
+                conn.Close();
+            }
+
             if (conn.State == ConnectionState.Closed)
             {
                 conn.Open();
@@ -68,6 +73,18 @@ namespace tripBUS.Helpers
             }
 
         }
+
+        internal static List<Attendance> GetAllAtendece(int busNum, int tripCode, string schoolId, ViewBusActivity viewBusActivity)
+        {
+            //throw new NotImplementedException();
+            return null;
+        }
+
+        internal static void DelStudent(string id, string school_ID, int lerningYear)
+        {
+            throw new NotImplementedException();
+        }
+
         public static void AddTeamMember (TeamMember teamMember,Context context )
         {
             try
@@ -135,6 +152,46 @@ namespace tripBUS.Helpers
                         ((IDataRecord)reader).GetValue(4).ToString(),
                         ((IDataRecord)reader).GetValue(5).ToString(),
                         ((IDataRecord)reader).GetValue(6).ToString() );
+                    conn.Close();
+                    SavedData.loginMember = teamMember;
+                    return teamMember;
+                }
+                else
+                {
+                    conn.Close();
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                    //MySqlCommand cmd = new MySqlCommand();
+                }
+                Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
+                return null;
+            }
+
+        }
+        public static TeamMember GetTeamMember(string email, string schoolId, Context context)
+        {
+            try
+            {
+                string sqlQuer = @"SELECT * FROM [dbo].[TeamMember] Where Email='" + email + "' AND schoolId='" + schoolId + "'";
+                createConacation();
+                var cmd = new SqlCommand(sqlQuer, conn);
+                var reader = cmd.ExecuteReader();
+                reader.Read();
+                if (reader.HasRows)
+                {
+                    TeamMember teamMember = new TeamMember(
+                        ((IDataRecord)reader).GetValue(0).ToString(),
+                        ((IDataRecord)reader).GetValue(1).ToString(),
+                        ((IDataRecord)reader).GetValue(2).ToString(),
+                        ((IDataRecord)reader).GetValue(3).ToString(),
+                        ((IDataRecord)reader).GetValue(4).ToString(),
+                        ((IDataRecord)reader).GetValue(5).ToString());
                     conn.Close();
                     SavedData.loginMember = teamMember;
                     return teamMember;
@@ -448,7 +505,225 @@ namespace tripBUS.Helpers
             }
         }
         //Student function
+        public static List<int>[] GetClassAgeInYear(string schoolID, int year, Context context)
+        {
+            List<int>[] classAges = new List<int>[13];
+            try
+            {
+                string sqlQuer = $@"Select ClassNum,ClassAge from [dbo].[Student] Group By ClassAge,SchoolID,LerningYear,ClassNum,Show Having (SchoolID='{schoolID}' And LerningYear={year} And Show=0) ORDER BY ClassAge,ClassNum";
+                createConacation();
+                var cmd = new SqlCommand(sqlQuer, conn);
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    
+                    while(reader.Read())
+                    {
+                        int classAge = int.Parse(((IDataRecord)reader).GetValue(1).ToString());
+                        int ClassNum = int.Parse(((IDataRecord)reader).GetValue(0).ToString());
+                        if(classAges[classAge]== null)
+                        {
+                            classAges[classAge] = new List<int>();
+                        }
+                        classAges[classAge].Add(ClassNum);
+                        Console.WriteLine(classAge+"|"+ ClassNum);
+                    }
+                    
+                    conn.Close();
+                    return classAges;
+                }
+                else
+                {
+                    conn.Close();
+                    return classAges;
+                }
+            }
+            catch (Exception ex)
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+                Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
+                return null;
+            }
+            
+        }
+        public static List<Student> GetStudentClassAgeInYear(int classAge, int classNum, string schoolID, int year, Context context)
+        {
+            List<Student> students = new List<Student>();
+            try
+            {
+                string sqlQuer = $@"Select * from [dbo].[Student] Where (SchoolID='{schoolID}' And LerningYear={year} And Show=0 And  ClassNum={classNum} And ClassAge={classAge})";
+                createConacation();
+                var cmd = new SqlCommand(sqlQuer, conn);
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    Student temp;
+                    while (reader.Read())
+                    {
+                        temp = new Student(
+                            ((IDataRecord)reader).GetValue(4).ToString(),
+                            ((IDataRecord)reader).GetValue(1).ToString(),
+                            ((IDataRecord)reader).GetValue(0).ToString(),
+                            ((IDataRecord)reader).GetValue(5).ToString(),
+                            int.Parse(((IDataRecord)reader).GetValue(6).ToString()),
+                            int.Parse(((IDataRecord)reader).GetValue(2).ToString()),
+                            int.Parse(((IDataRecord)reader).GetValue(3).ToString())
+                            );
+                        students.Add(temp);
+                    }
 
+                    conn.Close();
+                    return students;
+                }
+                else
+                {
+                    conn.Close();
+                    return students;
+                }
+            }
+            catch (Exception ex)
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+                Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
+                return null;
+            }
+
+        }
+
+        public static Student GetStudentById(string id,Context context)
+        {
+            string sqlQuer = @"SELECT * FROM [dbo].[Student] Where studentID = '" + id + "'";
+            createConacation();
+            var cmd = new SqlCommand(sqlQuer, conn);
+            var reader = cmd.ExecuteReader();
+            reader.Read();
+            if (reader.HasRows)
+            {
+                Student temp = new Student(
+                            ((IDataRecord)reader).GetValue(4).ToString(),
+                            ((IDataRecord)reader).GetValue(1).ToString(),
+                            ((IDataRecord)reader).GetValue(0).ToString(),
+                            ((IDataRecord)reader).GetValue(5).ToString(),
+                            int.Parse(((IDataRecord)reader).GetValue(6).ToString()),
+                            int.Parse(((IDataRecord)reader).GetValue(2).ToString()),
+                            int.Parse(((IDataRecord)reader).GetValue(3).ToString())
+                            );
+                if (((IDataRecord)reader).GetValue(7).ToString()=="0")
+                    return temp;
+                conn.Close();
+            }
+            return null;
+        }
+        
+        public static List<Student> GetStudentByGroup(int groupNum, int tripCode, Context context)
+        {
+            List<string> studentId = new List<string>();
+            List<Student> students = new List<Student>();
+            try
+            {
+                string sqlQuer = $@"Select studentID from [dbo].[StudentToGroup] Where (groupNum= {groupNum} And tripCode={tripCode})";
+                createConacation();
+                var cmd = new SqlCommand(sqlQuer, conn);
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        studentId.Add(((IDataRecord)reader).GetValue(0).ToString()); 
+                    }
+
+                    conn.Close();
+
+                    foreach (var student in studentId)
+                    {
+                        Student temp = GetStudentById(student, context);
+                        if (temp != null)
+                        {
+                            students.Add(temp);
+                        }
+                    }
+                    return students;
+                }
+                else
+                {
+                    conn.Close();
+                    return students;
+                }
+            }
+            catch (Exception ex)
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+                Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
+                return null;
+            }
+
+        }
+        //GroupFun
+        public static Group GetGroup(int GroupNum, int tripcode, string schoolID , Context context)
+        {
+            Group group = null;
+            string sqlQuer = @"SELECT * FROM [dbo].[TripGroup] Where groupNum=" + GroupNum  + " AND tripCode = " + tripcode ;
+            createConacation();
+            var cmd = new SqlCommand(sqlQuer, conn);
+            var reader = cmd.ExecuteReader();
+            reader.Read();
+            if (reader.HasRows)
+            {
+                //create group from info
+                group = new Group(
+                            int.Parse(((IDataRecord)reader).GetValue(1).ToString()),
+                            ((IDataRecord)reader).GetValue(3).ToString(),
+                            int.Parse(((IDataRecord)reader).GetValue(2).ToString()),
+                            ((IDataRecord)reader).GetValue(0).ToString(),
+                            ((IDataRecord)reader).GetValue(4).ToString(),
+                            int.Parse(((IDataRecord)reader).GetValue(5).ToString()),
+                            int.Parse(((IDataRecord)reader).GetValue(6).ToString())
+                            );
+                conn.Close ();
+                group.teamMember = GetTeamMember(group.TeamMemberEmail, group.SchoolId, context);
+                group.students = GetStudentByGroup(GroupNum, tripcode, context);
+            }
+            conn.Close();
+            return group;
+        }
+
+        public static Bus GetBusInfo(int busNum, int tripcode, string schoolID, Context context)
+        {
+            Bus bus = null;
+            string sqlQuer = @"SELECT * FROM [dbo].[Bus] Where busNum=" + busNum + " AND tripCode = " + tripcode;
+            createConacation();
+            var cmd = new SqlCommand(sqlQuer, conn);
+            var reader = cmd.ExecuteReader();
+            reader.Read();
+            if (reader.HasRows)
+            {
+                //create group from info
+                bus = new Bus(
+                            int.Parse(((IDataRecord)reader).GetValue(0).ToString()),
+                            int.Parse(((IDataRecord)reader).GetValue(1).ToString()),
+                            ((IDataRecord)reader).GetValue(2).ToString(),
+                            ((IDataRecord)reader).GetValue(4).ToString(),
+                            int.Parse(((IDataRecord)reader).GetValue(3).ToString())
+                            );
+            }
+            conn.Close();
+            return bus;
+        }
+
+
+        public static bool IfStudentConectedToGroup(string studentId, string schoolId, int year)
+        {
+            return true;
+        }
     }
 
 

@@ -63,8 +63,8 @@ namespace tripBUS
             }
             if (menuItem.ItemId == Resource.Id.nav_new_trip)
             {
-                Intent NewTr = new Intent(this, typeof(NewTripActivity));
-                StartActivity(NewTr);
+                Intent NewTrAc = new Intent(this, typeof(NewTripActivity));
+                StartActivity(NewTrAc);
                 return true;
             }
             if (menuItem.ItemId == Resource.Id.nav_update)
@@ -75,9 +75,16 @@ namespace tripBUS
             }
             if (menuItem.ItemId == Resource.Id.nav_past_trips)
             {
-                Intent UpAc = new Intent(this, typeof(ViewTripActivity));
-                UpAc.PutExtra("TripCode", 1);
-                StartActivityForResult(UpAc, 0);
+                Intent PasdtAc = new Intent(this, typeof(ViewTripActivity));
+                PasdtAc.PutExtra("TripCode", 1);
+                StartActivityForResult(PasdtAc, 0);
+                return true;
+            }
+            if (menuItem.ItemId == Resource.Id.nav_student_menegment) 
+            {
+                Intent SudMenAc = new Intent(this, typeof(StudentManegmantActivity));
+                SudMenAc.PutExtra("TripCode", 1);
+                StartActivityForResult(SudMenAc, 0);
                 return true;
             }
             return true;

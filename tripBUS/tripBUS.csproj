@@ -67,7 +67,15 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="StudentMenegmant.cs" />
+    <Compile Include="ClassManegmentActivity.cs" />
+    <Compile Include="Modles\Attendance.cs" />
+    <Compile Include="Modles\Bus.cs" />
+    <Compile Include="Modles\Group.cs" />
+    <Compile Include="EditGroupActivity.cs" />
+    <Compile Include="ViewBusActivity.cs" />
+    <Compile Include="ViewGroupActivity.cs" />
+    <Compile Include="Modles\StudentAdapter.cs" />
+    <Compile Include="StudentManegmantActivity.cs" />
     <Compile Include="Modles\Student.cs" />
     <Compile Include="UpdaterTripActivity.cs" />
     <Compile Include="ViewTripActivity.cs" />
@@ -228,6 +236,38 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\student_menegment.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\button3_style.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\student_layout.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\layout_empty.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Modles\Adapters\" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\group_layout.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\stroke.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\bus_layout.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

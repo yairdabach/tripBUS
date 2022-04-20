@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/til_Gnum_Group">
+
+            <EditText
+                android:inputType="number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Group Num"
+                android:textSize="21sp"
+                android:imeOptions="actionNext"
+                android:theme="@style/EditTextMy"
+                android:layout_margin="10dp"
+                android:id="@+id/et_Gnum_Group"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/til_Gname_Group">
+            <EditText
+                android:inputType="number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Group name"
+                android:textSize="21sp"
+                android:imeOptions="actionNext"
+                android:theme="@style/EditTextMy"
+                android:layout_margin="10dp"
+                android:id="@+id/et_Gname_Group"/>
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+        <TextView
+            android:text="Team Member"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:paddingLeft="5dp" />
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:id="@+id/spnr_teammember_group"
+            android:hint="Team member"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+        <TextView
+            android:text="Bus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:paddingLeft="5dp" />
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:id="@+id/spnr_bus_group"
+            android:hint="Team member"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginBottom="20dp"
+        android:layout_marginHorizontal="10dp">
+
+        <LinearLayout
+            android:layout_width="170dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="5dp"
+            
+            android:id="@+id/ll_groupStudent_viewgroup_layout"
+            android:background="@drawable/stroke">
+            <TextView
+                android:text="Student Group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:gravity="center_horizontal"
+                android:textStyle="bold"
+                android:layout_marginVertical="7dp"/>
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/ll_lv_groupStudent_viewgroup_layout"
+                    android:orientation="vertical" />
+            </ScrollView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="5dp"
+            android:id="@+id/ll_studentclass_Glayout"
+            android:background="@drawable/stroke">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp">
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    style="@style/Widget.AppCompat.Spinner.Underlined"
+                    android:id="@+id/spnr_class_group"
+                    android:hint="Team member"
+                    />
+            </LinearLayout>
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/ll_lv_classStudent_viewgroup_layout"
+                    android:orientation="vertical" />
+            </ScrollView>
+        </LinearLayout>
+
+    </LinearLayout>
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/group_fav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:tint="#fff"/>
+</FrameLayout>

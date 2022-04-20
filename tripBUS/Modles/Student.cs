@@ -11,23 +11,25 @@ using System.Text;
 
 namespace tripBUS.Modles
 {
-    internal class Student
+    public class Student
     {
-        string Id { get; }
-        string School_ID { get; }
-        string First_Name { get; set; }
-        string Last_Name { get; set; }
-        int LerningYear { get; }
-        int ClassAge { get; }
-        int ClassNum { get; }
+        public string Id { get; }
+        public string School_ID { get; }
+        public string First_Name { get; set; }
+        public string Last_Name { get; set; }
+        public int LerningYear { get; }
+        public int ClassAge { get; set; }
+        public int ClassNum { get; set; }
 
-        public Student(string id, string first_name, string last_name, string school_id, int lerning_year)
+        public Student(string id, string first_name, string last_name, string school_id, int lerning_year, int class_age, int class_num)
         {
             this.Id = id;
             this.First_Name = first_name;
             this.Last_Name = last_name;
             this.School_ID = school_id;
             this.LerningYear = lerning_year;
+            this.ClassAge = class_age;
+            this.ClassNum = class_num;
         }
 
         // CREATE TABLE Student(

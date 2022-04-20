@@ -33,6 +33,15 @@ namespace tripBUS.Modles
             this.email = email;
             this.password = password;
         }
+        public TeamMember(string firstName, string lastName, string schoolID, string kidomet, string phone, string email)
+        {
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.schoolID = schoolID;
+            this.kidomet = kidomet;
+            this.phone = phone;
+            this.email = email;
+        }
         public void CopyTeamMember(TeamMember m)
         {
             m.firstName = firstName;

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <FrameLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_margin="10dp">
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                            android:inputType="text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="bus Title"
+                            android:textSize="21sp"
+                            android:imeOptions="actionNext"
+                            android:theme="@style/EditTextMy"
+                            android:id="@+id/et_name_bus"/>
+                </android.support.design.widget.TextInputLayout>
+             
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="500dp"
+                    android:orientation="vertical"
+                    android:background="@drawable/stroke">
+                    <TextView
+                         android:text="Attendance check"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:textSize="26dp"
+                         android:textStyle="bold"
+                         android:gravity="center_horizontal"
+                         android:paddingLeft="5dp" />
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="#000">
+                            <ListView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:id="@+id/lv_atendece_bus"/>
+                        </LinearLayout>
+                    </ScrollView>      
+                </LinearLayout>
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginVertical="10dp">
+                    <Button
+                       android:layout_width="100dp"
+                       android:layout_height="wrap_content"
+                       android:text="new check"
+                       android:textSize="12sp"
+                       android:fontFamily="sans-serif"
+                       android:textAllCaps="false"
+                       android:background="@drawable/stroke"
+                       android:layout_margin="5dp"
+                       android:id="@+id/button_NewAttendance_bus"/>
+                    <!--
+                    <Button
+                       android:layout_width="100dp"
+                       android:layout_height="wrap_content"
+                       android:text="bus form"
+                       android:textSize="12sp"
+                       android:fontFamily="sans-serif"
+                       android:textAllCaps="false"
+                       android:background="@drawable/stroke"
+                       android:layout_margin="5dp"
+                       android:id="@+id/button_BusForm_bus"/>
+                    -->
+                    <Button
+                       android:layout_width="100dp"
+                       android:layout_height="wrap_content"
+                       android:text="Student List"
+                       android:textSize="12sp"
+                       android:fontFamily="sans-serif"
+                       android:textAllCaps="false"
+                       android:background="@drawable/stroke"
+                       android:layout_margin="5dp"
+                       android:id="@+id/button_student_bus"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/bus_fav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:tint="#fff"/>
+    </FrameLayout>
+</LinearLayout>
