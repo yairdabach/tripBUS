@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                            android:inputType="text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="attence cheek Title"
+                            android:textSize="21sp"
+                            android:imeOptions="actionNext"
+                            android:theme="@style/EditTextMy"
+                            android:id="@+id/et_title_attendece"/>
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                            android:gravity="center"
+                            android:inputType="datetime"
+                            android:layout_width="150dp"
+                            android:layout_height="wrap_content"
+                            android:hint="Date (click to change)"
+                            android:textSize="15sp"
+                            android:imeOptions="actionNext"
+                            android:theme="@style/EditTextMy"
+                            android:id="@+id/et_date_attendece"/>
+                </android.support.design.widget.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="500dp"
+                    android:orientation="vertical"
+                    android:background="@drawable/stroke">
+                    <TextView
+                         android:text="Attendance check"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:textSize="26dp"
+                         android:textStyle="bold"
+                         android:gravity="center_horizontal"
+                         android:paddingLeft="5dp"
+                         android:background="@drawable/stroke"/>
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                            <ListView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:id="@+id/lv_atendece_atendece"/>
+                        </LinearLayout>
+                    </ScrollView>      
+                </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="save"
+        android:background="#f58220"
+        android:textColor="#fff"
+        android:layout_gravity="bottom"
+        android:id="@+id/btn_save_attendace"/>
+
+</LinearLayout>

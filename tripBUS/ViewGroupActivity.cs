@@ -20,7 +20,7 @@ namespace tripBUS
         EditText GroupName, GroupNum;
         ListView groupStudent;
         Spinner teamMemberSpr;
-        int tripCode, groupNum;
+        int tripCode, groupNum,year;
         string schoolId;
         Google.Android.Material.FloatingActionButton.FloatingActionButton editFAB;
         protected override void OnCreate(Bundle savedInstanceState)
@@ -41,10 +41,10 @@ namespace tripBUS
 
             groupNum = Intent.GetIntExtra("groupNum", 0);
             tripCode = Intent.GetIntExtra("tripCode", 0);
+            year = Intent.GetIntExtra("year", 0);
             schoolId = Intent.GetStringExtra("SchoolId");
 
-            Group group = DataHelper.GetGroup(groupNum, tripCode, schoolId, this);
-
+            Group group = DataHelper.GetGroup(groupNum, tripCode,year, schoolId, this);
 
             (FindViewById<LinearLayout>(Resource.Id.ll_studentclass_Glayout)).Visibility = ViewStates.Gone;
 
@@ -63,7 +63,7 @@ namespace tripBUS
             if (group.students.Count > 0)
             {
 
-                groupStudent.Adapter = new StudentAdapter(this, group.students, false);
+                groupStudent.Adapter = new StudentAdapter(this,year,schoolId, group.students, false);
 
             }
 
@@ -74,15 +74,30 @@ namespace tripBUS
             editFAB.Click += EditFAB_Click;
         }
 
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            //base.OnActivityResult(requestCode, resultCode, data);
+            Group group = DataHelper.GetGroup(groupNum, tripCode, year, schoolId, this);
+            GroupNum.Text = groupNum.ToString();
+            GroupName.Text = group.Name;
+
+            if (group.students.Count > 0)
+            {
+
+                groupStudent.Adapter = new StudentAdapter(this, year, schoolId, group.students, false);
+
+            }
+        }
         private void EditFAB_Click(object sender, EventArgs e)
         {
             Intent intent = new Intent(this, typeof(EditGroupActivity));
             Bundle b = new Bundle();
-            b.PutInt("groupNum", 1);
+            b.PutInt("groupNum", groupNum);
             b.PutInt("tripCode", tripCode);
+            b.PutInt("year", year);
             b.PutString("SchoolId", Helpers.SavedData.loginMember.schoolID);
             intent.PutExtras(b);
-            StartActivity(intent);
+            StartActivityForResult(intent,1);
             
         }
     }

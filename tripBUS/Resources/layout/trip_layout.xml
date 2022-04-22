@@ -221,6 +221,49 @@
                         android:layout_marginRight="20dp"/>
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginHorizontal="5dp"
+                android:gravity="center_horizontal">
+                <Button
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="Groups"
+                    android:textSize="15sp"
+                    android:fontFamily="sans-serif"
+                    android:textAllCaps="false"
+                    android:background="@drawable/button3_style"
+                    android:layout_margin="5dp"
+                    android:textColor="#fff"
+                    android:id="@+id/button_group_trip"/>
+                <Button
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="Buss"
+                    android:textSize="15sp"
+                    android:fontFamily="sans-serif"
+                    android:textAllCaps="false"
+                    android:background="@drawable/button3_style"
+                    android:layout_margin="5dp"
+                    android:textColor="#fff"
+                    android:id="@+id/button_bus_trip"/>
+                <Button
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="Team members"
+                    android:textSize="15sp"
+                    android:fontFamily="sans-serif"
+                    android:textAllCaps="false"
+                    android:background="@drawable/button3_style"
+                    android:layout_margin="5dp"
+                    android:textColor="#fff"
+                    android:id="@+id/button_teamMembers_trip"/>
+
+
+            </LinearLayout>
         </LinearLayout>
     </FrameLayout>
     

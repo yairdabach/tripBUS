@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/til_Gname_Group">
             <EditText
-                android:inputType="number"
+                android:inputType="text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Group name"

@@ -68,16 +68,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClassManegmentActivity.cs" />
+    <Compile Include="GroupsActivity.cs" />
     <Compile Include="Modles\Attendance.cs" />
     <Compile Include="Modles\Bus.cs" />
     <Compile Include="Modles\Group.cs" />
     <Compile Include="EditGroupActivity.cs" />
+    <Compile Include="Modles\AttendanceAdapter.cs" />
+    <Compile Include="AttendanceActivity.cs" />
+    <Compile Include="Modles\StudentAttendance.cs" />
+    <Compile Include="Modles\TripAdapter.cs" />
     <Compile Include="ViewBusActivity.cs" />
     <Compile Include="ViewGroupActivity.cs" />
     <Compile Include="Modles\StudentAdapter.cs" />
     <Compile Include="StudentManegmantActivity.cs" />
     <Compile Include="Modles\Student.cs" />
     <Compile Include="UpdaterTripActivity.cs" />
+    <Compile Include="ViewStudentLIst.cs" />
     <Compile Include="ViewTripActivity.cs" />
     <Compile Include="UpdateDitlesActivity.cs" />
     <Compile Include="Modles\Trip.cs" />
@@ -268,6 +274,27 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\bus_layout.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\attendance_adapter_layout.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\IsCheck.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\NotCheck.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\attendance_layout.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\trip_layout_lv.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

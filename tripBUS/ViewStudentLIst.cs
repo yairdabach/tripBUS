@@ -11,10 +11,13 @@ using AndroidX.AppCompat.App;
 
 namespace tripBUS
 {
-    [Activity(Label = "ClassManegmentActivity")]
-    public class ClassManegmentActivity : AppCompatActivity
+    [Activity(Label = "ViewStudentLIst")]
+    public class ViewStudentListActivity : AppCompatActivity
     {
-        ListView StudentLV;
+        private int busNum, tripCode, year; 
+        string schoolId;
+        private ListView StudentLV;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -31,25 +34,22 @@ namespace tripBUS
             View PerentLayout = FindViewById(Resource.Id.layout_empty);
             (FindViewById<TextView>(Resource.Id.tv_empty)).Visibility = ViewStates.Gone;
 
-            int classAge = Intent.GetIntExtra("ClassAge", 0);
-            string SchoolID = Intent.GetStringExtra("SchoolId");
-            int year = Intent.GetIntExtra("year", 0);
-            int classNum = Intent.GetIntExtra("ClassNum", 0);
-
-            SupportActionBar.Title = "Class: " + classAge + "-" + classNum + " | " + year;
+            busNum = Intent.GetIntExtra("busNum", 0);
+            tripCode = Intent.GetIntExtra("tripCode", 0);
+            year = Intent.GetIntExtra("year", 0);
+            schoolId = Intent.GetStringExtra("SchoolId");
 
 
-            List<Student> students = DataHelper.GetStudentClassAgeInYear(classAge, classNum, SavedData.loginMember.schoolID, year, this);
+            List<Student> students = DataHelper.GetStudentByBus(busNum, tripCode, year, schoolId, this);
 
-            StudentAdapter studentAdapter = new StudentAdapter(this, year, SchoolID,students, true);
+            StudentAdapter studentAdapter = new StudentAdapter(this, tripCode, year, schoolId, students, false);
 
             StudentLV = new ListView(this);
             StudentLV.LayoutParameters = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MatchParent, LinearLayout.LayoutParams.WrapContent);
-            ((LinearLayout) PerentLayout).AddView(StudentLV);
-            
+            ((LinearLayout)PerentLayout).AddView(StudentLV);
+
             StudentLV.Adapter = studentAdapter;
 
-            
         }
     }
 }

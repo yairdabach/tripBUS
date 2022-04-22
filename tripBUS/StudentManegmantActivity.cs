@@ -124,6 +124,7 @@ namespace tripBUS
                 ClassMenAc.PutExtra("ClassAge", int.Parse(classinfo[0]));
                 ClassMenAc.PutExtra("ClassNum", int.Parse(classinfo[1]));
                 ClassMenAc.PutExtra("year", 2022);
+                ClassMenAc.PutExtra("schoolId", SavedData.loginMember.schoolID);
                 StartActivity(ClassMenAc);
             }
         }

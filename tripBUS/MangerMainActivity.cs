@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -14,6 +15,7 @@ using Google.Android.Material.FloatingActionButton;
 using Google.Android.Material.Navigation;
 using Google.Android.Material.Snackbar;
 using tripBUS.Helpers;
+using tripBUS.Modles;
 
 namespace tripBUS
 {
@@ -21,7 +23,8 @@ namespace tripBUS
     public class MangerMainActivity : AppCompatActivity, NavigationView.IOnNavigationItemSelectedListener
     {
         AndroidX.AppCompat.Widget.Toolbar toolbar;
-
+        ListView tripsLV;
+        List<Trip> allTrips;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -49,6 +52,20 @@ namespace tripBUS
             ((navigationView.GetHeaderView(0)).FindViewById<TextView>(Resource.Id.nav_head_name)).Text = SavedData.loginMember.firstName + " "+SavedData.loginMember.lastName;
             ((navigationView.GetHeaderView(0)).FindViewById<TextView>(Resource.Id.nav_head_email)).Text = SavedData.loginMember.email;
 
+            allTrips = DataHelper.GetAllTrips(SavedData.loginMember.email, this);
+            string email = SavedData.loginMember.email;
+            List<Trip> futerTrips = new List<Trip>();
+
+            foreach (Trip trip in allTrips)
+            {
+                if (trip.StartDate.CompareTo(DateTime.Now)>=0)
+                {
+                    futerTrips.Add(trip);
+                }
+            }
+
+            tripsLV = FindViewById<ListView>(Resource.Id.lv_trips_futer);
+            tripsLV.Adapter = new TripAdapter(allTrips, this);
         }
 
         public bool OnNavigationItemSelected(IMenuItem menuItem)
@@ -77,6 +94,7 @@ namespace tripBUS
             {
                 Intent PasdtAc = new Intent(this, typeof(ViewTripActivity));
                 PasdtAc.PutExtra("TripCode", 1);
+                PasdtAc.PutExtra("SchoolId", SavedData.loginMember.schoolID);
                 StartActivityForResult(PasdtAc, 0);
                 return true;
             }
@@ -84,12 +102,20 @@ namespace tripBUS
             {
                 Intent SudMenAc = new Intent(this, typeof(StudentManegmantActivity));
                 SudMenAc.PutExtra("TripCode", 1);
+                SudMenAc.PutExtra("SchoolId", SavedData.loginMember.schoolID);
                 StartActivityForResult(SudMenAc, 0);
                 return true;
             }
             return true;
         }
 
+        public void OpenTripLayout(int TripCode, string schoolID)
+        {
+            Intent PasdtAc = new Intent(this, typeof(ViewTripActivity));
+            PasdtAc.PutExtra("TripCode", TripCode);
+            PasdtAc.PutExtra("SchoolId", schoolID);
+            StartActivityForResult(PasdtAc, 0);
+        }
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
             

@@ -21,11 +21,11 @@ namespace tripBUS.Modles
         public TeamMember teamMember { get; set; }
         public List<Student> students { get; set; }
 
-        public int BusNumber { get; set; }
-        public int amoountOfstudent { get; set; } // להגדיר Set משלו
+        public int BusNumber { get; set; } = 667;
+        public int amoountOfstudent { get; set; } = 0; // להגדיר Set משלו
 
 
-        public Group() { }
+        public Group() { teamMember = new TeamMember(); }
         public Group(int GroupNum, string name, int tripcode, string schoolId, TeamMember teamMember)
         {
             this.GroupNum = GroupNum;
@@ -65,5 +65,10 @@ namespace tripBUS.Modles
 
         }
 
+
+        public override string ToString()
+        {
+            return $"({GroupNum},'{Name}',{tripCode},'{SchoolId}','{teamMember.email}',{BusNumber})";
+        }
     }
 }

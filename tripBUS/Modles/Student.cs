@@ -32,6 +32,22 @@ namespace tripBUS.Modles
             this.ClassNum = class_num;
         }
 
+        public Student(Student s)
+        {
+            if (s != null)
+            {
+                this.Id = s.Id;
+                this.First_Name = s.First_Name;
+                this.Last_Name = s.Last_Name;
+                this.School_ID = s.School_ID;
+                this.LerningYear = s.LerningYear;
+                this.ClassAge = s.ClassAge;
+                this.ClassNum = s.ClassNum;
+            }
+        }
+
+        public Student(string Id) { this.Id = Id; }
+        public Student() { }
         // CREATE TABLE Student(
         //    LastName varchar(255),
         //    FirstName varchar(255),

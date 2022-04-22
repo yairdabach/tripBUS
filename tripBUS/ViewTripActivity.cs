@@ -112,7 +112,19 @@ namespace tripBUS
             }
 
             editFAB.Click += EditFAB_Click;
+            (FindViewById<Button>(Resource.Id.button_group_trip)).Click += ViewTripActivity_Click;
+        }
 
+        private void ViewTripActivity_Click(object sender, EventArgs e)
+        {
+            Intent intent = new Intent(this, typeof(GroupsActivity));
+            Bundle b = new Bundle();
+            b.PutString("TripName", trip.tripName);
+            b.PutInt("tripCode", trip.tripCode);
+            b.PutInt("year", trip.StartDate.Year);
+            b.PutString("SchoolId", SavedData.loginMember.schoolID);
+            intent.PutExtras(b);
+            StartActivityForResult(intent, 0);
         }
 
         private void EditFAB_Click(object sender, EventArgs e)
@@ -145,20 +157,26 @@ namespace tripBUS
 
         public bool OnNavigationItemSelected(IMenuItem menuItem)
         {
-            //// group activity open
-            //Intent intent = new Intent(this, typeof(ViewGroupActivity));
-            //Bundle b = new Bundle();
-            //b.PutInt("groupNum", 1);
-            //b.PutInt("tripCode", trip.tripCode);
-            //b.PutString("SchoolId", Helpers.SavedData.loginMember.schoolID);
-            //intent.PutExtras(b);
-            //StartActivity(intent);
-            //return true;
-
-            Intent intent = new Intent(this, typeof(ViewBusActivity));
+            // group activity open
+            Intent intent = new Intent(this, typeof(ViewGroupActivity));
+            Bundle b = new Bundle();
+            b.PutInt("groupNum", 1);
+            b.PutInt("tripCode", trip.tripCode);
+            b.PutInt("year", trip.StartDate.Year);
+            b.PutString("SchoolId", Helpers.SavedData.loginMember.schoolID);
+            intent.PutExtras(b);
             StartActivity(intent);
             return true;
+
+            //Intent intent = new Intent(this, typeof(ViewBusActivity));
+            //intent.PutExtra("tripCode", trip.tripCode);
+            //intent.PutExtra("busNum", 1);
+            //intent.PutExtra("Status", 2);
+            //intent.PutExtra("year", trip.StartDate.Year);
+            //intent.PutExtra("SchoolId", Helpers.SavedData.loginMember.schoolID);
+            //StartActivity(intent);
+            //return true;
         }
-    
+
     }
 }
