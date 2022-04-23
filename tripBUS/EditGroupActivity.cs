@@ -129,31 +129,25 @@ namespace tripBUS
             {
                 List<Student> students = DataHelper.GetStudentClassAgeInYear(int.Parse(((string)classSpr.SelectedItem).Split("/")[0]), int.Parse(((string)classSpr.SelectedItem).Split("/")[1]), schoolId, trip.StartDate.Year, this);
                 int pos = students.Count;
-                if ((students != null || students.Count>0) && (currentList != null || currentList.Count > 0))
+                if (students == null)
                 {
-                    foreach (Student studentClass in students)
+                   students = new List<Student>();
+                }
+                for (int i = 0; i < students.Count; i++)
+                {
+                    for (int j = 0; j < currentList.Count; j++)
                     {
-                        foreach (Student studentCurrent in currentList)
+                        try
                         {
-                            if (studentClass.Id == studentCurrent.Id)
+                            if (students[i].Id == currentList[j].Id)
                             {
-                                students.Remove(studentClass);
-                                
+                                students.Remove(students[i]);
                             }
-                            
                         }
-                        pos--;
-                        if (pos == 0)
-                        {
-                            break;
-                        }
+                        catch (Exception ex) { }
                     }
-                    classStudent.Adapter = new StudentAdapter(this, tripCode, year, schoolId, students, false, 1);
                 }
-                else
-                {
-                    classStudent.Adapter = new StudentAdapter(this, tripCode, year, schoolId, new List<Student>(), false, 1);
-                }
+                classStudent.Adapter = new StudentAdapter(this, tripCode, year, schoolId, students, false, 1);
             }
             
         }  

@@ -38,13 +38,15 @@ namespace tripBUS.Modles
             this.DateTime = dateTime;
             this.busNum = busNum;
             this.descriotionCheek = descriotionCheek;
+            
         }
 
-        public Attendance(int tripcode, int busNum, DateTime dateTime)
+        public Attendance(int tripcode,string SchoolId, int busNum, DateTime dateTime)
         {
             this.tripCode = tripcode;
             this.DateTime = dateTime;
             this.busNum = busNum;
+            this.schoolID = SchoolId;
         }
     }
 }

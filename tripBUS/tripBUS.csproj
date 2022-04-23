@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClassManegmentActivity.cs" />
+    <Compile Include="BusActivity.cs" />
     <Compile Include="GroupsActivity.cs" />
     <Compile Include="Modles\Attendance.cs" />
     <Compile Include="Modles\Bus.cs" />

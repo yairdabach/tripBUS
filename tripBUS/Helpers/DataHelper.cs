@@ -774,28 +774,7 @@ namespace tripBUS.Helpers
                     DeleatStudentToGroup(student, group.GroupNum, group.tripCode, context);
                 }
             }
-            try
-            {
-                StringBuilder stringBuilder = new StringBuilder();
-                //({GroupNum},{Name},{tripCode},{SchoolId},{TeamMemberEmail})";
-                stringBuilder.Append("UPDATE [dbo].[TripGroup]");
-                stringBuilder.Append(@$"SET countStudent = {amount}");
-                stringBuilder.Append($@"Where GroupNum = {group.GroupNum} And tripCode={group.tripCode}");
-                createConacation();
-                var cmd = new SqlCommand(stringBuilder.ToString(), conn);
-                cmd.ExecuteNonQuery();
-                conn.Close();
-            }
-            catch (Exception ex)
-            {
-                if (conn.State == ConnectionState.Open)
-                {
-                    conn.Close();
-                    //MySqlCommand cmd = new MySqlCommand();
-                }
-                Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
-
-            }
+            UpdateNumStusent(group.tripCode, Add.Count - Del.Count, context);
         }
         public static void AddStudentToGroup(Student student,int GroupNum,int tripCode, Context context)
         {
@@ -868,6 +847,80 @@ namespace tripBUS.Helpers
             return bus;
         }
 
+        public static void AddNewBus(Bus bus, Context context)
+        {
+            try
+            {
+                StringBuilder stringBuilder = new StringBuilder();
+                //({GroupNum},{Name},{tripCode},{SchoolId},{TeamMemberEmail})";
+                stringBuilder.Append("INSERT INTO [dbo].[Bus] (busNum, tripCode, schoolId, studentCount, BusNmae)");
+                stringBuilder.Append($@"VALUES ({bus.busNum}, {bus.tripNum}, '{bus.schoolId}', {bus.countStudent}, '{bus.BusName}')" );
+                createConacation();
+                var cmd = new SqlCommand(stringBuilder.ToString(), conn);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+                
+            }
+            catch (Exception ex)
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                    //MySqlCommand cmd = new MySqlCommand();
+                }
+                Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
+
+            }
+        }
+        public static void UpdateBusInfo(Bus bus, Context context)
+        {
+            try
+            {
+                StringBuilder stringBuilder = new StringBuilder();
+                //({GroupNum},{Name},{tripCode},{SchoolId},{TeamMemberEmail})";
+                string comand = $"Update [dbo].[Bus] SET BusNmae='{bus.BusName}' Where busNum = {bus.busNum} AND tripCode={bus.tripNum}";
+                createConacation();
+                var cmd = new SqlCommand(comand, conn);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                    //MySqlCommand cmd = new MySqlCommand();
+                }
+                Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
+
+            }
+        }
+
+        public static List<Bus> GetAllBuss(int tripcode, string schoolID, Context context)
+        {
+            List<Bus> buss = new List<Bus>();
+            string sqlQuer = @"SELECT * FROM [dbo].[Bus] Where tripCode = " + tripcode;
+            createConacation();
+            var cmd = new SqlCommand(sqlQuer, conn);
+            var reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                //create group from info
+                while (reader.Read())
+                {
+                    buss.Add( new Bus(
+                            CangeToInt(((IDataRecord)reader).GetValue(0).ToString()),
+                            CangeToInt(((IDataRecord)reader).GetValue(1).ToString()),
+                            ((IDataRecord)reader).GetValue(2).ToString(),
+                            ((IDataRecord)reader).GetValue(4).ToString(),
+                            CangeToInt(((IDataRecord)reader).GetValue(3).ToString())
+                            ));
+                }
+
+            }
+            conn.Close();
+            return buss;
+        }
         public static List<Student> GetStudentByBus(int busNum, int tripCode, int year, string schoolID, Context context)
         {
             List<int> GroupNums = new List<int>();
@@ -895,6 +948,81 @@ namespace tripBUS.Helpers
             return students;
         }
 
+        ///Atendece
+        public static void AddAtendace(Attendance attendance,StudentAttendance student, Context context)
+        {
+            try
+            {
+                int attend = student.isAttendance ? 1 : 0;
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.Append(@$"INSERT INTO [dbo].[Attendance] (tripCode, schoolID ,busNum , dateOfCheek, descriptionCheek, studentID, attend)");
+                stringBuilder.Append(@$"VALUES ({attendance.tripCode}, '{attendance.schoolID}' ,{attendance.busNum} , '{attendance.DateTime.ToString("u").Replace("Z", "")}','{attendance.descriotionCheek}','{student.Id}',{attend})");
+                Console.WriteLine(@$"VALUES ({attendance.tripCode}, '{attendance.schoolID}' ,{attendance.busNum} , '{attendance.DateTime.ToString("u").Replace("Z", "")}','{attendance.descriotionCheek}','{student.Id}',{attend})");
+                createConacation();
+                var cmd = new SqlCommand(stringBuilder.ToString(), conn);
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                    //MySqlCommand cmd = new MySqlCommand();
+                }
+                Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
+
+            }
+        }
+
+        public static void UpdateAtendeceInfo(Attendance attendance, Context context)
+        {
+            try
+            {
+                StringBuilder stringBuilder = new StringBuilder();
+                //({GroupNum},{Name},{tripCode},{SchoolId},{TeamMemberEmail})";
+                string comand = $"Update [dbo].[Attendance] SET descriptionCheek='{attendance.descriotionCheek}' Where busNum = {attendance.busNum} AND tripCode={attendance.tripCode} And dateOfCheek ='{attendance.DateTime.ToString("u").Replace("Z", "")}'";
+                Console.WriteLine(comand);
+                createConacation();
+                var cmd = new SqlCommand(comand, conn);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                    //MySqlCommand cmd = new MySqlCommand();
+                }
+                Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
+
+            }
+        }
+
+        public static void UpdateAtendeceStudent(Attendance attendance,StudentAttendance student, Context context)
+        {
+            try
+            {
+                int attend = student.isAttendance ? 1 : 0;
+                StringBuilder stringBuilder = new StringBuilder();
+                //({GroupNum},{Name},{tripCode},{SchoolId},{TeamMemberEmail})";
+                string comand = $"Update [dbo].[Attendance] SET attend='{attend}' Where studentID='{student.Id}' AND busNum = {attendance.busNum} AND tripCode={attendance.tripCode} And dateOfCheek ='{attendance.DateTime.ToString("u").Replace("Z", "")}'";
+                Console.WriteLine(comand);
+                createConacation();
+                var cmd = new SqlCommand(comand, conn);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                    //MySqlCommand cmd = new MySqlCommand();
+                }
+                Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
+            }
+        }
 
         public static List<Attendance> GetAllAttendaceForBus(int tripCode, int busNum, Context context)
         {
@@ -915,13 +1043,12 @@ namespace tripBUS.Helpers
                         ((IDataRecord)reader).GetValue(1).ToString())
                         );
                 }
-            }
+            }   
             return attendances;
         }
         public static Attendance GetAttendace(int tripCode, int busNum, DateTime dateTime, int year, string schoolID, Context context)
         {
             Attendance attendance = null;
-
             string sqlQuer = @$"SELECT * FROM [dbo].[Attendance] Where busNum={busNum}  AND tripCode = { tripCode } And dateOfCheek='{dateTime.ToString("u").Replace("Z", "")}'";
             createConacation();
             var cmd = new SqlCommand(sqlQuer, conn);
@@ -940,13 +1067,14 @@ namespace tripBUS.Helpers
                                         DateTime.Parse(((IDataRecord)reader).GetValue(3).ToString()),
                                         ((IDataRecord)reader).GetValue(4).ToString()
                                         );
+                        attendance.Attendances = new List<StudentAttendance>();
                     }
 
                     attendance.Attendances.Add(new StudentAttendance(
                         ((IDataRecord)reader).GetValue(5).ToString(),
-                         Convert.ToBoolean(CangeToInt(((IDataRecord)reader).GetValue(6).ToString()))
-                        ));
-
+                         Convert.ToBoolean(CangeToInt(((IDataRecord)reader).GetValue(6).ToString())))
+                        );
+                    Console.WriteLine(Convert.ToBoolean(CangeToInt(((IDataRecord)reader).GetValue(6).ToString())));
 
                 }
                 conn.Close();
@@ -960,6 +1088,30 @@ namespace tripBUS.Helpers
             }
             return attendance;
         }
+
+        public static void DeleatAttendace(Attendance attendance, Context context)
+        {
+            try
+            {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.Append(@$"DELETE FROM [dbo].[Attendance] Where busNum={attendance.busNum} And tripCode= {attendance.tripCode} And dateOfCheek='{attendance.DateTime.ToString("u").Replace("Z", "")}'");
+                createConacation();
+                var cmd = new SqlCommand(stringBuilder.ToString(), conn);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                    //MySqlCommand cmd = new MySqlCommand();
+                }
+                Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
+
+            }
+        }
+
         //DateTime.Parse(reader.GetValue(0).ToString());
         public static bool IfStudentConectedToGroup(string studentId, string schoolId, int year)
         {

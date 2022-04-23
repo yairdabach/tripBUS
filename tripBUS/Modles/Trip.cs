@@ -40,7 +40,7 @@ namespace tripBUS.Modles
             this.EndDate = endDate;
         }
 
-        public Trip(int tripCode, string ManegerEmail, string tripName, string tripDescription,string place, string classAge, DateTime StartDate, DateTime endDate,int groupCount, int studentCount, int busCount)
+        public Trip(int tripCode, string ManegerEmail, string tripName, string tripDescription,string place, string classAge, DateTime StartDate, DateTime endDate, int studentCount, int groupCount, int busCount)
         {
             this.tripCode = tripCode;
             this.maengerEmail= ManegerEmail;

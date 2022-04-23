@@ -5,6 +5,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using AndroidX.AppCompat.App;
+using Google.Android.Material.FloatingActionButton;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,8 @@ namespace tripBUS
         ListView atendesLV;
         EditText BusNameET;
         Button AddAttendeceBTN, ViewStudentBTN;
-
+        FloatingActionButton BusFab;
+        List<Attendance> Del = new List<Attendance>();
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -35,8 +37,6 @@ namespace tripBUS
             var toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar_Bar);
             SetSupportActionBar(toolbar);
 
-            SupportActionBar.Title = "Group ";
-
             ViewStub stub = FindViewById<ViewStub>(Resource.Id.layout_stubBar);
             stub.LayoutResource = Resource.Layout.bus_layout;
             stub.Inflate();
@@ -46,6 +46,9 @@ namespace tripBUS
             tripCode = Intent.GetIntExtra("tripCode", 0);
             year = Intent.GetIntExtra("year", 0);
             schoolId = Intent.GetStringExtra("SchoolId");
+
+
+            SupportActionBar.Title = "Bus num:" +busNum;
 
             if (Status != 3)
             {
@@ -67,7 +70,7 @@ namespace tripBUS
             BusNameET = FindViewById<EditText>(Resource.Id.et_name_bus);
             AddAttendeceBTN = FindViewById<Button>(Resource.Id.button_NewAttendance_bus);
             ViewStudentBTN = FindViewById<Button>(Resource.Id.button_student_bus);
-            
+            BusFab = FindViewById<FloatingActionButton>(Resource.Id.bus_fav);
 
             BusNameET.Text = bus.BusName;
 
@@ -76,6 +79,9 @@ namespace tripBUS
                 BusNameET.Enabled = false;
                 ViewStudentBTN.Click += ViewStudentBTN_Click;
                 atendesLV.Adapter = new AttendanceAdapter(this, DataHelper.GetAllAttendaceForBus(tripCode, busNum, this), false);
+                BusFab.SetImageResource(Android.Resource.Drawable.IcMenuEdit);
+                BusFab.Click += BusFabEdit_Click;
+                AddAttendeceBTN.Click += AddAttendeceBTN_Click; 
             }
             else
             {
@@ -83,33 +89,113 @@ namespace tripBUS
                 ViewStudentBTN.SetBackgroundColor(Android.Graphics.Color.Gray);
                 if (Status == 1)
                 {
-                    ViewStudentBTN.Click += ViewStudentBTN_Click;
                     atendesLV.Adapter = new AttendanceAdapter(this, DataHelper.GetAllAttendaceForBus(tripCode, busNum, this), true);
+                    BusFab.Click += BusFabUpdate_Click;
                 }
+                else
+                {
+                    BusFab.Click += BusFabAdd_Click;
+                }
+                BusFab.SetImageResource(Android.Resource.Drawable.IcMenuSave);
             }
 
+        }
+
+        public void delateAttendace(Attendance attendance)
+        {
+           
+            var list = new List<Attendance>();
+            foreach (var item in (atendesLV.Adapter as AttendanceAdapter).objects)
+            {
+                list.Add(item);
+            }
+            list.Remove(attendance);
+            atendesLV.Adapter = new AttendanceAdapter(this, list, true);
+            Del.Add(attendance);
+        }
+
+        private void AddAttendeceBTN_Click(object sender, EventArgs e)
+        {
+            OpenAttendece("");
+        }
+
+        private void BusFabAdd_Click(object sender, EventArgs e)
+        {
+            bus.BusName = BusNameET.Text;
+            DataHelper.AddNewBus(bus, this);
+
+            Intent intent = new Intent(this, typeof(ViewBusActivity));
+            Bundle b = new Bundle();
+            b.PutInt("busNum", bus.busNum);
+            b.PutInt("Status", 2);
+            b.PutInt("tripCode", tripCode);
+            b.PutInt("year", year);
+            b.PutString("SchoolId", bus.schoolId);
+            intent.PutExtras(b);
+            StartActivityForResult(intent, 0);
+        }
+
+        private void BusFabUpdate_Click(object sender, EventArgs e)
+        {
+            bus.BusName = BusNameET.Text;
+            DataHelper.UpdateBusInfo(bus, this);
+            foreach (var item in Del)
+            {
+                DataHelper.DeleatAttendace(item, this);
+            }
+            Finish();
+        }
+
+        private void BusFabEdit_Click(object sender, EventArgs e)
+        {
+            Intent intent = new Intent(this, typeof(ViewBusActivity));
+            Bundle b = new Bundle();
+            b.PutInt("busNum", busNum);
+            b.PutInt("Status", 1);
+            b.PutInt("tripCode", tripCode);
+            b.PutInt("year", year);
+            b.PutString("SchoolId", schoolId);
+            intent.PutExtras(b);
+            StartActivityForResult(intent, 0);
         }
 
         public void OpenAttendece(string time)
         {
             Intent intent = new Intent(this, typeof(AttendanceActivity));
             intent.PutExtra("tripCode", tripCode);
-            intent.PutExtra("busNum", 1);
+            intent.PutExtra("busNum", bus.busNum);
             intent.PutExtra("dateTime", time);
             intent.PutExtra("year", year);
             intent.PutExtra("SchoolId", schoolId);
-            StartActivity(intent);
+            StartActivityForResult(intent, 0);
         }
 
         private void ViewStudentBTN_Click(object sender, EventArgs e)
         {
             Intent intent = new Intent(this, typeof(ViewStudentListActivity));
             intent.PutExtra("tripCode", tripCode);
-            intent.PutExtra("busNum", 1);
+            intent.PutExtra("busNum",busNum);
             intent.PutExtra("Status", 2);
             intent.PutExtra("year", year);
             intent.PutExtra("SchoolId", Helpers.SavedData.loginMember.schoolID);
             StartActivity(intent);
+        }
+
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+            bus = DataHelper.GetBusInfo(busNum, tripCode, schoolId, this);
+            BusNameET.Text = bus.BusName;
+
+            if (Status == 2)
+            {
+                BusNameET.Enabled = false;
+                ViewStudentBTN.Click += ViewStudentBTN_Click;
+                atendesLV.Adapter = new AttendanceAdapter(this, DataHelper.GetAllAttendaceForBus(tripCode, busNum, this), false);
+                BusFab.SetImageResource(Android.Resource.Drawable.IcMenuEdit);
+                BusFab.Click += BusFabEdit_Click;
+                ViewStudentBTN.Click += ViewStudentBTN_Click;
+            }
         }
     }
 }

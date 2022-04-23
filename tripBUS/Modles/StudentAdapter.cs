@@ -99,7 +99,7 @@ namespace tripBUS.Modles
         }
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
-            
+            StudentAdapterViewHolder holder = null;
             LayoutInflater layoutInflater = null;
             if (context is ClassManegmentActivity)
             {
@@ -166,11 +166,22 @@ namespace tripBUS.Modles
                 }
                 else
                 {
-                    view.FindViewById<Button>(Resource.Id.edit_student_fav).SetBackgroundResource(Resource.Drawable.IsCheck);
+                    view.FindViewById<Button>(Resource.Id.edit_student_fav).SetBackgroundResource(Resource.Drawable.NotCheck);
                 }
                 
+                if (view.FindViewById<Button>(Resource.Id.edit_student_fav) != null)
+                    holder = view.Tag as StudentAdapterViewHolder;
+                if (holder == null)
+                {
+                    holder = new StudentAdapterViewHolder();
+                    holder.student = objects[position];
+                    holder.pos = position;
+                    view.FindViewById<Button>(Resource.Id.edit_student_fav).Tag = holder;
+                }
+                view.FindViewById<Button>(Resource.Id.edit_student_fav).Click += StudentAdapter_Click;
+
             }
-            
+
 
             if (temp != null)
             {
@@ -179,19 +190,33 @@ namespace tripBUS.Modles
                 
             }
 
-            StudentAdapterViewHolder holder = null;
             if (view != null)
-                 holder = view.Tag as StudentAdapterViewHolder;
+                holder = view.Tag as StudentAdapterViewHolder;
             if (holder == null)
             {
                 holder = new StudentAdapterViewHolder();
                 holder.student = objects[position];
+                holder.pos = position;
                 view.Tag = holder;
-                
             }
-
             return view;
 
+        }
+
+        private void StudentAdapter_Click(object sender, EventArgs e)
+        {
+            View view = sender as View;
+            int position = ((StudentAdapterViewHolder) view.Tag).pos;
+            attendances[position].isAttendance = !attendances[position].isAttendance;
+            if (attendances[position].isAttendance)
+            {
+                view.FindViewById<Button>(Resource.Id.edit_student_fav).SetBackgroundResource(Resource.Drawable.IsCheck);
+            }
+            else
+            {
+                view.FindViewById<Button>(Resource.Id.edit_student_fav).SetBackgroundResource(Resource.Drawable.NotCheck);
+            }
+            ((AttendanceActivity)context).ChageAttendace(position);
         }
 
         private void View_Click(object sender, EventArgs e)
@@ -211,5 +236,8 @@ namespace tripBUS.Modles
     {
         //Your adapter views to re-use
         public Student student { get; set; }
+        public int pos { get; set; }
+
+        public StudentAdapterViewHolder() { }
     }
 }

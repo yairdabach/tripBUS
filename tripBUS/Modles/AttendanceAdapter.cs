@@ -61,14 +61,24 @@ namespace tripBUS.Modles
             (view.FindViewById<TextView>(Resource.Id.tv_des_adpterAtten)).Text = objects[position].descriotionCheek;
             (view.FindViewById<TextView>(Resource.Id.tv_date_adpterAtten)).Text = objects[position].DateTime.ToString("g");
 
-            if (!edit)
+            if (edit)
             {
-                view.Click += View_Click;
-                (view.FindViewById<Button>(Resource.Id.del_attendent_fav)).Visibility = ViewStates.Gone;
+                Button b = view.FindViewById<Button>(Resource.Id.del_attendent_fav);
+                TagClass holder = null;
+                if (b != null)
+                    holder = b.Tag as TagClass;
+                if (holder == null)
+                {
+                    holder = new TagClass();
+                    holder.position = position;
+                    b.Tag = holder;
+                }
+                b.Click += AttendanceAdapter_Click;
             }
             else
             {
-                (view.FindViewById<Button>(Resource.Id.del_attendent_fav)).Click += AttendanceAdapter_Click;
+                view.FindViewById<Button>(Resource.Id.del_attendent_fav).Visibility = ViewStates.Gone;
+                view.Click += View_Click;
             }
             
 
@@ -78,12 +88,17 @@ namespace tripBUS.Modles
 
         private void AttendanceAdapter_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            ((ViewBusActivity)context).delateAttendace(objects[((sender as View).Tag as TagClass).position]);
         }
 
         private void View_Click(object sender, EventArgs e)
         {
             ((ViewBusActivity)context).OpenAttendece((((View)sender).FindViewById<TextView>(Resource.Id.tv_date_adpterAtten)).Text);
         }
+    }
+    internal class TagClass : Java.Lang.Object
+    {
+        public int position;
+
     }
 }

@@ -20,11 +20,15 @@ namespace tripBUS
         private int busNum;
         private int tripCode, year;
         string SchoolID;
+        string date;
         DateTime dateTime;
         EditText dateCheeckET, titleCheekET;
+        Button saveBtn;
         ListView studentAttendeceLV;
         List<StudentAttendance> students;
+        List<StudentAttendance> change, Add;
         Attendance attendance;
+        Trip trip;
         
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -44,31 +48,159 @@ namespace tripBUS
 
             busNum = Intent.GetIntExtra("busNum", 0);
             tripCode = Intent.GetIntExtra("tripCode", 0);
-            string date = Intent.GetStringExtra("dateTime");
+            date = Intent.GetStringExtra("dateTime");
             year = Intent.GetIntExtra("year", 0);
             SchoolID = Intent.GetStringExtra("SchoolId");
 
-            if (date !="" || date!=null)
+            trip = DataHelper.GetTripByCode(tripCode, this);
+
+            if (!string.IsNullOrEmpty(date))
             {
                 dateTime = DateTime.Parse(date);
                 attendance = DataHelper.GetAttendace(tripCode, busNum, dateTime, year, SchoolID, this);
+                if (attendance.Attendances == null)
+                {
+                    attendance.Attendances = new List<StudentAttendance>();
+                }
             }
             else
             {
                 dateTime = DateTime.Now;
-                attendance = new Attendance(tripCode, busNum, dateTime);
+                attendance = new Attendance(tripCode,SchoolID, busNum, dateTime);
+                attendance.Attendances = new List<StudentAttendance>();
+            }
+
+            students = new List<StudentAttendance>();
+            Add = new List<StudentAttendance>();
+            change = new List<StudentAttendance>();
+            List<Student> tempStudent = DataHelper.GetStudentByBus(busNum,tripCode,year, SchoolID, this);
+            if ( tempStudent.Count ==0)
+            {
+                Finish();
+            }
+            for (int i = 0; i < tempStudent.Count; i++)
+            {
+                bool inAttenace = false;
+                for (int j = 0; j < attendance.Attendances.Count; j++)
+                {
+                    if (tempStudent[i].Id == attendance.Attendances[j].Id)
+                    {
+                        inAttenace = true;
+                        students.Add(attendance.Attendances[j]);
+                    }
+                }
+                if (!inAttenace)
+                {
+                    var s = new StudentAttendance(tempStudent[i], false);
+                    students.Add(s);
+                    Add.Add(s);
+                }
             }
 
             studentAttendeceLV = FindViewById<ListView>(Resource.Id.lv_atendece_atendece);
             dateCheeckET = FindViewById<EditText>(Resource.Id.et_date_attendece);
             titleCheekET = FindViewById<EditText>(Resource.Id.et_title_attendece);
-
-            studentAttendeceLV.Adapter = new StudentAdapter(this,tripCode,year,SchoolID, attendance.Attendances.Cast<Student>().ToList(), true, 3, attendance.Attendances);
+            saveBtn = FindViewById<Button>(Resource.Id.btn_save_attendace);
+           
+            studentAttendeceLV.Adapter = new StudentAdapter(this,tripCode,year,SchoolID, students.Cast<Student>().ToList(), true, 3, students);
 
             dateCheeckET.Text = dateTime.ToString("g");
             titleCheekET.Text = attendance.descriotionCheek;
 
+            if (string.IsNullOrEmpty(date))
+                dateCheeckET.Click += DateCheeckET_Click;
+            else
+            {
+                dateCheeckET.Enabled = false;
+                dateCheeckET.Hint = "date of check";
+            }
 
+            saveBtn.Click += SaveBtn_Click;
+        }
+
+        private void SaveBtn_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(date) && ((dateTime.CompareTo(trip.StartDate) < 0 || dateTime.CompareTo(trip.EndDate) > 0)))
+            {
+                Toast.MakeText(this, "invalid date", ToastLength.Long).Show();
+            }
+            else
+            {
+                attendance.descriotionCheek = titleCheekET.Text;
+                attendance.DateTime = dateTime;
+                for (int i = 0; i < Add.Count; i++)
+                {
+                    DataHelper.AddAtendace(attendance, Add[i], this);
+                }
+                for (int i = 0; i < change.Count; i++)
+                {
+                    DataHelper.UpdateAtendeceStudent(attendance, change[i], this);
+                }
+                DataHelper.UpdateAtendeceInfo(attendance, this);
+            }
+            Finish();
+            
+
+        }
+
+        private void DateCheeckET_Click(object sender, EventArgs e)
+        {
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this,OnDateSet,dateTime.Year, dateTime.Month, dateTime.Day);
+            datePickerDialog.Show();
+        }
+
+        private void OnDateSet(object sender, DatePickerDialog.DateSetEventArgs e)
+        {
+            if (e.Date.CompareTo(trip.StartDate)<0 || e.Date.CompareTo(trip.EndDate) > 0)
+            {
+                Toast.MakeText(this,"invalid date", ToastLength.Long).Show();
+                DateCheeckET_Click(null, null);
+            }
+            else
+            {
+                dateTime = new DateTime(e.Date.Year, e.Date.Month, e.Date.Day, 0, 0, 0);
+                TimePickerDialog timePickerDialog = new TimePickerDialog(this, OnTimeSet, DateTime.Now.Hour, DateTime.Now.Minute, true);
+                timePickerDialog.Show(); 
+            }
+        }
+
+        private void OnTimeSet(object sender, TimePickerDialog.TimeSetEventArgs e)
+        {
+            TimeSpan t = new TimeSpan(e.HourOfDay, e.Minute, 0);
+            dateTime.Add(t);
+            dateCheeckET.Text = dateTime.ToString("g");
+        }
+
+        public void ChageAttendace(int postion)
+        {
+            string id = students[postion].Id;
+            if (!string.IsNullOrEmpty(date))
+            {
+                bool inList = false;
+                for (int i = 0; i < Add.Count && !inList; i++)
+                {
+                    if (id == Add[i].Id)
+                    {
+                        Add[i].isAttendance = students[postion].isAttendance;
+                        inList = true;
+                    }
+                }
+                if (!inList)
+                {
+                    for (int i = 0; i < change.Count && !inList; i++)
+                    {
+                        if (id == change[i].Id)
+                        {
+                            inList = true;
+                            change.RemoveAt(i);
+                        }
+                    }
+                    if (!inList)
+                    {
+                        change.Add(students[postion]);
+                    }
+                }
+            }
         }
     }
 }

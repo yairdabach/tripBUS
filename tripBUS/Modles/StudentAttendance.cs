@@ -21,9 +21,9 @@ namespace tripBUS.Modles
             this.isAttendance = _isAttendance;
         }
 
-        public StudentAttendance(string id,bool _isAttendance): base(id)
+        public StudentAttendance(string id,bool isAttendance): base(id)
         {
-            isAttendance = isAttendance;
+            this.isAttendance = isAttendance;
         }
 
         public StudentAttendance(Student s, bool isAttendance) : base(s)
