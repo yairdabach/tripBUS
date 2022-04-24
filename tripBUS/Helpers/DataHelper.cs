@@ -409,7 +409,7 @@ namespace tripBUS.Helpers
                 Trip trip = GetTripByCode(tripcode, context);
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.Append("UPDATE [dbo].[Trip]");
-                stringBuilder.Append(@"SET " + $"countGroup='{trip.countGroup+add}'");
+                stringBuilder.Append(@"SET " + $"countGroups='{trip.countGroup+add}'");
                 stringBuilder.Append(@"Where ManegerEmail='" + trip.maengerEmail + "' AND TripCode='" + trip.tripCode + "'");
                 createConacation();
                 var cmd = new SqlCommand(stringBuilder.ToString(), conn);
@@ -720,6 +720,7 @@ namespace tripBUS.Helpers
                 cmd.ExecuteNonQuery();
                 conn.Close();
                 GroupStudentChange(students, new List<Student>(), students.Count, group, context);
+                UpdateNumGroup(group.tripCode, 1,  context);
             }
             catch (Exception ex)
             {
@@ -739,7 +740,7 @@ namespace tripBUS.Helpers
             {
                 StringBuilder stringBuilder = new StringBuilder();
                 //({GroupNum},{Name},{tripCode},{SchoolId},{TeamMemberEmail})";
-                string comand = $"Update [dbo].[TripGroup] SET groupName='{group.Name}', teamMember ='{group.teamMember.email}', BusNum ={group.BusNumber} Where groupNum = {group.GroupNum} AND tripCode={group.tripCode}";
+                string comand = $"Update [dbo].[TripGroup] SET groupName='{group.Name}', teamMember ='{group.teamMember.email}', BusNum ={group.BusNumber},countStudent={group.amoountOfstudent + AddStudent.Count - RemoveStudent.Count} Where groupNum = {group.GroupNum} AND tripCode={group.tripCode}";
                 createConacation();
                 var cmd = new SqlCommand(comand, conn);
                 cmd.ExecuteNonQuery();
@@ -775,6 +776,7 @@ namespace tripBUS.Helpers
                 }
             }
             UpdateNumStusent(group.tripCode, Add.Count - Del.Count, context);
+
         }
         public static void AddStudentToGroup(Student student,int GroupNum,int tripCode, Context context)
         {
@@ -859,7 +861,7 @@ namespace tripBUS.Helpers
                 var cmd = new SqlCommand(stringBuilder.ToString(), conn);
                 cmd.ExecuteNonQuery();
                 conn.Close();
-                
+                UpdateNumBus(bus.tripNum, 1, context);
             }
             catch (Exception ex)
             {

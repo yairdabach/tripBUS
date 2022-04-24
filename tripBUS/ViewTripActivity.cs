@@ -178,7 +178,7 @@ namespace tripBUS
             b.PutInt("year", trip.StartDate.Year);
             b.PutString("SchoolId", Helpers.SavedData.loginMember.schoolID);
             intent.PutExtras(b);
-            StartActivity(intent);
+            StartActivityForResult(intent,1);
             return true;
 
             //Intent intent = new Intent(this, typeof(ViewBusActivity));
