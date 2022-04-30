@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:orientation="vertical"
+            android:layout_margin="5dp"
+            android:id="@+id/ll_tripTeamBember_teamMaeber_layout"
+            android:background="@drawable/stroke">
+        <TextView
+            android:text="Student Group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:gravity="center_horizontal"
+            android:textStyle="bold"
+            android:layout_marginVertical="7dp"
+            android:layout_marginHorizontal="10dp"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/lv_tripTeamBember_teamMaeber_layout"
+                android:orientation="vertical" />
+        </ScrollView>
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="250dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="10dp"
+            android:id="@+id/ll_schoolTeamBember_teamMaeber_layout"
+            android:background="@drawable/stroke">
+        <TextView
+            android:text="Student Group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:gravity="center_horizontal"
+            android:textStyle="bold"
+            android:layout_marginVertical="7dp"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/lv_schoolTeamBember_teamMaeber_layout"
+                android:orientation="vertical" />
+        </ScrollView>
+    </LinearLayout>
+
+</LinearLayout>

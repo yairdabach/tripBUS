@@ -180,15 +180,6 @@ namespace tripBUS
             intent.PutExtras(b);
             StartActivityForResult(intent,1);
             return true;
-
-            //Intent intent = new Intent(this, typeof(ViewBusActivity));
-            //intent.PutExtra("tripCode", trip.tripCode);
-            //intent.PutExtra("busNum", 1);
-            //intent.PutExtra("Status", 2);
-            //intent.PutExtra("year", trip.StartDate.Year);
-            //intent.PutExtra("SchoolId", Helpers.SavedData.loginMember.schoolID);
-            //StartActivity(intent);
-            //return true;
         }
 
     }

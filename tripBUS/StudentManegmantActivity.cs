@@ -56,14 +56,26 @@ namespace tripBUS
 
             sprLerningYear = FindViewById<Spinner>(Resource.Id.spnr_LerningYear_StudentMenegment);
 
-            createScreen();
+            List<int> years = new List<int>();
+            years.Add(DataHelper.MinYearSchool(SavedData.loginMember.schoolID, this));
+            int counter = 1;
+            while(counter + years[0] <= DateTime.Today.Year)
+            {
+                years.Add(counter + years[0]);
+                counter++;
+            }
+
+            sprLerningYear.Adapter = new ArrayAdapter<int>(this, Android.Resource.Layout.SimpleSpinnerItem, years);
+            sprLerningYear.ItemSelected += delegate { createScreen(int.Parse(sprLerningYear.SelectedItem.ToString())); };
+
+            createScreen(int.Parse(sprLerningYear.SelectedItem.ToString()));
             
         }
 
-        private void createScreen()
+        private void createScreen(int year)
         {
             faterLayout.RemoveAllViews();
-            List<int>[] classAge =DataHelper.GetClassAgeInYear(SavedData.loginMember.schoolID, 2022, this);
+            List<int>[] classAge =DataHelper.GetClassAgeInYear(SavedData.loginMember.schoolID, year, this);
             if (classAge!=null)
             {
                 

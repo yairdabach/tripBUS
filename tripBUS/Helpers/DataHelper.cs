@@ -259,6 +259,62 @@ namespace tripBUS.Helpers
             }
         }
 
+        public static List<TeamMember> GetAllSchoolTeamMember(string schoolId, Context context)
+        {
+           var list = new List<TeamMember>();
+            try
+            {
+                string sqlQuer = @$"SELECT * FROM [dbo].[TeamMember] Where schoolId='{schoolId}' ";
+                createConacation();
+                var cmd = new SqlCommand(sqlQuer, conn);
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(new TeamMember(
+                        ((IDataRecord)reader).GetValue(0).ToString(),
+                        ((IDataRecord)reader).GetValue(1).ToString(),
+                        ((IDataRecord)reader).GetValue(2).ToString(),
+                        ((IDataRecord)reader).GetValue(3).ToString(),
+                        ((IDataRecord)reader).GetValue(4).ToString(),
+                        ((IDataRecord)reader).GetValue(5).ToString()));
+                    }
+                }
+
+            }
+            catch { }
+            return list;
+        }
+
+        public static List<TeamMember> GetAllTripTeamMember(int tripCode, string schoolId, Context context)
+        {
+            var emails = new List<string>();
+            var list = new List<TeamMember>();
+            try
+            {
+                string sqlQuer = @$"SELECT teamMemberId FROM [dbo].[TeamMeaberTrip] Where tripCode={tripCode} ";
+                createConacation();
+                var cmd = new SqlCommand(sqlQuer, conn);
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        emails.Add(reader.GetValue(0).ToString());
+                    }
+                }
+                foreach (var email in emails)
+                {
+                    list.Add(GetTeamMember(email, schoolId, context));
+                }
+            }
+            catch { }
+            return list;
+        }
+
         //Trip Function
         public static void CreateNewTrip(Trip trip, Context context)
         {
@@ -650,6 +706,62 @@ namespace tripBUS.Helpers
             }
 
         }
+
+        public static List<string> GetAllGroupStudent(int groupNum, int tripCode, Context context)
+        {
+            List<string> students = new List<string>();
+            try
+            {
+                string sqlQuer = $@"Select studentID from [dbo].[StudentToGroup] Where ( Not (groupNum = {groupNum}) ) And tripCode={tripCode}";
+                createConacation();
+                var cmd = new SqlCommand(sqlQuer, conn);
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        students.Add(((IDataRecord)reader).GetValue(0).ToString());
+                    }
+
+                    conn.Close();
+
+                    return students;
+                }
+                else
+                {
+                    conn.Close();
+                    return students;
+                }
+            }
+            catch (Exception ex)
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+                Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
+                return null;
+            }
+        }
+        public static int MinYearSchool(string schoolId, Context context)
+        {
+            int year = 0;
+            string sqlQuer = @$"SELECT Min(LerningYear) FROM [dbo].[Student] Where SchoolID='{schoolId}'";
+            createConacation();
+            var cmd = new SqlCommand(sqlQuer, conn);
+            var reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                reader.Read();
+                year = CangeToInt(((IDataRecord)reader).GetValue(0).ToString());
+            }
+            if (year ==0)
+            {
+                year = DateTime.Today.Year;
+            }
+            return year;
+        }
+
         //GroupFun
         public static Group GetGroup(int GroupNum, int tripcode, int year, string schoolID, Context context)
         {
@@ -738,9 +850,19 @@ namespace tripBUS.Helpers
         {
             try
             {
+                string email;
                 StringBuilder stringBuilder = new StringBuilder();
                 //({GroupNum},{Name},{tripCode},{SchoolId},{TeamMemberEmail})";
-                string comand = $"Update [dbo].[TripGroup] SET groupName='{group.Name}', teamMember ='{group.teamMember.email}', BusNum ={group.BusNumber},countStudent={group.amoountOfstudent + AddStudent.Count - RemoveStudent.Count} Where groupNum = {group.GroupNum} AND tripCode={group.tripCode}";
+                if (group.teamMember == null)
+                {
+                    email = "";
+                }
+                else
+                {
+                    email = group.teamMember.email;
+                }
+                string comand = $"Update [dbo].[TripGroup] SET groupName='{group.Name}', teamMember ='{email}', BusNum ={group.BusNumber},countStudent={group.amoountOfstudent + AddStudent.Count - RemoveStudent.Count} Where groupNum = {group.GroupNum} AND tripCode={group.tripCode}";
+                Console.WriteLine(comand);
                 createConacation();
                 var cmd = new SqlCommand(comand, conn);
                 cmd.ExecuteNonQuery();
@@ -959,7 +1081,6 @@ namespace tripBUS.Helpers
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.Append(@$"INSERT INTO [dbo].[Attendance] (tripCode, schoolID ,busNum , dateOfCheek, descriptionCheek, studentID, attend)");
                 stringBuilder.Append(@$"VALUES ({attendance.tripCode}, '{attendance.schoolID}' ,{attendance.busNum} , '{attendance.DateTime.ToString("u").Replace("Z", "")}','{attendance.descriotionCheek}','{student.Id}',{attend})");
-                Console.WriteLine(@$"VALUES ({attendance.tripCode}, '{attendance.schoolID}' ,{attendance.busNum} , '{attendance.DateTime.ToString("u").Replace("Z", "")}','{attendance.descriotionCheek}','{student.Id}',{attend})");
                 createConacation();
                 var cmd = new SqlCommand(stringBuilder.ToString(), conn);
                 cmd.ExecuteNonQuery();

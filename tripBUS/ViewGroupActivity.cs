@@ -19,7 +19,7 @@ namespace tripBUS
     {
         EditText GroupName, GroupNum;
         ListView groupStudent;
-        Spinner teamMemberSpr;
+        Spinner teamMemberSpr, busSpr;
         int tripCode, groupNum,year;
         string schoolId;
         Google.Android.Material.FloatingActionButton.FloatingActionButton editFAB;
@@ -51,14 +51,25 @@ namespace tripBUS
             GroupName = FindViewById<EditText>(Resource.Id.et_Gname_Group); 
             GroupNum = FindViewById<EditText>(Resource.Id.et_Gnum_Group);
             editFAB = FindViewById<Google.Android.Material.FloatingActionButton.FloatingActionButton>(Resource.Id.group_fav);
+            busSpr = FindViewById<Spinner>(Resource.Id.spnr_bus_group);
 
             groupStudent = new ListView(this);
 
             GroupName.Enabled = false;
             GroupNum.Enabled = false;
+            busSpr.Enabled = false;
 
             GroupNum.Text = groupNum.ToString();
             GroupName.Text = group.Name;
+
+            Bus bus = DataHelper.GetBusInfo(group.BusNumber, group.tripCode, group.SchoolId, this);
+
+            List<string> busNum = new List<string>() ;
+            if (bus != null)
+            {
+                busNum.Add(bus.busNum + " | " + bus.BusName);
+            }
+            busSpr.Adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleSpinnerItem, busNum);
 
             if (group.students.Count > 0)
             {

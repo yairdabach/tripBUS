@@ -58,7 +58,7 @@ namespace tripBUS.Modles
         public string ToStringUpdate()
         {
             //(TripName, TripDescription, ManegerEmail, Place, ClassAge, TripStartDateDay, TripStartDateMonth, TripStartDateYear, TripEndDateDay, TripEndDateMonth, TripEndDateYear)
-            return $"TripName='{this.tripName}',TripDescription='{this.tripDescription}', Place = '{this.place}', ClassAge='{this.classAge}', TripStartDateDay='{this.StartDate.Day}', TripStartDateMonth='{this.StartDate.Day}',TripStartDateYear='{this.StartDate.Day}',TripEndDateDay='{this.StartDate.Day}', TripEndDateMonth='{this.StartDate.Day}',TripEndDateYear='{this.StartDate.Day}'";
+            return $"TripName='{this.tripName}',TripDescription='{this.tripDescription}', Place = '{this.place}', ClassAge='{this.classAge}', TripStartDateDay={this.StartDate.Day}, TripStartDateMonth={this.StartDate.Month},TripStartDateYear={this.StartDate.Year},TripEndDateDay={this.EndDate.Day}, TripEndDateMonth={this.EndDate.Month},TripEndDateYear={this.EndDate.Year}";
         }
         public override string ToString()
         {

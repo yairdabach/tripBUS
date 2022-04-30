@@ -126,6 +126,7 @@ namespace tripBUS
                 TripStartDate.SetError("", null);
                 TripStartDate.Background.SetColorFilter(Android.Graphics.Color.LightGray, PorterDuff.Mode.Src);
                 TripStartDate.Error = null;
+                
             }
 
             if (TripEndDate.Text == "" || DateTime.Compare(startDate, endDate) > 0)
@@ -187,8 +188,8 @@ namespace tripBUS
 
         private void OnDateSet(object sender, DatePickerDialog.DateSetEventArgs e)
         {
-            if (Last == btnStartDate) { startDate = e.Date; TripStartDate.Text = e.Date.ToShortDateString(); Last = null; }
-            else { if (Last == btnEndDate) { endDate = e.Date; TripEndDate.Text = e.Date.ToShortDateString(); Last = null; } }
+            if ((Last as View).Id == btnStartDate.Id) { startDate = e.Date; TripStartDate.Text = e.Date.ToShortDateString(); Last = null; }
+            else { if ((Last as View).Id == btnEndDate.Id) { endDate = e.Date; TripEndDate.Text = e.Date.ToShortDateString(); Last = null; } }
         }
     }
 }

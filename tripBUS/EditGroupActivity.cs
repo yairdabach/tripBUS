@@ -20,12 +20,13 @@ namespace tripBUS
         EditText GroupName, GroupNum;
         ListView groupStudent , classStudent;
         Trip trip;
-        Spinner teamMemberSpr,classSpr;
+        Spinner busSpr ,teamMemberSpr,classSpr;
         int tripCode, groupNum,year;
         string schoolId;
         bool IsExist;
         Google.Android.Material.FloatingActionButton.FloatingActionButton editFAB;
         List<Student> currentList, DeleteStudent, AddStudent;
+        List<string> studentInAtherGroup;
         Group group;
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -71,11 +72,29 @@ namespace tripBUS
             DeleteStudent = new List<Student>();
             AddStudent = new List<Student>();
 
-            
+            studentInAtherGroup = DataHelper.GetAllGroupStudent(groupNum, tripCode, this);
+
             GroupName = FindViewById<EditText>(Resource.Id.et_Gname_Group);
             GroupNum = FindViewById<EditText>(Resource.Id.et_Gnum_Group);
             editFAB = FindViewById<Google.Android.Material.FloatingActionButton.FloatingActionButton>(Resource.Id.group_fav);
             classSpr = FindViewById<Spinner>(Resource.Id.spnr_class_group);
+            teamMemberSpr = FindViewById<Spinner>(Resource.Id.spnr_teammember_group);
+            busSpr = FindViewById<Spinner>(Resource.Id.spnr_bus_group);
+
+            List<string> busNum = new List<string>();
+            busNum.Add("");
+            List<Bus> busList = DataHelper.GetAllBuss(group.tripCode, group.SchoolId, this);
+            int index = 0;
+            foreach (Bus bus in busList)
+            {
+                busNum.Add(bus.busNum + " | " + bus.BusName);
+                if (bus.busNum == group.BusNumber)
+                {
+                    index = busNum.IndexOf(bus.busNum + " | " + bus.BusName);
+                }
+            }
+            busSpr.Adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleSpinnerItem, busNum);
+            busSpr.SetSelection(index);
 
             groupStudent = new ListView(this);
 
@@ -140,6 +159,21 @@ namespace tripBUS
                         try
                         {
                             if (students[i].Id == currentList[j].Id)
+                            {
+                                students.Remove(students[i]);
+                            }
+                        }
+                        catch (Exception ex) { }
+                    }
+                }
+
+                for (int i = 0; i < students.Count; i++)
+                {
+                    for (int j = 0; j < studentInAtherGroup.Count; j++)
+                    {
+                        try
+                        {
+                            if (students[i].Id == studentInAtherGroup[j])
                             {
                                 students.Remove(students[i]);
                             }
@@ -228,6 +262,15 @@ namespace tripBUS
         private void EditFAB_Click(object sender, EventArgs e)
         {
             group.Name = GroupName.Text;
+            if (busSpr.SelectedItem.ToString() == "")
+            {
+                group.BusNumber = 667;
+            }
+            else
+            {
+                group.BusNumber = int.Parse((busSpr.SelectedItem.ToString().Split(" | "))[0]);
+            }
+            
             //spiiner
             if (IsExist)
             {

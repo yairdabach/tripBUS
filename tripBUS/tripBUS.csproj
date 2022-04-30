@@ -70,6 +70,7 @@
     <Compile Include="ClassManegmentActivity.cs" />
     <Compile Include="BusActivity.cs" />
     <Compile Include="GroupsActivity.cs" />
+    <Compile Include="Modles\TeamMemberAdapter.cs" />
     <Compile Include="Modles\Attendance.cs" />
     <Compile Include="Modles\Bus.cs" />
     <Compile Include="Modles\Group.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="AttendanceActivity.cs" />
     <Compile Include="Modles\StudentAttendance.cs" />
     <Compile Include="Modles\TripAdapter.cs" />
+    <Compile Include="TeamMemberActivity.cs" />
     <Compile Include="ViewBusActivity.cs" />
     <Compile Include="ViewGroupActivity.cs" />
     <Compile Include="Modles\StudentAdapter.cs" />
@@ -296,6 +298,11 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\trip_layout_lv.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\team_member_layout.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
