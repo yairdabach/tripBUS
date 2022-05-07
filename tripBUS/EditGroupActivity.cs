@@ -27,6 +27,7 @@ namespace tripBUS
         Google.Android.Material.FloatingActionButton.FloatingActionButton editFAB;
         List<Student> currentList, DeleteStudent, AddStudent;
         List<string> studentInAtherGroup;
+        List<TeamMember> teamMembers;
         Group group;
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -95,6 +96,28 @@ namespace tripBUS
             }
             busSpr.Adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleSpinnerItem, busNum);
             busSpr.SetSelection(index);
+
+            List<string> teamMemberString = new List<string>();
+            teamMembers = DataHelper.GetTripTeamMembersWhoNotConnected(tripCode, schoolId, this);
+            index = 0;
+
+            teamMembers.Add(group.teamMember);
+            teamMemberString.Add(" ");
+            foreach (TeamMember teamMember in teamMembers)
+            {
+                teamMemberString.Add(teamMember.firstName +" "+ teamMember.lastName);
+                if (teamMember != null && group.teamMember != null)
+                {
+                    if (group.teamMember.email == teamMember.email)
+                    {
+                        index = busNum.IndexOf(teamMember.firstName + " " + teamMember.lastName);
+                    }
+                }
+                
+            }
+            teamMemberSpr.Adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleSpinnerItem, teamMemberString);
+            teamMemberSpr.SetSelection(index);
+
 
             groupStudent = new ListView(this);
 
@@ -270,7 +293,23 @@ namespace tripBUS
             {
                 group.BusNumber = int.Parse((busSpr.SelectedItem.ToString().Split(" | "))[0]);
             }
+
+            if (group.teamMember != null)
+            {
+                DataHelper.UpdateTeamMemberGroup(tripCode, 667, group.teamMember.email, this);
+            }
             
+
+            if (teamMemberSpr.SelectedItem.ToString() == " ")
+            {
+                group.teamMember = null;
+            }
+            else
+            {
+                group.teamMember = teamMembers[teamMemberSpr.SelectedItemPosition-1];
+                DataHelper.UpdateTeamMemberGroup(tripCode, groupNum, group.teamMember.email, this);
+            }
+
             //spiiner
             if (IsExist)
             {

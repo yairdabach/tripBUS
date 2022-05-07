@@ -51,6 +51,7 @@ namespace tripBUS
             (FindViewById<EditText>(Resource.Id.et_GroupCount_trip)).Visibility = ViewStates.Gone;
             (FindViewById<EditText>(Resource.Id.et_StudentCount_trip)).Visibility = ViewStates.Gone;
             (FindViewById<EditText>(Resource.Id.et_BusCount_trip)).Visibility = ViewStates.Gone;
+            (FindViewById<LinearLayout>(Resource.Id.ll_button_trip)).Visibility = ViewStates.Gone;
 
             TripNameET = FindViewById<EditText>(Resource.Id.et_TripName_trip);
             TripDescriptionET = FindViewById<EditText>(Resource.Id.et_TripDes_trip);

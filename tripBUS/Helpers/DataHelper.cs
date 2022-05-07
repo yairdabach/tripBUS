@@ -162,7 +162,7 @@ namespace tripBUS.Helpers
         {
             try
             {
-                string sqlQuer = @"SELECT * FROM [dbo].[TeamMember] Where Email='" + email + "' AND schoolId='" + schoolId + "'";
+                string sqlQuer = @"SELECT * FROM [dbo].[TeamMember] Where Email='" + email.Replace(" ","") + "' AND schoolId='" + schoolId + "'";
                 createConacation();
                 var cmd = new SqlCommand(sqlQuer, conn);
                 var reader = cmd.ExecuteReader();
@@ -1235,6 +1235,129 @@ namespace tripBUS.Helpers
             }
         }
 
+        //TeamMemberTripFun
+        public static void UpdateTeamMemberTrip(List<TeamMember> Add,List<TeamMember > Del, int tripCode, Context context)
+        {
+            foreach (var teamMember in Add) { AddTeamMemberToTrip(teamMember, tripCode, context); }
+            foreach (var teamMember in Del) { DeleatTeamMemberFromTrip(teamMember, tripCode, context); }
+        }
+
+        public static void AddTeamMemberToTrip(TeamMember teamMember,int tripCode, Context context)
+        {
+            try
+            {
+                
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.Append(@$"INSERT INTO [dbo].[TeamMeaberTrip] (teamMemberId, tripCode, schoolID,groupNum)");
+                stringBuilder.Append(@$"VALUES ('{teamMember.email}',{tripCode},'{teamMember.schoolID}',667)");
+                createConacation();
+                var cmd = new SqlCommand(stringBuilder.ToString(), conn);
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                    //MySqlCommand cmd = new MySqlCommand();
+                }
+                Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
+
+            }
+        }
+
+        public static void DeleatTeamMemberFromTrip(TeamMember teamMember, int tripCode, Context context)
+        {
+            try
+            {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.Append(@$"DELETE FROM [dbo].[TeamMeaberTrip] Where teamMemberId='{teamMember.email}' And tripCode= {tripCode}");
+                createConacation();
+                Console.WriteLine(stringBuilder.ToString());
+                var cmd = new SqlCommand(stringBuilder.ToString(), conn);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                    //MySqlCommand cmd = new MySqlCommand();
+                }
+                Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
+
+            }
+        }
+
+        public static void UpdateTeamMemberGroup(int TripCode, int groupNum,string TeamMemberEmail, Context context)
+        {
+            try
+            {
+                StringBuilder stringBuilder = new StringBuilder();
+                string comand = $"Update [dbo].[TeamMeaberTrip] SET groupNum={groupNum} Where teamMemberId='{TeamMemberEmail}' AND tripCode={TripCode}";
+                Console.WriteLine(comand);
+                createConacation();
+                var cmd = new SqlCommand(comand, conn);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                    //MySqlCommand cmd = new MySqlCommand();
+                }
+                Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
+            }
+        }
+
+        public static List<TeamMember> GetTripTeamMembers(int tripCode, string schoolId, Context context)
+        {
+            List<string> emails = new List<string>();
+            List<TeamMember> teamMembers = new List<TeamMember>();
+            string sqlQuer = @$"SELECT teamMemberId FROM [dbo].[TeamMeaberTrip] Where tripCode={tripCode}" ;
+            createConacation();
+            var cmd = new SqlCommand(sqlQuer, conn);
+            var reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    emails.Add((((IDataRecord)reader).GetValue(0).ToString()));
+                }
+                conn.Close();
+                foreach (string email in emails)
+                {
+                    teamMembers.Add(GetTeamMember(email, schoolId,context));
+                }
+            }
+            return teamMembers;
+        }
+
+        public static List<TeamMember> GetTripTeamMembersWhoNotConnected(int tripCode, string schoolId, Context context)
+        {
+            List<string> emails = new List<string>();
+            List<TeamMember> teamMembers = new List<TeamMember>();
+            string sqlQuer = @$"SELECT teamMemberId FROM [dbo].[TeamMeaberTrip] Where tripCode={tripCode} And groupNum=667";
+            createConacation();
+            var cmd = new SqlCommand(sqlQuer, conn);
+            var reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    emails.Add((((IDataRecord)reader).GetValue(0).ToString()));
+                }
+                conn.Close();
+                foreach (string email in emails)
+                {
+                    teamMembers.Add(GetTeamMember(email, schoolId, context));
+                }
+            }
+            return teamMembers;
+        }
         //DateTime.Parse(reader.GetValue(0).ToString());
         public static bool IfStudentConectedToGroup(string studentId, string schoolId, int year)
         {

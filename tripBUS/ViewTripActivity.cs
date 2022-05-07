@@ -113,7 +113,20 @@ namespace tripBUS
 
             editFAB.Click += EditFAB_Click;
             (FindViewById<Button>(Resource.Id.button_group_trip)).Click += ViewTripActivity_Click;
-            (FindViewById<Button>(Resource.Id.button_bus_trip)).Click += ViewTripActivity_ClickBus; ;
+            (FindViewById<Button>(Resource.Id.button_bus_trip)).Click += ViewTripActivity_ClickBus;
+            (FindViewById<Button>(Resource.Id.button_teamMembers_trip)).Click += ViewTripActivity_ClickTeamMember;
+        }
+
+        private void ViewTripActivity_ClickTeamMember(object sender, EventArgs e)
+        {
+            Intent intent = new Intent(this, typeof(TeamMemberActivity));
+            Bundle b = new Bundle();
+            b.PutString("TripName", trip.tripName);
+            b.PutInt("tripCode", trip.tripCode);
+            b.PutInt("year", trip.StartDate.Year);
+            b.PutString("SchoolId", SavedData.loginMember.schoolID);
+            intent.PutExtras(b);
+            StartActivityForResult(intent, 0);
         }
 
         private void ViewTripActivity_ClickBus(object sender, EventArgs e)

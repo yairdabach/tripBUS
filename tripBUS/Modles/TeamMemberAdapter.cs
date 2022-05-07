@@ -16,10 +16,12 @@ namespace tripBUS.Modles
 
         Context context;
         List<TeamMember> objects;
-
-        public TeamMemberAdapter(Context context)
+        int status;
+        public TeamMemberAdapter(Context context , List<TeamMember> objects, int ststus)
         {
             this.context = context;
+            this.objects = objects;
+            this.status = ststus;
         }
 
 
@@ -55,8 +57,11 @@ namespace tripBUS.Modles
                 //replace with your item and your holder items
                 //comment back in
                 view = inflater.Inflate(Resource.Layout.layout_empty, parent, false);
-                (view.FindViewById<TextView>(Resource.Id.tv_empty)).Text = objects[position].firstName + " " + objects[position].lastName;
+                view.SetBackgroundResource(Resource.Drawable.stroke);
+                (view.FindViewById<TextView>(Resource.Id.tv_empty)).Text =  "  " + objects[position].firstName + " " + objects[position].lastName;
+                holder.TeamMember = objects[position];
                 view.Tag = holder;
+                view.Click += View_Click;
 
             }
 
@@ -67,12 +72,23 @@ namespace tripBUS.Modles
             return view;
         }
 
+        private void View_Click(object sender, EventArgs e)
+        {
+            if (status ==1)
+            {
+                (context as TeamMemberActivity).DelateTripTeamMember(((sender as View).Tag as Adapter1ViewHolder).TeamMember);
+            }
+            if (status ==2)
+            {
+                (context as TeamMemberActivity).AddTripTeamMember(((sender as View).Tag as Adapter1ViewHolder).TeamMember);
+            }
+        }
     }
 
     internal class Adapter1ViewHolder : Java.Lang.Object
     {
         //Your adapter views to re-use
         //public TextView Title { get; set; }
-        TeamMember TeamMember;
+        public TeamMember TeamMember;
     }
 }

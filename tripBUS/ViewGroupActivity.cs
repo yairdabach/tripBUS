@@ -22,6 +22,7 @@ namespace tripBUS
         Spinner teamMemberSpr, busSpr;
         int tripCode, groupNum,year;
         string schoolId;
+        int meneger;
         Google.Android.Material.FloatingActionButton.FloatingActionButton editFAB;
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -43,6 +44,7 @@ namespace tripBUS
             tripCode = Intent.GetIntExtra("tripCode", 0);
             year = Intent.GetIntExtra("year", 0);
             schoolId = Intent.GetStringExtra("SchoolId");
+            meneger = Intent.GetIntExtra("meneger", 0);
 
             Group group = DataHelper.GetGroup(groupNum, tripCode,year, schoolId, this);
 
@@ -52,11 +54,13 @@ namespace tripBUS
             GroupNum = FindViewById<EditText>(Resource.Id.et_Gnum_Group);
             editFAB = FindViewById<Google.Android.Material.FloatingActionButton.FloatingActionButton>(Resource.Id.group_fav);
             busSpr = FindViewById<Spinner>(Resource.Id.spnr_bus_group);
+            teamMemberSpr = FindViewById<Spinner>(Resource.Id.spnr_teammember_group);
 
             groupStudent = new ListView(this);
 
             GroupName.Enabled = false;
             GroupNum.Enabled = false;
+            busSpr.Enabled = false;
             busSpr.Enabled = false;
 
             GroupNum.Text = groupNum.ToString();
@@ -71,6 +75,14 @@ namespace tripBUS
             }
             busSpr.Adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleSpinnerItem, busNum);
 
+            List<string> TeamMember = new List<string>();
+            if (group.teamMember != null)
+            {
+                busNum.Add(group.teamMember.firstName+" "+ group.teamMember.lastName);
+            }
+            busSpr.Adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleSpinnerItem, busNum);
+
+
             if (group.students.Count > 0)
             {
 
@@ -82,7 +94,15 @@ namespace tripBUS
             (FindViewById<LinearLayout>(Resource.Id.ll_groupStudent_viewgroup_layout)).LayoutParameters = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent);
 
             editFAB.SetImageResource(Android.Resource.Drawable.IcMenuEdit);
-            editFAB.Click += EditFAB_Click;
+            if (meneger ==1)
+            {
+                editFAB.Visibility = ViewStates.Gone;
+            }
+            else
+            {
+                editFAB.Click += EditFAB_Click;
+            }
+            
         }
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
