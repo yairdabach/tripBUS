@@ -70,6 +70,7 @@
     <Compile Include="ClassManegmentActivity.cs" />
     <Compile Include="BusActivity.cs" />
     <Compile Include="GroupsActivity.cs" />
+    <Compile Include="TeamMemberLoginActivity.cs" />
     <Compile Include="Modles\TeamMemberAdapter.cs" />
     <Compile Include="Modles\Attendance.cs" />
     <Compile Include="Modles\Bus.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Modles\Student.cs" />
     <Compile Include="UpdaterTripActivity.cs" />
     <Compile Include="ViewStudentLIst.cs" />
+    <Compile Include="TeamMemberViewTripActivity.cs" />
     <Compile Include="ViewTripActivity.cs" />
     <Compile Include="UpdateDitlesActivity.cs" />
     <Compile Include="Modles\Trip.cs" />

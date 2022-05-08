@@ -46,6 +46,11 @@ namespace tripBUS
             schoolId = Intent.GetStringExtra("SchoolId");
             meneger = Intent.GetIntExtra("meneger", 0);
 
+            if (meneger == 1 )
+            {
+                FindViewById(Resource.Id.group_fav).Visibility = ViewStates.Gone;
+            }
+
             Group group = DataHelper.GetGroup(groupNum, tripCode,year, schoolId, this);
 
             (FindViewById<LinearLayout>(Resource.Id.ll_studentclass_Glayout)).Visibility = ViewStates.Gone;

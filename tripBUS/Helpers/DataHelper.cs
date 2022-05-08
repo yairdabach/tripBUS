@@ -790,6 +790,22 @@ namespace tripBUS.Helpers
             conn.Close();
             return group;
         }
+        public static int GetGroupBus(int GroupNum, int tripcode, string schoolID, Context context)
+        {
+            string sqlQuer = @"SELECT BusNum FROM [dbo].[TripGroup] Where groupNum=" + GroupNum + " AND tripCode = " + tripcode;
+            createConacation();
+            var cmd = new SqlCommand(sqlQuer, conn);
+            var reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                reader.Read();
+                int i = CangeToInt(((IDataRecord)reader).GetValue(0).ToString());
+                conn.Close();
+                return i;
+            }
+            conn.Close();
+            return 667;
+        }
 
         public static List<Group> GetAllGroups(int tripcode, string schoolID, Context context)
         {
@@ -1336,6 +1352,38 @@ namespace tripBUS.Helpers
             return teamMembers;
         }
 
+        public static int GetGroupTripTeamMembers(string email,int tripCode, string schoolId, Context context)
+        {
+            List<string> emails = new List<string>();
+            List<TeamMember> teamMembers = new List<TeamMember>();
+            string sqlQuer = @$"SELECT groupNum FROM [dbo].[TeamMeaberTrip] Where tripCode={tripCode} And teamMemberId='{email}'";
+            createConacation();
+            var cmd = new SqlCommand(sqlQuer, conn);
+            var reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            { 
+                reader.Read();
+                int i = int.Parse(((IDataRecord)reader).GetValue(0).ToString());
+                conn.Close();
+                return i;
+            }
+            return 667;
+        }
+
+        public static TeamMember LoginTripTeamMembers(string email, int tripCode, string schoolId, Context context)
+        {
+            
+            string sqlQuer = @$"SELECT teamMemberId FROM [dbo].[TeamMeaberTrip] Where tripCode={tripCode} And teamMemberId='{email}'";
+            createConacation();
+            var cmd = new SqlCommand(sqlQuer, conn);
+            var reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                conn.Close();
+                return (GetTeamMember(email, schoolId, context)); 
+            }
+            return null;
+        }
         public static List<TeamMember> GetTripTeamMembersWhoNotConnected(int tripCode, string schoolId, Context context)
         {
             List<string> emails = new List<string>();

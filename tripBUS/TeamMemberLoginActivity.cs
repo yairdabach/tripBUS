@@ -19,11 +19,11 @@ using Xamarin.Essentials;
 namespace tripBUS
 {
     [Activity(Label = "Maneger Login")]
-    public class ManegerLoginActivity : Activity
+    public class TeamMemberLoginActivity : Activity
     {
 
         TextView forgetPasswordTvClick;
-        EditText passwordET;
+        EditText tripCodeET , schoolIdEt;
         EditText emailET;
         Button btnLogin;
         CheckBox cbRememberMe;
@@ -38,44 +38,43 @@ namespace tripBUS
             SetContentView(Resource.Layout.login_layout);
            
             SavedData.context = (this);
+            
+            emailET = FindViewById<EditText>(Resource.Id.et_email_login);
+            tripCodeET = FindViewById<EditText>(Resource.Id.et_tripCode_login);
+            schoolIdEt = FindViewById<EditText>(Resource.Id.et_schoolID_login);
 
-            forgetPasswordTvClick = FindViewById<TextView>(Resource.Id.tv_forget_password_click);
-            forgetPasswordTvClick.Click += ForgetPassword_Click;
-
-            passwordET = FindViewById<EditText>(Resource.Id.et_password_login);
-            emailET= FindViewById<EditText>(Resource.Id.et_email_login);
-            cbRememberMe = FindViewById<CheckBox>(Resource.Id.cb_remember_login);
-            FindViewById(Resource.Id.ll_et_teamMemberLogin).Visibility = ViewStates.Gone;
+            FindViewById<EditText>(Resource.Id.et_password_login).Visibility = ViewStates.Gone;
+            FindViewById<CheckBox>(Resource.Id.cb_remember_login).Visibility = ViewStates.Gone;
+            FindViewById<TextView>(Resource.Id.tv_forget_password_click).Visibility = ViewStates.Gone;
 
             btnLogin = FindViewById<Button>(Resource.Id.btn_login);
-            btnLogin.Click += BtnLogin_Click;
-                sMSReceiver = new SmsReceiver();
-                var intentFilter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
-                intentFilter.Priority = 999;
-                RegisterReceiver(sMSReceiver, intentFilter);
-           
+            btnLogin.Click += BtnLogin_Click;   
 
         }
 
         private void BtnLogin_Click(object sender, EventArgs e)
         {
-            TeamMember teamMember = DataHelper.Login(emailET.Text, passwordET.Text, this);
+            TeamMember teamMember = DataHelper.LoginTripTeamMembers(emailET.Text, int.Parse(tripCodeET.Text), schoolIdEt.Text, this);
             if (teamMember != null)
             {
                 SavedData.loginMember = teamMember;
+                SavedData.tripCode = int.Parse(tripCodeET.Text);
                 Intent data = new Intent();
-                data.PutExtra("Save", cbRememberMe.Checked);
+                
                 SetResult(Result.Ok,data);
                 Finish();
 
             }
             else
             {
-                passwordET.Background.SetColorFilter(Android.Graphics.Color.Red, PorterDuff.Mode.SrcAtop);
-                passwordET.Error = "Wrong email or password";
+                tripCodeET.Background.SetColorFilter(Android.Graphics.Color.Red, PorterDuff.Mode.SrcAtop);
+                tripCodeET.Error = "Wrong values";
+
+                schoolIdEt.Background.SetColorFilter(Android.Graphics.Color.Red, PorterDuff.Mode.SrcAtop);
+                schoolIdEt.Error = "Wrong values";
 
                 emailET.Background.SetColorFilter(Android.Graphics.Color.Red, PorterDuff.Mode.SrcAtop);
-                emailET.Error = "must fill it";
+                emailET.Error = "Wrong values";
             }
         }
 
@@ -235,7 +234,7 @@ namespace tripBUS
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            UnregisterReceiver(sMSReceiver);
+            //UnregisterReceiver(sMSReceiver);
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)

@@ -16,6 +16,7 @@ namespace tripBUS.Helpers
     {
         public static TeamMember loginMember;
         public static Trip AllTripsOfMember;
+        public static int tripCode;
         public static Queue<Context> savedActivities;
         public static Context context;
         private static Android.Content.ISharedPreferences sharedPreferencesRefrence;

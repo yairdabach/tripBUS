@@ -55,8 +55,8 @@ namespace tripBUS
 
         private void BtnTeamMember_Click(object sender, EventArgs e)
         {
-            //Intent menegerLogin = new Intent(this, typeof(MangerMainActivity));
-            //StartActivity(menegerLogin);
+            Intent TeamLogin = new Intent(this, typeof(TeamMemberLoginActivity));
+            StartActivityForResult(TeamLogin, 3);
         }
 
         private void TVSignUp_Click(object sender, System.EventArgs e)
@@ -116,6 +116,20 @@ namespace tripBUS
                 }
                 catch (Exception ex) { }
 
+            }
+            if (requestCode == 3)
+            {
+                Toast.MakeText(this, "login", ToastLength.Long).Show();
+                int groupNum = DataHelper.GetGroupTripTeamMembers(SavedData.loginMember.email, SavedData.tripCode, SavedData.loginMember.schoolID, this);
+                int bus = DataHelper.GetGroupBus(groupNum, SavedData.tripCode, SavedData.loginMember.schoolID, this);
+                Intent intent = new Intent(this, typeof(TeamMemberViewTripActivity));
+                Bundle b = new Bundle();
+                b.PutInt("TripCode", SavedData.tripCode);
+                b.PutInt("groupNum", groupNum);
+                b.PutInt("BusNum", bus);
+                intent.PutExtras(b);
+                StartActivity(intent);
+                Finish();
             }
         }
 

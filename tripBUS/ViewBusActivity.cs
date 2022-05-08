@@ -50,6 +50,12 @@ namespace tripBUS
 
             SupportActionBar.Title = "Bus num:" +busNum;
 
+            if(Status == 4)
+            {
+                FindViewById<FloatingActionButton>(Resource.Id.bus_fav).Visibility = ViewStates.Gone;
+                Status = 2;
+            }
+
             if (Status != 3)
             {
                 bus = DataHelper.GetBusInfo(busNum, tripCode, schoolId, this);
