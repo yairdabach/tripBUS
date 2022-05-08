@@ -25,15 +25,15 @@ namespace tripBUS
         string schoolId;
         bool IsExist;
         Google.Android.Material.FloatingActionButton.FloatingActionButton editFAB;
-        List<Student> currentList, DeleteStudent, AddStudent;
-        List<string> studentInAtherGroup;
+        List<Student> currentList, DeleteStudent, AddStudent; // current list - for the student in a group, del for the student you want to del and so add
+        List<string> studentInAtherGroup; 
         List<TeamMember> teamMembers;
         Group group;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
-            // Create your application here
+            // set screen
             SetContentView(Resource.Layout.title_layout);
 
             var toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar_Bar);
@@ -43,13 +43,16 @@ namespace tripBUS
             stub.LayoutResource = Resource.Layout.group_layout;
             stub.Inflate();
 
+            // get info from prev activity
             groupNum = Intent.GetIntExtra("groupNum", 2);
             tripCode = Intent.GetIntExtra("tripCode", 0);
             year = Intent.GetIntExtra("year", 0);
             schoolId = Intent.GetStringExtra("SchoolId");
 
+            // set activity title
             SupportActionBar.Title = "Group "+ groupNum;
 
+            // fet info from Db in there isent create new
             trip = DataHelper.GetTripByCode(tripCode, this);
             group = DataHelper.GetGroup(groupNum, tripCode, year, schoolId, this);
             if (group == null)
@@ -75,6 +78,7 @@ namespace tripBUS
 
             studentInAtherGroup = DataHelper.GetAllGroupStudent(groupNum, tripCode, this);
 
+            //get all views
             GroupName = FindViewById<EditText>(Resource.Id.et_Gname_Group);
             GroupNum = FindViewById<EditText>(Resource.Id.et_Gnum_Group);
             editFAB = FindViewById<Google.Android.Material.FloatingActionButton.FloatingActionButton>(Resource.Id.group_fav);
@@ -82,6 +86,7 @@ namespace tripBUS
             teamMemberSpr = FindViewById<Spinner>(Resource.Id.spnr_teammember_group);
             busSpr = FindViewById<Spinner>(Resource.Id.spnr_bus_group);
 
+            // set bus spn
             List<string> busNum = new List<string>();
             busNum.Add("");
             List<Bus> busList = DataHelper.GetAllBuss(group.tripCode, group.SchoolId, this);
@@ -97,6 +102,7 @@ namespace tripBUS
             busSpr.Adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleSpinnerItem, busNum);
             busSpr.SetSelection(index);
 
+            // set team member spr
             List<string> teamMemberString = new List<string>();
             teamMembers = DataHelper.GetTripTeamMembersWhoNotConnected(tripCode, schoolId, this);
             index = 0;
@@ -118,7 +124,7 @@ namespace tripBUS
             teamMemberSpr.Adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleSpinnerItem, teamMemberString);
             teamMemberSpr.SetSelection(index);
 
-
+            // set list view
             groupStudent = new ListView(this);
 
             GroupNum.Text = groupNum.ToString();
@@ -157,6 +163,7 @@ namespace tripBUS
                 }
             }
 
+
             classSpr.Adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleSpinnerItem, classList);
             classSpr.ItemSelected += ClassSpr_ItemSelected;
             ClassSpr_ItemSelected(classSpr, null);
@@ -165,6 +172,7 @@ namespace tripBUS
             editFAB.Click += EditFAB_Click;
         }
 
+        //fun for cange class in lv by change class in spr
         private void ClassSpr_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
             if (!classSpr.Adapter.IsEmpty)
@@ -209,6 +217,7 @@ namespace tripBUS
             
         }  
 
+        // remove from group -> fun call by adapter
         public void RemoveFromGroup(Student student)
         {
             List<Student> temp;
@@ -244,6 +253,7 @@ namespace tripBUS
             }
         }
 
+        // Add to group -> fun call by adapter
         public void AddToGroup(Student student)
         {
             //currentList.Add(student);
@@ -282,6 +292,7 @@ namespace tripBUS
             }
         }
 
+        // save fun
         private void EditFAB_Click(object sender, EventArgs e)
         {
             group.Name = GroupName.Text;
@@ -310,7 +321,7 @@ namespace tripBUS
                 DataHelper.UpdateTeamMemberGroup(tripCode, groupNum, group.teamMember.email, this);
             }
 
-            //spiiner
+            //if isnt new close else open view group activity
             if (IsExist)
             {
                 group.amoountOfstudent = currentList.Count;

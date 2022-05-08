@@ -33,12 +33,14 @@ namespace tripBUS
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            //set screen
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.title_layout);
 
             var toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar_Bar);
             SetSupportActionBar(toolbar);
 
+            // get info from prev actibity
             SchoolID = Intent.GetStringExtra("SchoolId");
             tripCode = Intent.GetIntExtra("tripCode", 0);
             tripName = Intent.GetStringExtra("TripName");
@@ -53,6 +55,7 @@ namespace tripBUS
 
             faterLayout = FindViewById<LinearLayout>(Resource.Id.layout_empty);
 
+            //set dinamicly base for activity
             var Frame = new FrameLayout(this);
             Frame.LayoutParameters = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MatchParent, FrameLayout.LayoutParams.MatchParent);
             faterLayout.AddView(Frame);
@@ -76,6 +79,7 @@ namespace tripBUS
 
         private void createScreen()
         {
+            //desing button for goups
             faterLayout.RemoveAllViewsInLayout();
             buttons = new List<Button>();
             groups = DataHelper.GetAllGroups(tripCode, SchoolID, this);
@@ -104,6 +108,8 @@ namespace tripBUS
             base.OnActivityResult(requestCode, resultCode, data);
             createScreen();
         }
+
+        //open activity - new group
         private void PlusFAB_Click(object sender, EventArgs e)
         {
             Intent intent = new Intent(this, typeof(ViewGroupActivity));
@@ -126,6 +132,7 @@ namespace tripBUS
             StartActivityForResult(intenti, 1);
         }
 
+        // open group view screen
         private void Temp_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < buttons.Count; i++)

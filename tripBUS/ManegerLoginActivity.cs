@@ -39,14 +39,17 @@ namespace tripBUS
            
             SavedData.context = (this);
 
+            // foget password "button" set
             forgetPasswordTvClick = FindViewById<TextView>(Resource.Id.tv_forget_password_click);
             forgetPasswordTvClick.Click += ForgetPassword_Click;
 
+            // find views
             passwordET = FindViewById<EditText>(Resource.Id.et_password_login);
             emailET= FindViewById<EditText>(Resource.Id.et_email_login);
             cbRememberMe = FindViewById<CheckBox>(Resource.Id.cb_remember_login);
             FindViewById(Resource.Id.ll_et_teamMemberLogin).Visibility = ViewStates.Gone;
 
+            //set login post button
             btnLogin = FindViewById<Button>(Resource.Id.btn_login);
             btnLogin.Click += BtnLogin_Click;
                 sMSReceiver = new SmsReceiver();
@@ -57,6 +60,7 @@ namespace tripBUS
 
         }
 
+        // btn login click
         private void BtnLogin_Click(object sender, EventArgs e)
         {
             TeamMember teamMember = DataHelper.Login(emailET.Text, passwordET.Text, this);
@@ -129,6 +133,8 @@ namespace tripBUS
             }
         }
 
+
+        
         private void BtnConfirmPassword_Click(object sender, EventArgs e)
         {
             ConfirmCode((ForgetPasswordDilog.FindViewById<EditText>(Resource.Id.et_code_forget)).Text);
@@ -146,6 +152,7 @@ namespace tripBUS
                 Toast.MakeText(this, "Wrong code", ToastLength.Long).Show();
         }
 
+        //set new password - foget password dilog
         private void BtnSetPassword_Click(object sender, EventArgs e)
         {
             EditText passwordForget = ForgetPasswordDilog.FindViewById<EditText>(Resource.Id.et_password_new_forget);
@@ -200,6 +207,8 @@ namespace tripBUS
             }
         }
 
+        // check validtion password fun
+        //valid if more than one under letter one Upper letter and one number
         private bool ValidatePassword(string passWord)
         {
             int validConditions = 0;

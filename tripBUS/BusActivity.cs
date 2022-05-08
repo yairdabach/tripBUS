@@ -33,24 +33,28 @@ namespace tripBUS
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            //set screen
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.title_layout);
 
             var toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar_Bar);
             SetSupportActionBar(toolbar);
 
+            //get data from prev activity
             SchoolID = Intent.GetStringExtra("SchoolId");
             tripCode = Intent.GetIntExtra("tripCode", 0);
             tripName = Intent.GetStringExtra("TripName");
             year = Intent.GetIntExtra("year",0);
 
+            //activity title
             SupportActionBar.Title = "Buss | "+ tripName;
 
-
+            //set scerrn
             ViewStub stub = FindViewById<ViewStub>(Resource.Id.layout_stubBar);
             stub.LayoutResource = Resource.Layout.layout_empty;
             stub.Inflate();
 
+            //Add father dainamecky layout for floating button
             faterLayout = FindViewById<LinearLayout>(Resource.Id.layout_empty);
 
             var Frame = new FrameLayout(this);
@@ -61,6 +65,7 @@ namespace tripBUS
             Frame.AddView(faterLayout);
             faterLayout.Orientation = Orientation.Vertical;
 
+            // set floting button
             plusFAB = new FloatingActionButton(this);
             plusFAB.LayoutParameters = new FrameLayout.LayoutParams(150, 150, (GravityFlags.Right | GravityFlags.Bottom));
             ((FrameLayout.LayoutParams) plusFAB.LayoutParameters).SetMargins(50,50, 50, 50);
@@ -74,6 +79,7 @@ namespace tripBUS
             plusFAB.Click += PlusFAB_Click;
         }
 
+        // fun for desing sreen -> get all bus and crate for them buttons
         private void createScreen()
         {
             faterLayout.RemoveAllViewsInLayout();
@@ -104,6 +110,8 @@ namespace tripBUS
             base.OnActivityResult(requestCode, resultCode, data);
             createScreen();
         }
+
+        //Add new bus function
         private void PlusFAB_Click(object sender, EventArgs e)
         {
             Intent intent = new Intent(this, typeof(ViewGroupActivity));
@@ -127,6 +135,7 @@ namespace tripBUS
             StartActivityForResult(intenti, 1);
         }
 
+        //open Bus info Activity
         private void Temp_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < buttons.Count; i++)

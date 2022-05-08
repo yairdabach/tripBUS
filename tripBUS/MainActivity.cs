@@ -28,15 +28,19 @@ namespace tripBUS
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.activity_main);
 
+            // meneger login button
             BtnManegerLogin = FindViewById<Button>(Resource.Id.button_login_manager);
             BtnManegerLogin.Click += ManegerLogin_Click;
 
+            // singup "button"
             TVSignUp = FindViewById<TextView>(Resource.Id.tv_signup);
             TVSignUp.Click += TVSignUp_Click;
 
+            //team member login Button
             BtnTeamMember = FindViewById<Button>(Resource.Id.button_login_team);
             BtnTeamMember.Click += BtnTeamMember_Click;
 
+            //Get Info from Shared Prefrence - check if there is connected user
             sp = this.GetSharedPreferences("details", Android.Content.FileCreationMode.Private);
             SavedData.SetSharedPreferencesRefrence(sp);
 
@@ -53,19 +57,21 @@ namespace tripBUS
             }
         }
 
+        //function click team member login button -> open Team Member login Activity
         private void BtnTeamMember_Click(object sender, EventArgs e)
         {
             Intent TeamLogin = new Intent(this, typeof(TeamMemberLoginActivity));
             StartActivityForResult(TeamLogin, 3);
         }
 
+        //function click singup button -> open SingUp Activity
         private void TVSignUp_Click(object sender, System.EventArgs e)
         {
             Intent menegerLogin = new Intent(this, typeof(ManegerSignUpActivity));
             StartActivityForResult(menegerLogin, 1);
         }
 
-        //manager login screen
+        //function click meneger login button -> open Maneger login Activity
         private void ManegerLogin_Click(object sender, System.EventArgs e)
         {
             Intent menegerLogin = new Intent(this, typeof(ManegerLoginActivity));
@@ -73,6 +79,10 @@ namespace tripBUS
 
         }
 
+        //on activity result -> send you to the screens of the app after login
+        //request Code 1 : meneger login secsesfly
+        //request Code 2 : meneger login secsesfly and remembr me
+        //request Code 3 : team member login secsesfly
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);

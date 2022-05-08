@@ -17,6 +17,7 @@ namespace tripBUS
         ListView StudentLV;
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            //set screen
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.title_layout);
 
@@ -31,14 +32,16 @@ namespace tripBUS
             View PerentLayout = FindViewById(Resource.Id.layout_empty);
             (FindViewById<TextView>(Resource.Id.tv_empty)).Visibility = ViewStates.Gone;
 
+            // get info from prev activity
             int classAge = Intent.GetIntExtra("ClassAge", 0);
             string SchoolID = Intent.GetStringExtra("SchoolId");
             int year = Intent.GetIntExtra("year", 0);
             int classNum = Intent.GetIntExtra("ClassNum", 0);
 
+            // set title activity
             SupportActionBar.Title = "Class: " + classAge + "-" + classNum + " | " + year;
 
-
+            //get class student and set adapter
             List<Student> students = DataHelper.GetStudentClassAgeInYear(classAge, classNum, SavedData.loginMember.schoolID, year, this);
 
             StudentAdapter studentAdapter = new StudentAdapter(this, year, SchoolID,students, true);

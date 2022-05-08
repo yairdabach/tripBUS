@@ -37,6 +37,7 @@ namespace tripBUS
             // Create your application here
             SetContentView(Resource.Layout.title_layout);
 
+            //set layout and desing 
             var toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar_Bar);
             SetSupportActionBar(toolbar);
 
@@ -46,14 +47,17 @@ namespace tripBUS
             stub.LayoutResource = Resource.Layout.attendance_layout;
             stub.Inflate();
 
+            //get info from prev activity
             busNum = Intent.GetIntExtra("busNum", 0);
             tripCode = Intent.GetIntExtra("tripCode", 0);
             date = Intent.GetStringExtra("dateTime");
             year = Intent.GetIntExtra("year", 0);
             SchoolID = Intent.GetStringExtra("SchoolId");
 
+            // get trip
             trip = DataHelper.GetTripByCode(tripCode, this);
 
+            // if date is empty -> new Attendace else get the attendace from db
             if (!string.IsNullOrEmpty(date))
             {
                 dateTime = DateTime.Parse(date);
@@ -70,6 +74,7 @@ namespace tripBUS
                 attendance.Attendances = new List<StudentAttendance>();
             }
 
+            // set list and adapters fot attendace
             students = new List<StudentAttendance>();
             Add = new List<StudentAttendance>();
             change = new List<StudentAttendance>();
@@ -97,16 +102,20 @@ namespace tripBUS
                 }
             }
 
+            // find views
             studentAttendeceLV = FindViewById<ListView>(Resource.Id.lv_atendece_atendece);
             dateCheeckET = FindViewById<EditText>(Resource.Id.et_date_attendece);
             titleCheekET = FindViewById<EditText>(Resource.Id.et_title_attendece);
             saveBtn = FindViewById<Button>(Resource.Id.btn_save_attendace);
            
+            //set Adapter
             studentAttendeceLV.Adapter = new StudentAdapter(this,tripCode,year,SchoolID, students.Cast<Student>().ToList(), true, 3, students);
 
+            //set et Text
             dateCheeckET.Text = dateTime.ToString("g");
             titleCheekET.Text = attendance.descriotionCheek;
 
+            // set on click function
             if (string.IsNullOrEmpty(date))
                 dateCheeckET.Click += DateCheeckET_Click;
             else
@@ -118,16 +127,21 @@ namespace tripBUS
             saveBtn.Click += SaveBtn_Click;
         }
 
+        // click on save 
         private void SaveBtn_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(date) && ((dateTime.CompareTo(trip.StartDate) < 0 || dateTime.CompareTo(trip.EndDate) > 0)))
             {
+                // un valid date
                 Toast.MakeText(this, "invalid date", ToastLength.Long).Show();
             }
             else
             {
+                //set attendace
                 attendance.descriotionCheek = titleCheekET.Text;
                 attendance.DateTime = dateTime;
+
+                //change student attendace
                 for (int i = 0; i < Add.Count; i++)
                 {
                     DataHelper.AddAtendace(attendance, Add[i], this);
@@ -143,12 +157,14 @@ namespace tripBUS
 
         }
 
+        //ope date dilog
         private void DateCheeckET_Click(object sender, EventArgs e)
         {
             DatePickerDialog datePickerDialog = new DatePickerDialog(this,OnDateSet,dateTime.Year, dateTime.Month, dateTime.Day);
             datePickerDialog.Show();
         }
 
+        //set date and open time dilog
         private void OnDateSet(object sender, DatePickerDialog.DateSetEventArgs e)
         {
             if (e.Date.CompareTo(trip.StartDate)<0 || e.Date.CompareTo(trip.EndDate) > 0)
@@ -164,6 +180,7 @@ namespace tripBUS
             }
         }
 
+        //set time
         private void OnTimeSet(object sender, TimePickerDialog.TimeSetEventArgs e)
         {
             TimeSpan t = new TimeSpan(e.HourOfDay, e.Minute, 0);
@@ -171,6 +188,7 @@ namespace tripBUS
             dateCheeckET.Text = dateTime.ToString("g");
         }
 
+        // change attendace | the fun calld by adapter
         public void ChageAttendace(int postion)
         {
             string id = students[postion].Id;
