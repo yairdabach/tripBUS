@@ -106,6 +106,12 @@ namespace tripBUS
                 StartActivityForResult(SudMenAc, 0);
                 return true;
             }
+            if (menuItem.ItemId == Resource.Id.nav_sherch)
+            {
+                Intent SudMenAc = new Intent(this, typeof(ServiceActivity));
+                StartActivityForResult(SudMenAc, 0);
+                return true;
+            }
             return true;
         }
 

@@ -70,6 +70,8 @@
     <Compile Include="ClassManegmentActivity.cs" />
     <Compile Include="BusActivity.cs" />
     <Compile Include="GroupsActivity.cs" />
+    <Compile Include="Helpers\FirstService.cs" />
+    <Compile Include="ServiceActivity.cs" />
     <Compile Include="TeamMemberLoginActivity.cs" />
     <Compile Include="Modles\TeamMemberAdapter.cs" />
     <Compile Include="Modles\Attendance.cs" />
@@ -308,6 +310,14 @@
     <AndroidResource Include="Resources\layout\team_member_layout.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\service_latyout.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\raw\bgmusic.mp3" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
