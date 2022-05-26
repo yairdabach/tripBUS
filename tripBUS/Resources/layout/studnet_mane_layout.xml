@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+       <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <EditText
+                            android:inputType="number"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="studnet id"
+                            android:textSize="21sp"
+                            android:imeOptions="actionNext"
+                            android:theme="@style/EditTextMy"
+                            android:id="@+id/et_studentId_student"/>
+                    </android.support.design.widget.TextInputLayout>     
+       
+
+     <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+         <android.support.design.widget.TextInputLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:inputType="textPersonName"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:hint="first name"
+                    android:textSize="21sp"
+                    android:imeOptions="actionNext"
+                    android:theme="@style/EditTextMy"
+                    android:layout_marginLeft="20dp"
+                    android:id="@+id/et_first_student"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:inputType="textPersonName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="last name"
+                    android:textSize="21sp"
+                    android:imeOptions="actionNext"
+                    android:theme="@style/EditTextMy"
+                    android:layout_marginRight="20dp"
+                    android:id="@+id/et_last_student"/>
+            </android.support.design.widget.TextInputLayout>
+     </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+        <TextView
+            android:text="Year"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:paddingLeft="5dp" />
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:id="@+id/spnr_year_student"
+            android:hint="Team member"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp">
+                <TextView
+                    android:text="Student Class Age"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:paddingLeft="5dp" />
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    style="@style/Widget.AppCompat.Spinner.Underlined"
+                    android:id="@+id/spnr_class_student"
+                    android:hint="Student Class"/>
+            </LinearLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:inputType="number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="class Num"
+                    android:textSize="21sp"
+                    android:imeOptions="actionNext"
+                    android:theme="@style/EditTextMy"
+                    android:layout_marginRight="20dp"
+                    android:id="@+id/et_classNum_student"/>
+            </android.support.design.widget.TextInputLayout>
+      </LinearLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="save"
+            android:id="@+id/button_save_student"
+            android:background="@drawable/button3_style"
+        />
+</LinearLayout>

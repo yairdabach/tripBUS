@@ -24,11 +24,31 @@
                     android:id="@+id/spnr_LerningYear_StudentMenegment"
                     android:hint="Lerning Year"/>
             </LinearLayout>
-    
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="250dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/lily_Perent_StudentMenegment"
             android:orientation="vertical" />
-    
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="refrsh"
+            android:layout_marginHorizontal="20dp"
+            android:id="@+id/refreshbtn"/>
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:text="add Student"
+            android:id="@+id/newStudent"/>
+    </LinearLayout>
 </LinearLayout>

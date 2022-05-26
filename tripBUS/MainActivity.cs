@@ -127,7 +127,7 @@ namespace tripBUS
                 catch (Exception ex) { }
 
             }
-            if (requestCode == 3)
+            if (requestCode == 3 && SavedData.loginMember != null)
             {
                 Toast.MakeText(this, "login", ToastLength.Long).Show();
                 int groupNum = DataHelper.GetGroupTripTeamMembers(SavedData.loginMember.email, SavedData.tripCode, SavedData.loginMember.schoolID, this);

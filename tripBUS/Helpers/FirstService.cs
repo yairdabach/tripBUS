@@ -17,13 +17,12 @@ namespace tripBUS.Helpers
     public class FirstService : Service
     {
         IBinder binder;//null not in bagrut 
-        MediaPlayer mp;
         public override StartCommandResult OnStartCommand(Android.Content.Intent intent, StartCommandFlags flags, int startId)
         {
             // start your service logic here
 
-            mp = MediaPlayer.Create(this, Resource.Raw.bgmusic);
-            mp.Start();
+            Sound.mp = MediaPlayer.Create(this, Resource.Raw.bgmusic);
+            Sound.mp.Start();
             // Return the correct StartCommandResult for the type of service you are building
             return StartCommandResult.NotSticky;
         }
@@ -37,11 +36,11 @@ namespace tripBUS.Helpers
         public override void OnDestroy()
         {
             base.OnDestroy();
-            if (mp != null)
+            if (Sound.mp != null)
             {
-                mp.Stop();
-                mp.Release();
-                mp = null;
+                Sound.mp.Stop();
+                Sound.mp.Release();
+                Sound.mp = null;
             }
 
         }
@@ -61,5 +60,10 @@ namespace tripBUS.Helpers
         {
             return service;
         }
+    }
+
+    public static class Sound
+    {
+        public static MediaPlayer mp;
     }
 }

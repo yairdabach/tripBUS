@@ -116,7 +116,7 @@ namespace tripBUS
                 {
                     if (group.teamMember.email == teamMember.email)
                     {
-                        index = busNum.IndexOf(teamMember.firstName + " " + teamMember.lastName);
+                        index = teamMemberString.IndexOf(teamMember.firstName + " " + teamMember.lastName);
                     }
                 }
                 

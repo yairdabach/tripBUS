@@ -89,7 +89,7 @@ namespace tripBUS
                 TripNameET.Error = null;
             }
 
-            if (TripStartDate.Text == "")
+            if (TripStartDate.Text == "" )
             {
                 TripStartDate.Background.SetColorFilter(Android.Graphics.Color.Red, PorterDuff.Mode.SrcAtop);
                 TripStartDate.Error = "must fill it";
@@ -97,9 +97,18 @@ namespace tripBUS
             }
             else
             {
-                TripStartDate.SetError("", null);
-                TripStartDate.Background.SetColorFilter(Android.Graphics.Color.LightGray, PorterDuff.Mode.Src);
-                TripStartDate.Error = null;
+                if (DateTime.Compare(startDate, DateTime.Today) < 0)
+                {
+                    TripStartDate.Background.SetColorFilter(Android.Graphics.Color.Red, PorterDuff.Mode.SrcAtop);
+                    TripStartDate.Error = "you can make trip only for futer";
+                    valid = false;
+                }
+                else
+                {
+                    TripStartDate.SetError("", null);
+                    TripStartDate.Background.SetColorFilter(Android.Graphics.Color.LightGray, PorterDuff.Mode.Src);
+                    TripStartDate.Error = null;
+                }
             }
 
             if (TripEndDate.Text == "" || DateTime.Compare(startDate,endDate)>0)

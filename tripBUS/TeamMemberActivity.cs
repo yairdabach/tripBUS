@@ -52,18 +52,24 @@ namespace tripBUS
             schoolTeamMembers = DataHelper.GetAllSchoolTeamMember(schoolId, this);
             TripTeamMembers = DataHelper.GetTripTeamMembers(tripCode, SavedData.loginMember.schoolID, this);
 
+            List<TeamMember> teamMembersTemp = new List<TeamMember>();
+            foreach (TeamMember teamMember in schoolTeamMembers)
+            {
+                teamMembersTemp.Add(teamMember);
+            }
 
-            for (int i = 0; i < schoolTeamMembers.Count; i++)
+
+            for (int i = 0; i < teamMembersTemp.Count; i++)
             {
                 for (int j = 0; j < TripTeamMembers.Count; j++)
                 {
-                    if (schoolTeamMembers[i].email == TripTeamMembers[j].email)
+                    if (teamMembersTemp[i].email == TripTeamMembers[j].email)
                     {
-                        schoolTeamMembers.Remove(schoolTeamMembers[i]);
+                        schoolTeamMembers.Remove(teamMembersTemp[i]);
                     }
-                    if (schoolTeamMembers[i].email == SavedData.loginMember.email)
+                    if (teamMembersTemp[i].email == SavedData.loginMember.email)
                     {
-                        schoolTeamMembers.Remove(schoolTeamMembers[i]);
+                        schoolTeamMembers.Remove(teamMembersTemp[i]);
                     }
                 }
             }

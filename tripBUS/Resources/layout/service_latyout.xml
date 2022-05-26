@@ -17,4 +17,12 @@
         android:id="@+id/btnStop"
         />
 
+           <Switch
+           android:layout_width="wrap_content"
+           android:background="#aba"
+           android:layout_height="wrap_content"
+           android:id="@+id/sw"
+           android:checked="false"
+           />
+
 </LinearLayout>

@@ -84,6 +84,9 @@ namespace tripBUS
             TripStartDate.Text = trip.StartDate.ToShortDateString();
             TripEndDate.Text = trip.EndDate.ToShortDateString();
 
+            startDate = trip.StartDate;
+            endDate = trip.EndDate;
+
             for (int i = 0; i < adapter.Count; i++)
             {
                 if (((string)(adapter.GetItem(i))) == trip.classAge)

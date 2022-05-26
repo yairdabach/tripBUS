@@ -139,6 +139,7 @@ namespace tripBUS
             b.PutString("SchoolId", bus.schoolId);
             intent.PutExtras(b);
             StartActivityForResult(intent, 0);
+            Finish();
         }
 
         private void BusFabUpdate_Click(object sender, EventArgs e)

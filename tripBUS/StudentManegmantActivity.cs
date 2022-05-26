@@ -69,6 +69,17 @@ namespace tripBUS
             sprLerningYear.ItemSelected += delegate { createScreen(int.Parse(sprLerningYear.SelectedItem.ToString())); };
 
             createScreen(int.Parse(sprLerningYear.SelectedItem.ToString()));
+
+            FindViewById(Resource.Id.newStudent).Click += delegate
+            {
+                Intent intenti = new Intent(this, typeof(StudentActivity));
+                Bundle bi = new Bundle();
+
+                bi.PutInt("Status", 2);
+                bi.PutString("SchoolId", Helpers.SavedData.loginMember.schoolID);
+                intenti.PutExtras(bi);
+                StartActivityForResult(intenti, 0);
+            };
             
         }
 
@@ -121,10 +132,6 @@ namespace tripBUS
 
         }
 
-        public bool OnNavigationItemSelected(IMenuItem menuItem)
-        {
-            throw new NotImplementedException();
-        }
 
         public void OnClick(View v)
         {
@@ -139,6 +146,12 @@ namespace tripBUS
                 ClassMenAc.PutExtra("schoolId", SavedData.loginMember.schoolID);
                 StartActivity(ClassMenAc);
             }
+        }
+
+        public bool OnNavigationItemSelected(IMenuItem menuItem)
+        {
+            return true;
+
         }
     }
 }

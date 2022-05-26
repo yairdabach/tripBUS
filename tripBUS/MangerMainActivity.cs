@@ -34,7 +34,7 @@ namespace tripBUS
             toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar_futer);
             SetSupportActionBar(toolbar);
 
-            SupportActionBar.Title = "Future trips";
+            SupportActionBar.Title = "All trips";
 
             
             DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
@@ -48,24 +48,29 @@ namespace tripBUS
 
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
             navigationView.SetNavigationItemSelectedListener(this);
-            
             ((navigationView.GetHeaderView(0)).FindViewById<TextView>(Resource.Id.nav_head_name)).Text = SavedData.loginMember.firstName + " "+SavedData.loginMember.lastName;
             ((navigationView.GetHeaderView(0)).FindViewById<TextView>(Resource.Id.nav_head_email)).Text = SavedData.loginMember.email;
 
             allTrips = DataHelper.GetAllTrips(SavedData.loginMember.email, this);
             string email = SavedData.loginMember.email;
-            List<Trip> futerTrips = new List<Trip>();
+            //List<Trip> futerTrips = new List<Trip>();
 
-            foreach (Trip trip in allTrips)
-            {
-                if (trip.StartDate.CompareTo(DateTime.Now)>=0)
-                {
-                    futerTrips.Add(trip);
-                }
-            }
+            //foreach (Trip trip in allTrips)
+            //{
+            //    if (trip.StartDate.CompareTo(DateTime.Now)>=0)
+            //    {
+            //        futerTrips.Add(trip);
+            //    }
+            //}
 
             tripsLV = FindViewById<ListView>(Resource.Id.lv_trips_futer);
             tripsLV.Adapter = new TripAdapter(allTrips, this);
+
+            FindViewById(Resource.Id.ref_fav).Click += delegate
+            {
+                allTrips = DataHelper.GetAllTrips(SavedData.loginMember.email, this);
+                tripsLV.Adapter = new TripAdapter(allTrips, this);
+            };
         }
 
         public bool OnNavigationItemSelected(IMenuItem menuItem)
@@ -88,14 +93,6 @@ namespace tripBUS
             {
                 Intent UpAc = new Intent(this, typeof(UpdateDitlesActivity));
                 StartActivityForResult(UpAc, 0);
-                return true;
-            }
-            if (menuItem.ItemId == Resource.Id.nav_past_trips)
-            {
-                Intent PasdtAc = new Intent(this, typeof(ViewTripActivity));
-                PasdtAc.PutExtra("TripCode", 1);
-                PasdtAc.PutExtra("SchoolId", SavedData.loginMember.schoolID);
-                StartActivityForResult(PasdtAc, 0);
                 return true;
             }
             if (menuItem.ItemId == Resource.Id.nav_student_menegment) 

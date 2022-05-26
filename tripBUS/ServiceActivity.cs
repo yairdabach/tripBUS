@@ -8,14 +8,20 @@ using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
 using tripBUS.Helpers;
+using Android.Views.Animations;
+
 namespace tripBUS
 {
-    [Activity(Label = "@string/app_name", MainLauncher = true)]
+    [Activity(Label = "@string/app_name")]
     
     public class ServiceActivity : Activity
     {
         Button btnStop;
         Button btnStart;
+        Animation animFadeIn, animFadeOut;
+        Switch sw;
+        bool vol;
+
         protected override void OnCreate(Bundle savedInstanceState)
             {
                 base.OnCreate(savedInstanceState);
@@ -26,19 +32,60 @@ namespace tripBUS
                 btnStop = FindViewById<Button>(Resource.Id.btnStop);
                 btnStart.Click += BtnStart_Click;
                 btnStop.Click += BtnStop_Click;
-            }
-            private void BtnStop_Click(object sender, EventArgs e)
+
+            animFadeIn = AnimationUtils.LoadAnimation(this, Resource.Animation.anim1);
+            animFadeOut = AnimationUtils.LoadAnimation(this, Resource.Animation.a2_animFadeOut);
+            sw = FindViewById<Switch>(Resource.Id.sw);
+            sw.CheckedChange += OnChekedChanged;
+            vol = false;
+        }
+
+        private void OnChekedChanged(object sender, CompoundButton.CheckedChangeEventArgs e)
+        {
+            if (e.IsChecked && Sound.mp!= null)
+            {
+                Sound.mp.SetVolume(0, 0);
+                vol = true;
+            }   
+            else
+            {
+                Sound.mp.SetVolume(1, 1);
+                vol = false;
+            }   
+        }
+
+        private void BtnStop_Click(object sender, EventArgs e)
             {
                 Intent intent = new Intent(this, typeof(Helpers.FirstService));
                 StopService(intent);
-
-            }
+                btnStart.StartAnimation(animFadeIn);
+            btnStop.Visibility = ViewStates.Invisible;
+            btnStart.Visibility = ViewStates.Visible;
+            btnStop.StartAnimation(animFadeOut);
+        }
 
             private void BtnStart_Click(object sender, EventArgs e)
             {
                 Intent intent = new Intent(this, typeof(FirstService));
                 StartService(intent);
-
+                btnStart.StartAnimation(animFadeOut);
+            btnStart.Visibility = ViewStates.Invisible;
+            btnStop.Visibility = ViewStates.Visible;
+            btnStop.StartAnimation(animFadeIn);
+           
+            try
+            {
+                if (vol)
+                {
+                    Sound.mp.SetVolume(0, 0);
+                }
+                else
+                {
+                    Sound.mp.SetVolume(1, 1);
+                }
+            }
+            catch { }
+             
             }
 
 

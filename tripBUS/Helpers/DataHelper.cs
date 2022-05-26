@@ -198,6 +198,8 @@ namespace tripBUS.Helpers
             }
 
         }
+
+
         public static string GetPhoneByEmail(string email, Context context)
         {
             try
@@ -362,6 +364,39 @@ namespace tripBUS.Helpers
             try
             {
                 string sqlQuer = @$"SELECT * FROM [dbo].[Trip] Where ManegerEmail='{memberEmail}' ";
+                createConacation();
+                var cmd = new SqlCommand(sqlQuer, conn);
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        trips.Add(new Trip(
+                            CangeToInt(((IDataRecord)reader).GetValue(0).ToString()),
+                            ((IDataRecord)reader).GetValue(2).ToString(),
+                            ((IDataRecord)reader).GetValue(1).ToString(),
+                            ((IDataRecord)reader).GetValue(3).ToString(),
+                            ((IDataRecord)reader).GetValue(10).ToString(),
+                            ((IDataRecord)reader).GetValue(11).ToString(),
+                            new DateTime(CangeToInt(((IDataRecord)reader).GetValue(6).ToString()), CangeToInt(((IDataRecord)reader).GetValue(5).ToString()), CangeToInt(((IDataRecord)reader).GetValue(4).ToString())),
+                            new DateTime(CangeToInt(((IDataRecord)reader).GetValue(9).ToString()), CangeToInt(((IDataRecord)reader).GetValue(8).ToString()), CangeToInt(((IDataRecord)reader).GetValue(7).ToString())),
+                            CangeToInt(((IDataRecord)reader).GetValue(12).ToString()),
+                            CangeToInt(((IDataRecord)reader).GetValue(13).ToString()),
+                            CangeToInt(((IDataRecord)reader).GetValue(14).ToString())));
+                    }
+                }
+            }
+            catch (Exception ex) { }
+            return trips;
+        }
+
+        public static List<Trip> GetAllTripsInYear(string memberEmail, int year, Context context)
+        {
+            List<Trip> trips = new List<Trip>();
+            try
+            {
+                string sqlQuer = @$"SELECT * FROM [dbo].[Trip] Where TripStartDateYear={year} And ManegerEmail='{memberEmail}' ";
                 createConacation();
                 var cmd = new SqlCommand(sqlQuer, conn);
                 var reader = cmd.ExecuteReader();
@@ -629,11 +664,47 @@ namespace tripBUS.Helpers
 
         }
 
-        internal static void DelStudent(string id, string school_ID, int lerningYear)
+        internal static void AddStudent(Student student, Context context)
         {
-            throw new NotImplementedException();
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append("INSERT INTO [dbo].[Student] (StudentId, LerningYear,SchoolId, LastName, FirstName,ClassAge,classNum)");
+            stringBuilder.Append(@"VALUES " + $"('{student.Id}',{student.LerningYear},'{student.School_ID}','{student.Last_Name}','{student.First_Name}',{student.ClassAge},{student.ClassNum})");
+            createConacation();
+            var cmd = new SqlCommand(stringBuilder.ToString(), conn);
+            cmd.ExecuteNonQuery();
+            conn.Close();
         }
 
+
+        internal static void DelStudent(string id, string school_ID, int lerningYear, Context context)
+        {
+            string comand = $"DELETE [dbo].[Student] where StudentId = '{id}' And LerningYear = {lerningYear} And SchoolId = '{school_ID}'";
+            createConacation();
+            var cmd = new SqlCommand(comand, conn);
+            cmd.ExecuteNonQuery();
+            conn.Close();
+
+            foreach(TeamMember member in GetAllSchoolTeamMember(school_ID,context))
+            {
+                foreach (Trip item in GetAllTripsInYear(member.email, lerningYear,context))
+                {
+                    comand = $"DELETE [dbo].[StudentToGroup] where StudentId = '{id}' And TripCode={item.tripCode}";
+                    createConacation();
+                    cmd = new SqlCommand(comand, conn);
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+        }
+
+        internal static void UpdateStudent(Student student, Context context)
+        {
+            string comand = $"Update [dbo].[Student] SET LastName = '{student.Last_Name}', FirstName = '{student.First_Name}', ClassAge = {student.ClassAge}, classNum = {student.ClassNum} where StudentId = '{student.Id}' And LerningYear = {student.LerningYear} And SchoolId = '{student.School_ID}'";
+            createConacation();
+            var cmd = new SqlCommand(comand, conn);
+            cmd.ExecuteNonQuery();
+            conn.Close();
+        }
         public static Student GetStudentById(string id, string schoolId, int year, Context context)
         {
             string sqlQuer = @$"SELECT * FROM [dbo].[Student] Where StudentID = '{id}' And LerningYear = {year} And SchoolID='{schoolId}'";
@@ -878,7 +949,6 @@ namespace tripBUS.Helpers
                     email = group.teamMember.email;
                 }
                 string comand = $"Update [dbo].[TripGroup] SET groupName='{group.Name}', teamMember ='{email}', BusNum ={group.BusNumber},countStudent={group.amoountOfstudent + AddStudent.Count - RemoveStudent.Count} Where groupNum = {group.GroupNum} AND tripCode={group.tripCode}";
-                Console.WriteLine(comand);
                 createConacation();
                 var cmd = new SqlCommand(comand, conn);
                 cmd.ExecuteNonQuery();

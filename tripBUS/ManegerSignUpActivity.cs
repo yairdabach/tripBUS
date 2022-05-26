@@ -76,7 +76,7 @@ namespace tripBUS
 
 
             //check valid Fname
-            if (firstNameET.Text == "" || firstNameET.Text == null)
+            if (firstNameET.Text == "" || firstNameET.Text == null || !firstNameET.Text.All(Char.IsLetter))
             {
                 firstNameET.Background.SetColorFilter(Android.Graphics.Color.Red, PorterDuff.Mode.SrcAtop);
                 firstNameET.Error = "must fill it";
@@ -90,7 +90,7 @@ namespace tripBUS
             }
 
             //check valid last name
-            if (lastNameET.Text == "" || lastNameET.Text == null)
+            if (lastNameET.Text == "" || lastNameET.Text == null || !lastNameET.Text.All(Char.IsLetter))
             {
                 lastNameET.Background.SetColorFilter(Android.Graphics.Color.Red, PorterDuff.Mode.SrcAtop);
                 lastNameET.Error = "must fill it";
@@ -104,7 +104,7 @@ namespace tripBUS
             }
 
             //check valid school id
-            if (schoolIdET.Text == "" || lastNameET.Text == null)
+            if (schoolIdET.Text == "" || schoolIdET.Text == null)
             {
                 schoolIdET.Background.SetColorFilter(Android.Graphics.Color.Red, PorterDuff.Mode.SrcAtop);
                 schoolIdET.Error = "must fill it";
@@ -112,7 +112,7 @@ namespace tripBUS
             }
             else
             {
-                if (schoolIdET.Text.Length != 6 || lastNameET.Text.All(char.IsDigit))
+                if (schoolIdET.Text.Length != 6 || schoolIdET.Text.All(char.IsDigit))
                 {
                     schoolIdET.Background.SetColorFilter(Android.Graphics.Color.Red, PorterDuff.Mode.SrcAtop);
                     schoolIdET.Error = "Not valid school id";
@@ -154,10 +154,20 @@ namespace tripBUS
             //valid phone
             if (phoneET.Text.Length != 9 || !phoneET.Text.All(char.IsDigit))
             {
-                phoneET.Text = null;
-                phoneET.Background.SetColorFilter(Android.Graphics.Color.Red, PorterDuff.Mode.SrcAtop);
-                phoneET.Error = "not valid phone";
-                valid = false;
+                if (phoneET.Text.Length != 10 && !phoneET.Text.StartsWith("0"))
+                {
+                    phoneET.Text = null;
+                    phoneET.Background.SetColorFilter(Android.Graphics.Color.Red, PorterDuff.Mode.SrcAtop);
+                    phoneET.Error = "not valid phone";
+                    valid = false;
+                }
+                else
+                {
+                    phoneET.SetError("", null);
+                    phoneET.Background.SetColorFilter(Android.Graphics.Color.LightGray, PorterDuff.Mode.Src);
+                    phoneET.Error = null;
+                    phoneET.Text = phoneET.Text.Substring(1);
+                }
             }
             else
             {
@@ -167,7 +177,7 @@ namespace tripBUS
             }
 
             //Pasword Valid
-            if (!ValidatePassword(passwordET.Text))
+            if (ValidatePassword(passwordET.Text))
             {
                 //At least onelower case letter,
                 //At least oneupper case letter,

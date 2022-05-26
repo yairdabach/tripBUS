@@ -66,7 +66,7 @@ namespace tripBUS
             GroupName.Enabled = false;
             GroupNum.Enabled = false;
             busSpr.Enabled = false;
-            busSpr.Enabled = false;
+            teamMemberSpr.Enabled = false;
 
             GroupNum.Text = groupNum.ToString();
             GroupName.Text = group.Name;
@@ -83,9 +83,9 @@ namespace tripBUS
             List<string> TeamMember = new List<string>();
             if (group.teamMember != null)
             {
-                busNum.Add(group.teamMember.firstName+" "+ group.teamMember.lastName);
+                TeamMember.Add(group.teamMember.firstName+" "+ group.teamMember.lastName);
             }
-            busSpr.Adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleSpinnerItem, busNum);
+            teamMemberSpr.Adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleSpinnerItem, TeamMember);
 
 
             if (group.students.Count > 0)

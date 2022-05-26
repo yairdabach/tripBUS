@@ -133,13 +133,34 @@ namespace tripBUS.Modles
 
             if (edit && classOrGroup!=3)
             {
+               
+                holder = view.Tag as StudentAdapterViewHolder;
+                if (holder == null)
+                {
+                    holder = new StudentAdapterViewHolder();
+                    holder.student = objects[position];
+                    holder.pos = position;
+                    view.Tag = holder;
+                }
+
+
                 (view.FindViewById<Button>(Resource.Id.del_student_fav)).Click += delegate
                 {
-                    DataHelper.DelStudent(objects[position].Id, objects[position].School_ID, objects[position].LerningYear);
+                    DataHelper.DelStudent(objects[position].Id, objects[position].School_ID, objects[position].LerningYear, context);
+                    objects.Remove(objects[position]);
+                    ((ClassManegmentActivity)context).LayoutInflater.Inflate(Resource.Layout.student_layout, parent, false);
+                    Toast.MakeText(context, "Student Delate", ToastLength.Short).Show();
                 };
                 (view.FindViewById<Button>(Resource.Id.edit_student_fav)).Click += delegate
                 {
-
+                    Intent intenti = new Intent(context, typeof(StudentActivity));
+                    Bundle bi = new Bundle();
+                    bi.PutString("student", (view.Tag as StudentAdapterViewHolder).student.Id);
+                    bi.PutInt("year", (view.Tag as StudentAdapterViewHolder).student.LerningYear);
+                    bi.PutInt("Status", 1);
+                    bi.PutString("SchoolId", Helpers.SavedData.loginMember.schoolID);
+                    intenti.PutExtras(bi);
+                    ((ClassManegmentActivity) context).StartActivity(intenti);
                 };
             }
             else if(classOrGroup != 3)
