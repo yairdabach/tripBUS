@@ -29,7 +29,7 @@ namespace tripBUS
         List<StudentAttendance> change, Add;
         Attendance attendance;
         Trip trip;
-        
+        int s =0;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -62,13 +62,18 @@ namespace tripBUS
             {
                 dateTime = DateTime.Parse(date);
                 attendance = DataHelper.GetAttendace(tripCode, busNum, dateTime, year, SchoolID, this);
-                if (attendance.Attendances == null)
+                if (attendance!=null)
                 {
-                    attendance.Attendances = new List<StudentAttendance>();
+                    if (attendance.Attendances == null)
+                    {
+                        attendance.Attendances = new List<StudentAttendance>();
+                    }
                 }
+                
             }
             else
             {
+                s = 1;
                 dateTime = DateTime.Now;
                 attendance = new Attendance(tripCode,SchoolID, busNum, dateTime);
                 attendance.Attendances = new List<StudentAttendance>();
@@ -130,29 +135,44 @@ namespace tripBUS
         // click on save 
         private void SaveBtn_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(date) && ((dateTime.CompareTo(trip.StartDate) < 0 || dateTime.CompareTo(trip.EndDate) > 0)))
+
+            if (!string.IsNullOrEmpty(dateCheeckET.Text))
+            {
+                dateTime = DateTime.Parse(dateCheeckET.Text);
+            }
+            if (string.IsNullOrEmpty(dateCheeckET.Text) || ((dateTime.CompareTo(trip.StartDate) <= 0 || dateTime.CompareTo(trip.EndDate) >= 0)))
             {
                 // un valid date
+                
                 Toast.MakeText(this, "invalid date", ToastLength.Long).Show();
             }
             else
             {
-                //set attendace
-                attendance.descriotionCheek = titleCheekET.Text;
-                attendance.DateTime = dateTime;
+                if (DataHelper.GetAttendace(tripCode, busNum, dateTime, year, SchoolID, this) != null && s==1)
+                {
+                    Toast.MakeText(this, "Theare is such date and time", ToastLength.Long).Show();
+                }
+                else
+                {
+                    //set attendace
+                    attendance.descriotionCheek = titleCheekET.Text;
+                    attendance.DateTime = dateTime;
 
-                //change student attendace
-                for (int i = 0; i < Add.Count; i++)
-                {
-                    DataHelper.AddAtendace(attendance, Add[i], this);
+                    //change student attendace
+                    for (int i = 0; i < Add.Count; i++)
+                    {
+                        DataHelper.AddAtendace(attendance, Add[i], this);
+                    }
+                    for (int i = 0; i < change.Count; i++)
+                    {
+
+                        DataHelper.UpdateAtendeceStudent(attendance, change[i], this);
+                    }
+                    DataHelper.UpdateAtendeceInfo(attendance, this);
+                    Finish();
                 }
-                for (int i = 0; i < change.Count; i++)
-                {
-                    DataHelper.UpdateAtendeceStudent(attendance, change[i], this);
-                }
-                DataHelper.UpdateAtendeceInfo(attendance, this);
             }
-            Finish();
+            
             
 
         }
@@ -183,8 +203,7 @@ namespace tripBUS
         //set time
         private void OnTimeSet(object sender, TimePickerDialog.TimeSetEventArgs e)
         {
-            TimeSpan t = new TimeSpan(e.HourOfDay, e.Minute, 0);
-            dateTime.Add(t);
+            dateTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, e.HourOfDay, e.Minute, 0);
             dateCheeckET.Text = dateTime.ToString("g");
         }
 

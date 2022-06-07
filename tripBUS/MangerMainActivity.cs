@@ -69,7 +69,11 @@ namespace tripBUS
             FindViewById(Resource.Id.ref_fav).Click += delegate
             {
                 allTrips = DataHelper.GetAllTrips(SavedData.loginMember.email, this);
+                tripsLV.Adapter = new TripAdapter(new List<Trip>(), this);
+                System.Threading.Thread.Sleep(5000);
                 tripsLV.Adapter = new TripAdapter(allTrips, this);
+
+
             };
         }
 

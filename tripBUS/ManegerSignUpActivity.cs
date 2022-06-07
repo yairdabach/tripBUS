@@ -112,7 +112,7 @@ namespace tripBUS
             }
             else
             {
-                if (schoolIdET.Text.Length != 6 || schoolIdET.Text.All(char.IsDigit))
+                if (schoolIdET.Text.Length != 6 || !schoolIdET.Text.All(char.IsDigit))
                 {
                     schoolIdET.Background.SetColorFilter(Android.Graphics.Color.Red, PorterDuff.Mode.SrcAtop);
                     schoolIdET.Error = "Not valid school id";
@@ -177,7 +177,7 @@ namespace tripBUS
             }
 
             //Pasword Valid
-            if (ValidatePassword(passwordET.Text))
+            if (!ValidatePassword(passwordET.Text))
             {
                 //At least onelower case letter,
                 //At least oneupper case letter,

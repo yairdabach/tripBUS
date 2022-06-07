@@ -1,5 +1,6 @@
 ﻿using Android.App;
 using Android.Content;
+using Android.Graphics;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
@@ -107,8 +108,9 @@ namespace tripBUS
             teamMembers = DataHelper.GetTripTeamMembersWhoNotConnected(tripCode, schoolId, this);
             index = 0;
 
-            teamMembers.Add(group.teamMember);
+
             teamMemberString.Add(" ");
+            teamMembers.Add(group.teamMember);
             foreach (TeamMember teamMember in teamMembers)
             {
                 teamMemberString.Add(teamMember.firstName +" "+ teamMember.lastName);
@@ -295,53 +297,61 @@ namespace tripBUS
         // save fun
         private void EditFAB_Click(object sender, EventArgs e)
         {
-            group.Name = GroupName.Text;
-            if (busSpr.SelectedItem.ToString() == "")
+            if (string.IsNullOrEmpty(GroupName.Text))
             {
-                group.BusNumber = 667;
+                GroupName.Background.SetColorFilter(Android.Graphics.Color.Red, PorterDuff.Mode.SrcAtop);
+                GroupName.Error = "must fill it";
             }
             else
             {
-                group.BusNumber = int.Parse((busSpr.SelectedItem.ToString().Split(" | "))[0]);
-            }
+                group.Name = GroupName.Text;
+                if (busSpr.SelectedItem.ToString() == "")
+                {
+                    group.BusNumber = 667;
+                }
+                else
+                {
+                    group.BusNumber = int.Parse((busSpr.SelectedItem.ToString().Split(" | "))[0]);
+                }
 
-            if (group.teamMember != null)
-            {
-                DataHelper.UpdateTeamMemberGroup(tripCode, 667, group.teamMember.email, this);
-            }
-            
+                if (group.teamMember != null)
+                {
+                    DataHelper.UpdateTeamMemberGroup(tripCode, 667, group.teamMember.email, this);
+                }
 
-            if (teamMemberSpr.SelectedItem.ToString() == " ")
-            {
-                group.teamMember = null;
-            }
-            else
-            {
-                group.teamMember = teamMembers[teamMemberSpr.SelectedItemPosition-1];
-                DataHelper.UpdateTeamMemberGroup(tripCode, groupNum, group.teamMember.email, this);
-            }
 
-            //if isnt new close else open view group activity
-            if (IsExist)
-            {
-                group.amoountOfstudent = currentList.Count;
-                DataHelper.UpdateGroup(group, AddStudent, DeleteStudent, this);
-                FinishActivity(1);
-                Finish();
-            }
-            else
-            {
+                if (teamMemberSpr.SelectedItem.ToString() == " ")
+                {
+                    group.teamMember = null;
+                }
+                else
+                {
+                    group.teamMember = teamMembers[teamMemberSpr.SelectedItemPosition - 1];
+                    DataHelper.UpdateTeamMemberGroup(tripCode, groupNum, group.teamMember.email, this);
+                }
 
-                DataHelper.AddNewGroup(group, AddStudent, this);
-                Intent intent = new Intent(this, typeof(ViewGroupActivity));
-                Bundle b = new Bundle();
-                b.PutInt("groupNum", group.GroupNum);
-                b.PutInt("tripCode", tripCode);
-                b.PutInt("year", year);
-                b.PutString("SchoolId", group.SchoolId);
-                intent.PutExtras(b);
-                StartActivity(intent);
-                Finish();
+                //if isnt new close else open view group activity
+                if (IsExist)
+                {
+                    group.amoountOfstudent = currentList.Count;
+                    DataHelper.UpdateGroup(group, AddStudent, DeleteStudent, this);
+                    FinishActivity(1);
+                    Finish();
+                }
+                else
+                {
+
+                    DataHelper.AddNewGroup(group, AddStudent, this);
+                    Intent intent = new Intent(this, typeof(ViewGroupActivity));
+                    Bundle b = new Bundle();
+                    b.PutInt("groupNum", group.GroupNum);
+                    b.PutInt("tripCode", tripCode);
+                    b.PutInt("year", year);
+                    b.PutString("SchoolId", group.SchoolId);
+                    intent.PutExtras(b);
+                    StartActivity(intent);
+                    Finish();
+                }
             }
         }
     }

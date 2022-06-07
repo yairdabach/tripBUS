@@ -69,7 +69,15 @@ namespace tripBUS
             teamMemberSpr.Enabled = false;
 
             GroupNum.Text = groupNum.ToString();
-            GroupName.Text = group.Name;
+            if (!string.IsNullOrEmpty(group.Name))
+            {
+                GroupName.Text = group.Name;
+            }
+            else
+            {
+                GroupName.Text = null;
+            }
+            
 
             Bus bus = DataHelper.GetBusInfo(group.BusNumber, group.tripCode, group.SchoolId, this);
 

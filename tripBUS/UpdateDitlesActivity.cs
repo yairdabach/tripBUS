@@ -105,7 +105,8 @@ namespace tripBUS
                     if(DataHelper.UpdateTeamMember(teamMemberTemp,this))
                     {
                         Helpers.SavedData.loginMember= teamMemberTemp;
-                        FinishActivity(0); 
+                        FinishActivity(0);
+                        Finish();
                     }
                     
 
@@ -124,7 +125,7 @@ namespace tripBUS
 
 
             //check valid Fname
-            if (firstNameET.Text == "" || firstNameET.Text == null)
+            if (firstNameET.Text == "" || firstNameET.Text == null )
             {
                 firstNameET.Background.SetColorFilter(Android.Graphics.Color.Red, PorterDuff.Mode.SrcAtop);
                 firstNameET.Error = "must fill it";
@@ -268,7 +269,7 @@ namespace tripBUS
                     break;
                 }
             }
-            if (validConditions == 1) return false;
+            if (validConditions != 3) return false;
             return true;
 
 

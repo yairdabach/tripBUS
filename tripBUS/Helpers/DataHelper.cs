@@ -69,6 +69,7 @@ namespace tripBUS.Helpers
 
         }
 
+        //add team member to db
         public static void AddTeamMember(TeamMember teamMember, Context context)
         {
             try
@@ -92,6 +93,8 @@ namespace tripBUS.Helpers
 
             }
         }
+
+        //update team member
         public static bool UpdateTeamMember(TeamMember teamMember, Context context)
         {
             try

@@ -68,7 +68,12 @@ namespace tripBUS.Modles
 
         public override string ToString()
         {
-            return $"({GroupNum},'{Name}',{tripCode},'{SchoolId}','{teamMember.email}',{BusNumber})";
+            if (teamMember!=null)
+            {
+                return $"({GroupNum},'{Name}',{tripCode},'{SchoolId}','{teamMember.email}',{BusNumber})";
+            }
+            return $"({GroupNum},'{Name}',{tripCode},'{SchoolId}','',{BusNumber})";
+
         }
     }
 }
